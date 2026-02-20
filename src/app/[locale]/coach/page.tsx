@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CoachChat } from "@/components/modules/coach-chat";
 import { useToast } from "@/components/ui/toast";
+import { trpc } from "@/lib/trpc";
+import { useUserStore } from "@/lib/stores/user-store";
 import {
   Phone,
   ShieldAlert,
@@ -17,6 +19,8 @@ import {
   Brain,
   History,
   RefreshCw,
+  Loader2,
+  MessageSquare,
 } from "lucide-react";
 
 const SCENARIOS = [
@@ -26,6 +30,10 @@ const SCENARIOS = [
   { key: "needsDiscovery", apiKey: "needs_discovery", icon: Search, color: "text-purple-500 bg-purple-50 dark:bg-purple-950" },
   { key: "priceNegotiation", apiKey: "negotiation_discount", icon: DollarSign, color: "text-amber-500 bg-amber-50 dark:bg-amber-950" },
 ];
+
+// 將 scenario apiKey 對應到顯示用的 translation key
+const SCENARIO_API_TO_KEY: Record<string, string> = {};
+SCENARIOS.forEach((s) => { SCENARIO_API_TO_KEY[s.apiKey] = s.key; });
 
 interface ChatMessage {
   id: string;
@@ -38,6 +46,7 @@ export default function CoachPage() {
   const tErr = useTranslations("errors");
   const locale = useLocale();
   const { toast } = useToast();
+  const { isAuthenticated } = useUserStore();
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +58,29 @@ export default function CoachPage() {
     tip: string;
   } | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  // DB session ID (separate from AI session ID)
+  const dbSessionIdRef = useRef<string | null>(null);
+  const sessionStartTimeRef = useRef<number>(0);
+
+  // tRPC mutations for DB persistence (fire-and-forget with error toast)
+  const startDbSession = trpc.coach.startSession.useMutation({
+    onError: () => toast("Failed to save session.", "error"),
+  });
+  const sendDbMessage = trpc.coach.sendMessage.useMutation({
+    onError: () => toast("Failed to save message.", "error"),
+  });
+  const endDbSession = trpc.coach.endSession.useMutation({
+    onError: () => toast("Failed to save session results.", "error"),
+  });
+  const addXP = trpc.gamification.addXP.useMutation({
+    onError: () => toast("Failed to save XP.", "error"),
+  });
+
+  // Practice history from DB
+  const historyQuery = trpc.coach.getHistory.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const utils = trpc.useUtils();
 
   const startScenario = async (key: string) => {
     const scenario = SCENARIOS.find((s) => s.key === key);
@@ -59,18 +91,31 @@ export default function CoachPage() {
     setFeedback(null);
     setIsLoading(true);
     setHasError(false);
+    sessionStartTimeRef.current = Date.now();
+
+    // Start DB session + AI call in parallel
+    const dbSessionPromise = isAuthenticated
+      ? startDbSession.mutateAsync({ scenario: scenario.apiKey }).catch(() => null)
+      : Promise.resolve(null);
 
     try {
-      const res = await fetch("/api/ai/coach", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "start",
-          scenario: scenario.apiKey,
-          locale,
-          culture: "taiwan",
+      const [dbSession, res] = await Promise.all([
+        dbSessionPromise,
+        fetch("/api/ai/coach", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "start",
+            scenario: scenario.apiKey,
+            locale,
+            culture: "taiwan",
+          }),
         }),
-      });
+      ]);
+
+      if (dbSession) {
+        dbSessionIdRef.current = dbSession.id;
+      }
 
       const json = await res.json();
       if (!json.success) {
@@ -81,13 +126,23 @@ export default function CoachPage() {
       }
 
       setSessionId(json.data.sessionId);
+      const initialMessage = json.data.initialMessage;
       setMessages([
         {
           id: crypto.randomUUID(),
           role: "coach",
-          content: json.data.initialMessage,
+          content: initialMessage,
         },
       ]);
+
+      // Save assistant message to DB (dbSessionIdRef is now guaranteed set)
+      if (isAuthenticated && dbSessionIdRef.current) {
+        sendDbMessage.mutate({
+          sessionId: dbSessionIdRef.current,
+          role: "assistant",
+          content: initialMessage,
+        });
+      }
     } catch {
       toast(tErr("aiError"), "error");
       setActiveScenario(null);
@@ -103,6 +158,15 @@ export default function CoachPage() {
     const userMsg: ChatMessage = { id: crypto.randomUUID(), role: "user", content };
     setMessages((prev) => [...prev, userMsg]);
     setIsLoading(true);
+
+    // Save user message to DB (fire-and-forget)
+    if (isAuthenticated && dbSessionIdRef.current) {
+      sendDbMessage.mutate({
+        sessionId: dbSessionIdRef.current,
+        role: "user",
+        content,
+      });
+    }
 
     try {
       const res = await fetch("/api/ai/coach", {
@@ -122,12 +186,22 @@ export default function CoachPage() {
         return;
       }
 
+      const aiReply = json.data.reply;
       const coachMsg: ChatMessage = {
         id: crypto.randomUUID(),
         role: "coach",
-        content: json.data.reply,
+        content: aiReply,
       };
       setMessages((prev) => [...prev, coachMsg]);
+
+      // Save assistant message to DB (fire-and-forget)
+      if (isAuthenticated && dbSessionIdRef.current) {
+        sendDbMessage.mutate({
+          sessionId: dbSessionIdRef.current,
+          role: "assistant",
+          content: aiReply,
+        });
+      }
 
       // If session is complete, get feedback
       if (json.data.isComplete) {
@@ -153,17 +227,51 @@ export default function CoachPage() {
       const json = await res.json();
       if (json.success) {
         const d = json.data;
+        const score = d.totalScore;
         setFeedback({
-          score: d.totalScore,
+          score,
           strengths: d.strengths,
           improvements: d.improvements,
           tip: d.encouragement,
         });
+
+        const durationSeconds = Math.round((Date.now() - sessionStartTimeRef.current) / 1000);
+
+        // Persist score and feedback to DB
+        if (isAuthenticated && dbSessionIdRef.current) {
+          const feedbackText = JSON.stringify({
+            strengths: d.strengths,
+            improvements: d.improvements,
+            encouragement: d.encouragement,
+          });
+
+          endDbSession.mutate({
+            sessionId: dbSessionIdRef.current,
+            score,
+            feedback: feedbackText,
+            durationSeconds,
+          });
+
+          // Award XP based on score
+          const xpReward = Math.max(10, Math.round(score * 0.5));
+          addXP.mutate(
+            { amount: xpReward },
+            {
+              onSuccess: () => {
+                toast(`Practice complete! +${xpReward} XP`, "success");
+                // Refresh history
+                utils.coach.getHistory.invalidate();
+              },
+            }
+          );
+        }
       }
     } catch {
       // Feedback is best-effort
     }
   };
+
+  const history = historyQuery.data ?? [];
 
   return (
     <AppShell>
@@ -231,28 +339,56 @@ export default function CoachPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {[
-                    { scenario: t("scenarios.coldCall"), score: 72, date: "Feb 19" },
-                    { scenario: t("scenarios.objectionHandling"), score: 85, date: "Feb 18" },
-                    { scenario: t("scenarios.closing"), score: 68, date: "Feb 17" },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center justify-between rounded-lg border border-border p-3"
-                    >
-                      <div>
-                        <p className="text-sm font-medium text-text">{item.scenario}</p>
-                        <p className="text-xs text-text-muted">{item.date}</p>
-                      </div>
-                      <Badge
-                        variant={item.score >= 80 ? "success" : item.score >= 60 ? "warning" : "destructive"}
-                      >
-                        {item.score}/100
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
+                {!isAuthenticated ? (
+                  <p className="text-sm text-text-muted text-center py-4">
+                    Sign in to track your practice history.
+                  </p>
+                ) : historyQuery.isLoading ? (
+                  <div className="flex items-center justify-center py-6">
+                    <Loader2 className="h-5 w-5 animate-spin text-text-muted" />
+                  </div>
+                ) : history.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-6 text-center">
+                    <MessageSquare className="h-8 w-8 text-text-muted mb-2" />
+                    <p className="text-sm text-text-muted">
+                      No practice sessions yet. Start your first role-play!
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {history.map((item) => {
+                      const scenarioKey = SCENARIO_API_TO_KEY[item.scenario] ?? item.scenario;
+                      const displayName = (() => {
+                        try { return t(`scenarios.${scenarioKey}`); } catch { return item.scenario; }
+                      })();
+                      const date = new Date(item.createdAt).toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                      });
+                      const score = item.score ?? 0;
+                      return (
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between rounded-lg border border-border p-3"
+                        >
+                          <div>
+                            <p className="text-sm font-medium text-text">{displayName}</p>
+                            <p className="text-xs text-text-muted">{date}</p>
+                          </div>
+                          {item.score != null ? (
+                            <Badge
+                              variant={score >= 80 ? "success" : score >= 60 ? "warning" : "destructive"}
+                            >
+                              {score}/100
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary">--</Badge>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </>
@@ -264,6 +400,7 @@ export default function CoachPage() {
               onClick={() => {
                 setActiveScenario(null);
                 setSessionId(null);
+                dbSessionIdRef.current = null;
               }}
               className="mb-4"
             >

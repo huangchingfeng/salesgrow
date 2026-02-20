@@ -1,23 +1,24 @@
 "use client";
 
+import { useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { StreakFlame } from "@/components/gamification/streak-flame";
 import { XpBar } from "@/components/gamification/xp-bar";
 import { DailyTaskCard } from "@/components/modules/daily-task-card";
 import { useGamificationStore } from "@/lib/stores/gamification-store";
 import { useUserStore } from "@/lib/stores/user-store";
+import { trpc } from "@/lib/trpc";
+import { useToast } from "@/components/ui/toast";
 import {
   Search,
   Mail,
   ClipboardList,
   Bell,
   Brain,
-  Users,
-  DollarSign,
   TrendingUp,
   Clock,
 } from "lucide-react";
@@ -39,13 +40,49 @@ function getGreetingKey(): string {
   return "greetingEvening";
 }
 
+// 時間格式化
+function timeAgo(dateStr: string | Date): string {
+  const date = typeof dateStr === "string" ? new Date(dateStr) : dateStr;
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return "Just now";
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}h ago`;
+  const diffDay = Math.floor(diffHr / 24);
+  if (diffDay === 1) return "Yesterday";
+  return `${diffDay}d ago`;
+}
+
+const stageColorMap: Record<string, string> = {
+  lead: "bg-blue-500",
+  contacted: "bg-purple-500",
+  meeting: "bg-amber-500",
+  proposal: "bg-green-500",
+  negotiation: "bg-orange-500",
+  closed_won: "bg-success",
+  closed_lost: "bg-destructive",
+};
+
+const stageLabelMap: Record<string, string> = {
+  lead: "Lead",
+  contacted: "Contacted",
+  meeting: "Meeting",
+  proposal: "Proposal",
+  negotiation: "Negotiation",
+  closed_won: "Closed Won",
+  closed_lost: "Closed Lost",
+};
+
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
   const gamT = useTranslations("gamification");
   const locale = useLocale();
-  const { level, xp, xpToNextLevel, streak, dailyTasks, completeTask, addXp } =
+  const { level, xp, xpToNextLevel, streak, dailyTasks, completeTask, addXp, initFromServer, initialized } =
     useGamificationStore();
   const { isAuthenticated, name } = useUserStore();
+  const { toast } = useToast();
 
   const displayName = name || "Sales Pro";
   const greetingKey = getGreetingKey();
@@ -58,26 +95,163 @@ export default function DashboardPage() {
     5: gamT("levels.5"),
   };
 
+  // --- tRPC Queries ---
+  const clientsQuery = trpc.clients.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const visitLogsQuery = trpc.visitLog.list.useQuery(
+    { limit: 5 },
+    { enabled: isAuthenticated }
+  );
+
+  const outreachQuery = trpc.outreach.list.useQuery(
+    { limit: 5 },
+    { enabled: isAuthenticated }
+  );
+
+  const statsQuery = trpc.user.getStats.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const dailyTasksQuery = trpc.gamification.getDailyTasks.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const updateStreakMutation = trpc.user.updateStreak.useMutation({
+    onError: () => {
+      toast("Failed to update streak.", "error");
+    },
+  });
+  const completeDailyTaskMutation = trpc.gamification.completeDailyTask.useMutation({
+    onError: () => {
+      toast("Failed to save task completion.", "error");
+    },
+  });
+  const addXpMutation = trpc.gamification.addXP.useMutation({
+    onError: () => {
+      toast("Failed to save XP.", "error");
+    },
+  });
+
+  // --- Sync gamification store from server ---
+  useEffect(() => {
+    if (statsQuery.data && isAuthenticated) {
+      const serverTasks = dailyTasksQuery.data;
+      initFromServer(
+        {
+          level: statsQuery.data.level,
+          xp: statsQuery.data.xp,
+          streakDays: statsQuery.data.streakDays,
+        },
+        serverTasks?.length
+          ? serverTasks.map((t) => ({
+              id: t.id,
+              taskType: t.taskType,
+              description: t.description,
+              xpReward: t.xpReward,
+              status: t.status,
+            }))
+          : undefined
+      );
+    }
+  }, [statsQuery.data, dailyTasksQuery.data, isAuthenticated]);
+
+  // --- Update streak on mount ---
+  useEffect(() => {
+    if (isAuthenticated) {
+      updateStreakMutation.mutate(undefined, {
+        onSuccess: (data) => {
+          if (data && "streakDays" in data && data.streakDays !== streak) {
+            useGamificationStore.setState({ streak: data.streakDays });
+          }
+        },
+      });
+    }
+  }, [isAuthenticated]);
+
+  // --- Pipeline stats ---
+  const pipelineStats = useMemo(() => {
+    if (!clientsQuery.data) return null;
+    const clients = clientsQuery.data;
+    const stageCounts: Record<string, number> = {};
+    let totalDealValue = 0;
+
+    for (const client of clients) {
+      const stage = client.pipelineStage;
+      stageCounts[stage] = (stageCounts[stage] || 0) + 1;
+      if (client.dealValue) {
+        totalDealValue += parseFloat(client.dealValue);
+      }
+    }
+
+    const stages = ["lead", "contacted", "meeting", "proposal", "negotiation", "closed_won"].map(
+      (stage) => ({
+        key: stage,
+        label: stageLabelMap[stage] || stage,
+        count: stageCounts[stage] || 0,
+        color: stageColorMap[stage] || "bg-gray-500",
+      })
+    );
+
+    // 只顯示有資料的階段
+    const activeStages = stages.filter((s) => s.count > 0);
+
+    return {
+      stages: activeStages.length > 0 ? activeStages : stages.slice(0, 5),
+      totalDeals: clients.length,
+      totalRevenue: totalDealValue,
+    };
+  }, [clientsQuery.data]);
+
+  // --- Recent activity (合併多個來源) ---
+  const recentActivities = useMemo(() => {
+    const activities: { action: string; target: string; time: string; icon: any; date: Date }[] = [];
+
+    // 拜訪紀錄
+    if (visitLogsQuery.data) {
+      for (const log of visitLogsQuery.data) {
+        activities.push({
+          action: "Logged visit",
+          target: log.summary?.slice(0, 40) || "Client visit",
+          time: timeAgo(log.visitDate || log.createdAt),
+          icon: ClipboardList,
+          date: new Date(log.visitDate || log.createdAt),
+        });
+      }
+    }
+
+    // 開發信
+    if (outreachQuery.data) {
+      for (const email of outreachQuery.data) {
+        activities.push({
+          action: email.status === "sent" ? "Sent email" : "Drafted email",
+          target: email.subject?.slice(0, 40) || "Outreach email",
+          time: timeAgo(email.createdAt),
+          icon: Mail,
+          date: new Date(email.createdAt),
+        });
+      }
+    }
+
+    // 按時間排序，取最近 5 筆
+    activities.sort((a, b) => b.date.getTime() - a.date.getTime());
+    return activities.slice(0, 5);
+  }, [visitLogsQuery.data, outreachQuery.data]);
+
+  // --- Task completion handler ---
   const handleCompleteTask = (taskId: string, xpReward: number) => {
+    // 即時更新本地 UI
     completeTask(taskId);
     addXp(xpReward);
+
+    // 同步到 DB
+    completeDailyTaskMutation.mutate({ id: taskId });
   };
 
-  // TODO: fetch from DB
-  const pipelineStages = [
-    { label: "Lead", count: 12, color: "bg-blue-500" },
-    { label: "Contacted", count: 8, color: "bg-purple-500" },
-    { label: "Meeting", count: 5, color: "bg-amber-500" },
-    { label: "Proposal", count: 3, color: "bg-green-500" },
-    { label: "Closed", count: 2, color: "bg-success" },
-  ];
-
-  // TODO: fetch from DB
-  const recentActivities = [
-    { action: "Researched", target: "TechCorp Inc.", time: "2h ago", icon: Search },
-    { action: "Sent email to", target: "Sarah Chen", time: "4h ago", icon: Mail },
-    { action: "Logged visit with", target: "GlobalTrade", time: "Yesterday", icon: ClipboardList },
-  ];
+  const isLoadingPipeline = isAuthenticated && clientsQuery.isLoading;
+  const isLoadingActivity = isAuthenticated && (visitLogsQuery.isLoading || outreachQuery.isLoading);
+  const isLoadingTasks = isAuthenticated && (statsQuery.isLoading || dailyTasksQuery.isLoading);
 
   return (
     <AppShell>
@@ -85,7 +259,7 @@ export default function DashboardPage() {
         {/* Login prompt for unauthenticated users */}
         {!isAuthenticated && (
           <div className="rounded-lg border border-primary/30 bg-primary-light p-3 text-center text-sm text-primary">
-            {locale === "zh-TW" ? "登入以保存你的進度" : "Sign in to save your progress"}
+            {t("signInToSave") || "Sign in to save your progress"}
           </div>
         )}
 
@@ -120,20 +294,34 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {dailyTasks.map((task) => {
-              const Icon = iconMap[task.icon] || Bell;
-              return (
-                <DailyTaskCard
-                  key={task.id}
-                  icon={Icon}
-                  title={task.title}
-                  description={task.description}
-                  xpReward={task.xpReward}
-                  completed={task.completed}
-                  onComplete={() => handleCompleteTask(task.id, task.xpReward)}
-                />
-              );
-            })}
+            {isLoadingTasks ? (
+              <>
+                <Skeleton className="h-16 w-full rounded-lg" />
+                <Skeleton className="h-16 w-full rounded-lg" />
+                <Skeleton className="h-16 w-full rounded-lg" />
+              </>
+            ) : dailyTasks.length > 0 ? (
+              dailyTasks.map((task) => {
+                const Icon = iconMap[task.icon] || Bell;
+                return (
+                  <DailyTaskCard
+                    key={task.id}
+                    icon={Icon}
+                    title={task.title}
+                    description={task.description}
+                    xpReward={task.xpReward}
+                    completed={task.completed}
+                    onComplete={() => handleCompleteTask(task.id, task.xpReward)}
+                  />
+                );
+              })
+            ) : (
+              <div className="py-6 text-center text-sm text-text-muted">
+                {isAuthenticated
+                  ? "No tasks for today. Check back tomorrow!"
+                  : "Sign in to get personalized daily tasks."}
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -147,23 +335,43 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {pipelineStages.map((stage) => (
-                  <div key={stage.label} className="flex items-center gap-3">
-                    <div className={`h-3 w-3 rounded-full ${stage.color}`} />
-                    <span className="text-sm text-text flex-1">{stage.label}</span>
-                    <Badge variant="secondary">{stage.count}</Badge>
+              {isLoadingPipeline ? (
+                <div className="space-y-3">
+                  {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-6 w-full" />
+                  ))}
+                </div>
+              ) : pipelineStats && pipelineStats.totalDeals > 0 ? (
+                <>
+                  <div className="space-y-3">
+                    {pipelineStats.stages.map((stage) => (
+                      <div key={stage.key} className="flex items-center gap-3">
+                        <div className={`h-3 w-3 rounded-full ${stage.color}`} />
+                        <span className="text-sm text-text flex-1">{stage.label}</span>
+                        <Badge variant="secondary">{stage.count}</Badge>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className="mt-4 pt-4 border-t border-border">
-                <p className="text-sm text-text-secondary">
-                  {t("deals", { count: 30 })}
-                </p>
-                <p className="text-sm font-medium text-success">
-                  {t("revenue", { amount: "$125,000" })}
-                </p>
-              </div>
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <p className="text-sm text-text-secondary">
+                      {t("deals", { count: pipelineStats.totalDeals })}
+                    </p>
+                    {pipelineStats.totalRevenue > 0 && (
+                      <p className="text-sm font-medium text-success">
+                        {t("revenue", {
+                          amount: `$${pipelineStats.totalRevenue.toLocaleString()}`,
+                        })}
+                      </p>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div className="py-6 text-center text-sm text-text-muted">
+                  {isAuthenticated
+                    ? "Welcome! Start by researching your first potential client."
+                    : "Sign in to track your sales pipeline."}
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -176,25 +384,45 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentActivities.map((activity, i) => {
-                  const Icon = activity.icon;
-                  return (
+              {isLoadingActivity ? (
+                <div className="space-y-4">
+                  {[1, 2, 3].map((i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-bg-muted">
-                        <Icon className="h-4 w-4 text-text-secondary" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm text-text">
-                          {activity.action}{" "}
-                          <span className="font-medium">{activity.target}</span>
-                        </p>
-                        <p className="text-xs text-text-muted">{activity.time}</p>
+                      <Skeleton className="h-8 w-8 rounded-lg" />
+                      <div className="flex-1 space-y-1">
+                        <Skeleton className="h-4 w-3/4" />
+                        <Skeleton className="h-3 w-1/4" />
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+              ) : recentActivities.length > 0 ? (
+                <div className="space-y-4">
+                  {recentActivities.map((activity, i) => {
+                    const Icon = activity.icon;
+                    return (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-bg-muted">
+                          <Icon className="h-4 w-4 text-text-secondary" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm text-text">
+                            {activity.action}{" "}
+                            <span className="font-medium">{activity.target}</span>
+                          </p>
+                          <p className="text-xs text-text-muted">{activity.time}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="py-6 text-center text-sm text-text-muted">
+                  {isAuthenticated
+                    ? "Your activity feed will appear here as you use SalesGrow."
+                    : "Sign in to see your recent activity."}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

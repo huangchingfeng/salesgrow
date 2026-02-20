@@ -1,128 +1,192 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { FollowUpCard } from "@/components/modules/follow-up-card";
 import { PipelineBoard } from "@/components/modules/pipeline-board";
 import { useUserStore } from "@/lib/stores/user-store";
-import { Bell, AlertTriangle, Calendar } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { useToast } from "@/components/ui/toast";
+import { Bell, AlertTriangle, Calendar, Inbox } from "lucide-react";
 
-// TODO: fetch from DB via tRPC when authenticated
-const DEMO_FOLLOW_UPS = {
-  today: [
-    {
-      clientName: "Sarah Chen (TechCorp)",
-      daysAgo: 3,
-      suggestedMessage: "Hi Sarah, just wanted to follow up on our discussion about the CRM migration. Have you had a chance to review the proposal?",
-      stage: "Proposal",
-    },
-    {
-      clientName: "Michael Park (GlobalTrade)",
-      daysAgo: 5,
-      suggestedMessage: "Hi Michael, I hope you enjoyed the product demo. Would you like to schedule a technical deep-dive with your IT team?",
-      stage: "Meeting",
-    },
-  ],
-  overdue: [
-    {
-      clientName: "Lisa Wong (MediHealth)",
-      daysAgo: 12,
-      suggestedMessage: "Hi Lisa, it's been a while since we last connected. I'd love to hear about any updates on the budget approval process.",
-      stage: "Negotiation",
-    },
-  ],
-  upcoming: [
-    {
-      clientName: "David Kim (FinanceHub)",
-      daysAgo: 1,
-      suggestedMessage: "Hi David, looking forward to our call this week. Is there anything specific you'd like me to prepare?",
-      stage: "Lead",
-    },
-  ],
+// Pipeline stage metadata
+const STAGE_CONFIG: Record<string, { label: string; color: string }> = {
+  lead: { label: "Lead", color: "#3B82F6" },
+  contacted: { label: "Contacted", color: "#8B5CF6" },
+  meeting: { label: "Meeting", color: "#F59E0B" },
+  proposal: { label: "Proposal", color: "#22C55E" },
+  negotiation: { label: "Negotiation", color: "#EC4899" },
+  closed_won: { label: "Closed Won", color: "#10B981" },
+  closed_lost: { label: "Closed Lost", color: "#6B7280" },
 };
 
-// TODO: fetch from DB via tRPC when authenticated
-const DEMO_PIPELINE = [
-  {
-    key: "lead",
-    label: "Lead",
-    color: "#3B82F6",
-    deals: [
-      { id: "1", clientName: "FinanceHub", value: "$15,000", daysInStage: 3 },
-      { id: "2", clientName: "EduTech Co", value: "$8,000", daysInStage: 7 },
-    ],
-  },
-  {
-    key: "contacted",
-    label: "Contacted",
-    color: "#8B5CF6",
-    deals: [
-      { id: "3", clientName: "RetailMax", value: "$22,000", daysInStage: 5 },
-    ],
-  },
-  {
-    key: "meeting",
-    label: "Meeting",
-    color: "#F59E0B",
-    deals: [
-      { id: "4", clientName: "GlobalTrade", value: "$45,000", daysInStage: 2 },
-    ],
-  },
-  {
-    key: "proposal",
-    label: "Proposal",
-    color: "#22C55E",
-    deals: [
-      { id: "5", clientName: "TechCorp", value: "$60,000", daysInStage: 4 },
-    ],
-  },
-  {
-    key: "negotiation",
-    label: "Negotiation",
-    color: "#EC4899",
-    deals: [
-      { id: "6", clientName: "MediHealth", value: "$35,000", daysInStage: 10 },
-    ],
-  },
-  {
-    key: "closed",
-    label: "Closed",
-    color: "#10B981",
-    deals: [],
-  },
-];
+function daysBetween(dateStr: string): number {
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diff = now.getTime() - d.getTime();
+  return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+}
 
 export default function FollowUpPage() {
   const t = useTranslations("followUp");
+  const { toast } = useToast();
   const { isAuthenticated } = useUserStore();
+  const utils = trpc.useUtils();
 
-  // TODO: replace with real data fetch when authenticated
-  const followUps = DEMO_FOLLOW_UPS;
-  const pipeline = DEMO_PIPELINE;
+  // --- tRPC queries ---
+  const todayQuery = trpc.followUp.listToday.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const overdueQuery = trpc.followUp.listOverdue.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const upcomingQuery = trpc.followUp.listUpcoming.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const clientsQuery = trpc.clients.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
 
-  const [pipelineStages, setPipelineStages] = useState(pipeline);
+  // --- Mutations ---
+  const markDone = trpc.followUp.markDone.useMutation({
+    onSuccess: () => {
+      toast("Follow-up completed!", "success");
+      utils.followUp.listToday.invalidate();
+      utils.followUp.listOverdue.invalidate();
+      utils.followUp.listUpcoming.invalidate();
+    },
+    onError: (err) => {
+      toast(err.message || "Failed to mark as done", "error");
+    },
+  });
 
-  const handleMoveDeal = (dealId: string, fromStageKey: string, toStageKey: string) => {
-    setPipelineStages((prev) => {
-      const fromStage = prev.find((s) => s.key === fromStageKey);
-      const deal = fromStage?.deals.find((d) => d.id === dealId);
-      if (!deal) return prev;
+  const snooze = trpc.followUp.snooze.useMutation({
+    onSuccess: () => {
+      toast("Snoozed for 3 days", "success");
+      utils.followUp.listToday.invalidate();
+      utils.followUp.listOverdue.invalidate();
+      utils.followUp.listUpcoming.invalidate();
+    },
+    onError: (err) => {
+      toast(err.message || "Failed to snooze", "error");
+    },
+  });
 
-      return prev.map((stage) => {
-        if (stage.key === fromStageKey) {
-          return { ...stage, deals: stage.deals.filter((d) => d.id !== dealId) };
-        }
-        if (stage.key === toStageKey) {
-          return { ...stage, deals: [...stage.deals, { ...deal, daysInStage: 0 }] };
-        }
-        return stage;
+  const updatePipelineStage = trpc.clients.updatePipelineStage.useMutation({
+    onSuccess: () => {
+      toast("Pipeline stage updated!", "success");
+      utils.clients.list.invalidate();
+    },
+    onError: (err) => {
+      toast(err.message || "Failed to update stage", "error");
+    },
+  });
+
+  // --- Client lookup map ---
+  const clientMap = useMemo(() => {
+    const map = new Map<string, { companyName: string; pipelineStage: string; dealValue: string | null }>();
+    for (const c of clientsQuery.data ?? []) {
+      map.set(c.id, {
+        companyName: c.companyName,
+        pipelineStage: c.pipelineStage,
+        dealValue: c.dealValue,
       });
-    });
+    }
+    return map;
+  }, [clientsQuery.data]);
+
+  // --- Snooze handler (3 days from now) ---
+  const handleSnooze = (id: string) => {
+    const future = new Date();
+    future.setDate(future.getDate() + 3);
+    snooze.mutate({ id, newDueDate: future.toISOString().split("T")[0] });
   };
+
+  // --- Pipeline stages from real client data ---
+  const pipelineStages = useMemo(() => {
+    const stageKeys = ["lead", "contacted", "meeting", "proposal", "negotiation", "closed_won", "closed_lost"];
+    const grouped: Record<string, { id: string; clientName: string; value: string; daysInStage: number }[]> = {};
+    for (const key of stageKeys) grouped[key] = [];
+
+    for (const client of clientsQuery.data ?? []) {
+      const stage = client.pipelineStage;
+      if (grouped[stage]) {
+        const daysInStage = client.updatedAt
+          ? daysBetween(new Date(client.updatedAt).toISOString().split("T")[0])
+          : 0;
+        grouped[stage].push({
+          id: client.id,
+          clientName: client.companyName,
+          value: client.dealValue ? `$${Number(client.dealValue).toLocaleString()}` : "$0",
+          daysInStage,
+        });
+      }
+    }
+
+    return stageKeys.map((key) => ({
+      key,
+      label: STAGE_CONFIG[key]?.label ?? key,
+      color: STAGE_CONFIG[key]?.color ?? "#999",
+      deals: grouped[key],
+    }));
+  }, [clientsQuery.data]);
+
+  const handleMoveDeal = (dealId: string, _fromStageKey: string, toStageKey: string) => {
+    updatePipelineStage.mutate({ id: dealId, stage: toStageKey as "lead" | "contacted" | "meeting" | "proposal" | "negotiation" | "closed_won" | "closed_lost" });
+  };
+
+  // --- Render follow-up items ---
+  const renderFollowUpList = (
+    data: typeof todayQuery.data,
+    isLoading: boolean,
+    emptyMessage: string
+  ) => {
+    if (isLoading) {
+      return (
+        <div className="space-y-3">
+          {[1, 2].map((i) => (
+            <Skeleton key={i} className="h-32 w-full rounded-lg" />
+          ))}
+        </div>
+      );
+    }
+    if (!data?.length) {
+      return (
+        <div className="flex flex-col items-center justify-center py-8 text-center">
+          <Inbox className="h-10 w-10 text-text-muted mb-3" />
+          <p className="text-sm text-text-secondary">{emptyMessage}</p>
+        </div>
+      );
+    }
+    return (
+      <div className="space-y-3">
+        {data.map((item) => {
+          const client = clientMap.get(item.clientId);
+          return (
+            <FollowUpCard
+              key={item.id}
+              clientName={client?.companyName ?? "Unknown Client"}
+              daysAgo={daysBetween(item.dueDate)}
+              suggestedMessage={item.messageDraft ?? "No draft message available."}
+              stage={STAGE_CONFIG[client?.pipelineStage ?? ""]?.label ?? "Unknown"}
+              onMarkDone={() => markDone.mutate({ id: item.id })}
+              onSnooze={() => handleSnooze(item.id)}
+            />
+          );
+        })}
+      </div>
+    );
+  };
+
+  const isLoading = todayQuery.isLoading || overdueQuery.isLoading || upcomingQuery.isLoading;
+  const todayCount = todayQuery.data?.length ?? 0;
+  const overdueCount = overdueQuery.data?.length ?? 0;
+  const upcomingCount = upcomingQuery.data?.length ?? 0;
 
   return (
     <AppShell>
@@ -142,53 +206,47 @@ export default function FollowUpPage() {
               <span className="flex items-center gap-1.5">
                 <Bell className="h-4 w-4" />
                 {t("today")}
-                <Badge variant="default">{followUps.today.length}</Badge>
+                <Badge variant="default">{todayCount}</Badge>
               </span>
             </Tab>
             <Tab value="overdue">
               <span className="flex items-center gap-1.5">
                 <AlertTriangle className="h-4 w-4" />
                 {t("overdue")}
-                <Badge variant="destructive">{followUps.overdue.length}</Badge>
+                <Badge variant="destructive">{overdueCount}</Badge>
               </span>
             </Tab>
             <Tab value="upcoming">
               <span className="flex items-center gap-1.5">
                 <Calendar className="h-4 w-4" />
                 {t("upcoming")}
-                <Badge variant="secondary">{followUps.upcoming.length}</Badge>
+                <Badge variant="secondary">{upcomingCount}</Badge>
               </span>
             </Tab>
           </TabList>
 
           <TabPanel value="today">
-            <div className="space-y-3">
-              {followUps.today.map((item, i) => (
-                <FollowUpCard key={i} {...item} />
-              ))}
-            </div>
+            {renderFollowUpList(
+              todayQuery.data,
+              todayQuery.isLoading,
+              "No follow-ups due today. You're all caught up!"
+            )}
           </TabPanel>
 
           <TabPanel value="overdue">
-            <div className="space-y-3">
-              {followUps.overdue.length === 0 ? (
-                <p className="py-8 text-center text-sm text-text-secondary">
-                  {t("noOverdue")}
-                </p>
-              ) : (
-                followUps.overdue.map((item, i) => (
-                  <FollowUpCard key={i} {...item} />
-                ))
-              )}
-            </div>
+            {renderFollowUpList(
+              overdueQuery.data,
+              overdueQuery.isLoading,
+              t("noOverdue")
+            )}
           </TabPanel>
 
           <TabPanel value="upcoming">
-            <div className="space-y-3">
-              {followUps.upcoming.map((item, i) => (
-                <FollowUpCard key={i} {...item} />
-              ))}
-            </div>
+            {renderFollowUpList(
+              upcomingQuery.data,
+              upcomingQuery.isLoading,
+              "No upcoming follow-ups in the next 7 days."
+            )}
           </TabPanel>
         </Tabs>
 
@@ -198,7 +256,18 @@ export default function FollowUpPage() {
             <CardTitle>{t("pipeline.title")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <PipelineBoard stages={pipelineStages} onMoveDeal={handleMoveDeal} />
+            {clientsQuery.isLoading ? (
+              <Skeleton className="h-48 w-full rounded-lg" />
+            ) : !clientsQuery.data?.length ? (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <Inbox className="h-10 w-10 text-text-muted mb-3" />
+                <p className="text-sm text-text-secondary">
+                  No clients in your pipeline yet. Add clients from the Client Research page.
+                </p>
+              </div>
+            ) : (
+              <PipelineBoard stages={pipelineStages} onMoveDeal={handleMoveDeal} />
+            )}
           </CardContent>
         </Card>
       </div>

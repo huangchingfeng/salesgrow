@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Building2, Newspaper, AlertTriangle, MessageCircle, Users, Mail, Save } from "lucide-react";
+import { Building2, Newspaper, AlertTriangle, MessageCircle, Users, Mail, Save, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ResearchResultProps {
@@ -16,6 +16,8 @@ interface ResearchResultProps {
   contacts: { name: string; title: string }[];
   onWriteEmail?: () => void;
   onSave?: () => void;
+  isSaving?: boolean;
+  disableSave?: boolean;
   className?: string;
 }
 
@@ -29,6 +31,8 @@ export function ResearchResult({
   contacts,
   onWriteEmail,
   onSave,
+  isSaving,
+  disableSave,
   className,
 }: ResearchResultProps) {
   const sections = [
@@ -126,9 +130,9 @@ export function ResearchResult({
             <Mail className="h-4 w-4" />
             Write Email
           </Button>
-          <Button size="sm" variant="outline" onClick={onSave}>
-            <Save className="h-4 w-4" />
-            Save
+          <Button size="sm" variant="outline" onClick={onSave} disabled={isSaving || disableSave}>
+            {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {isSaving ? "Saving..." : "Save"}
           </Button>
         </div>
       </CardContent>

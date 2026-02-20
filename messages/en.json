@@ -27,7 +27,18 @@
     "settings": "Settings",
     "profile": "Profile",
     "help": "Help",
-    "language": "Language"
+    "language": "Language",
+    "signInRequired": "Sign in to access this feature",
+    "signInDescription": "Please sign in to view and manage your data.",
+    "noData": "No data yet",
+    "exportingData": "Exporting your data...",
+    "exportSuccess": "Data exported successfully!",
+    "exportError": "Failed to export data. Please try again.",
+    "profileSaved": "Profile saved successfully!",
+    "profileSaveError": "Failed to save profile. Please try again.",
+    "deleteConfirmTitle": "Delete Account",
+    "deleteConfirmMessage": "Are you sure you want to delete your account? This will sign you out and you can request full data deletion via email.",
+    "accountDeleted": "Account signed out. Contact support for full data deletion."
   },
   "landing": {
     "hero": {
@@ -184,7 +195,8 @@
     "deals": "{count} active deals",
     "revenue": "Projected: {amount}",
     "weeklyGoal": "Weekly Goal",
-    "completed": "Completed"
+    "completed": "Completed",
+    "signInToSave": "Sign in to save your progress"
   },
   "research": {
     "title": "Client Research",
@@ -226,6 +238,8 @@
     },
     "languageLabel": "Output Language",
     "generate": "Generate Email",
+    "generating": "Generating...",
+    "clientRequired": "Please enter a client name",
     "regenerate": "Regenerate",
     "score": "Email Score",
     "scoreExcellent": "Excellent — likely to get a response!",
@@ -262,7 +276,8 @@
     "micDenied": "Microphone access denied. Please allow microphone permission in your browser settings.",
     "processingVoice": "Processing your voice note...",
     "tapToStop": "Tap to stop recording",
-    "tapToStart": "Tap to start recording"
+    "tapToStart": "Tap to start recording",
+    "notesRequired": "Please enter your notes"
   },
   "followUp": {
     "title": "Follow-up Tracker",

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface DailyTask {
+export interface DailyTask {
   id: string;
   title: string;
   description: string;
@@ -10,13 +10,27 @@ interface DailyTask {
   icon: string;
 }
 
-interface Achievement {
+export interface Achievement {
   id: string;
   name: string;
   description: string;
   icon: string;
   unlocked: boolean;
   unlockedAt?: string;
+}
+
+interface ServerStats {
+  level: number;
+  xp: number;
+  streakDays: number;
+}
+
+interface ServerDailyTask {
+  id: string;
+  taskType: string;
+  description: string;
+  xpReward: number;
+  status: string;
 }
 
 interface GamificationState {
@@ -26,16 +40,18 @@ interface GamificationState {
   streak: number;
   dailyTasks: DailyTask[];
   achievements: Achievement[];
+  initialized: boolean;
   addXp: (amount: number) => void;
   completeTask: (taskId: string) => void;
   incrementStreak: () => void;
   resetStreak: () => void;
   unlockAchievement: (achievementId: string) => void;
+  initFromServer: (stats: ServerStats, tasks?: ServerDailyTask[], achievements?: Achievement[]) => void;
 }
 
 const XP_PER_LEVEL = [0, 100, 300, 600, 1000, 1500];
 
-function getLevelFromXp(totalXp: number): { level: number; currentXp: number; neededXp: number } {
+export function getLevelFromXp(totalXp: number): { level: number; currentXp: number; neededXp: number } {
   let level = 1;
   for (let i = 1; i < XP_PER_LEVEL.length; i++) {
     if (totalXp >= XP_PER_LEVEL[i]) {
@@ -53,67 +69,55 @@ function getLevelFromXp(totalXp: number): { level: number; currentXp: number; ne
   };
 }
 
+// 將 DB dailyTask 轉為本地格式
+const taskTypeToIcon: Record<string, string> = {
+  follow_up: "Bell",
+  research: "Search",
+  practice: "Brain",
+  outreach: "Mail",
+  visit: "ClipboardList",
+};
+
+function mapServerTask(t: ServerDailyTask): DailyTask {
+  return {
+    id: t.id,
+    title: t.taskType.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+    description: t.description,
+    xpReward: t.xpReward,
+    completed: t.status === "completed",
+    icon: taskTypeToIcon[t.taskType] || "Bell",
+  };
+}
+
 export const useGamificationStore = create<GamificationState>()(
   persist(
     (set) => ({
   level: 1,
   xp: 0,
   xpToNextLevel: 100,
-  streak: 3,
-  dailyTasks: [
-    {
-      id: "follow-up-1",
-      title: "Follow up with a client",
-      description: "Send a follow-up message to any client",
-      xpReward: 20,
-      completed: false,
-      icon: "Bell",
-    },
-    {
-      id: "research-1",
-      title: "Research a new prospect",
-      description: "Use AI to research a potential client",
-      xpReward: 15,
-      completed: false,
-      icon: "Search",
-    },
-    {
-      id: "practice-1",
-      title: "Practice your pitch",
-      description: "Complete a role-play session with AI Coach",
-      xpReward: 25,
-      completed: false,
-      icon: "Brain",
-    },
-  ],
-  achievements: [
-    {
-      id: "first-email",
-      name: "First AI Email",
-      description: "Send your first AI-generated email",
-      icon: "Mail",
-      unlocked: true,
-      unlockedAt: "2026-02-15",
-    },
-    {
-      id: "streak-7",
-      name: "7-Day Streak",
-      description: "Maintain a 7-day login streak",
-      icon: "Flame",
-      unlocked: false,
-    },
-    {
-      id: "research-pro",
-      name: "Research Pro",
-      description: "Complete 50 client researches",
-      icon: "Search",
-      unlocked: false,
-    },
-  ],
+  streak: 0,
+  dailyTasks: [],
+  achievements: [],
+  initialized: false,
+
+  initFromServer: (stats, tasks, serverAchievements) =>
+    set(() => {
+      const { level, neededXp } = getLevelFromXp(stats.xp);
+      return {
+        level,
+        xp: stats.xp,
+        xpToNextLevel: neededXp,
+        streak: stats.streakDays,
+        initialized: true,
+        ...(tasks ? { dailyTasks: tasks.map(mapServerTask) } : {}),
+        ...(serverAchievements ? { achievements: serverAchievements } : {}),
+      };
+    }),
+
   addXp: (amount) =>
     set((state) => {
       const totalXp = state.xp + amount;
-      const { level, currentXp, neededXp } = getLevelFromXp(totalXp);
+      const { level, neededXp } = getLevelFromXp(totalXp);
       return { xp: totalXp, level, xpToNextLevel: neededXp };
     }),
   completeTask: (taskId) =>
@@ -143,6 +147,7 @@ export const useGamificationStore = create<GamificationState>()(
         xpToNextLevel: state.xpToNextLevel,
         streak: state.streak,
         achievements: state.achievements,
+        initialized: state.initialized,
       }),
     }
   )

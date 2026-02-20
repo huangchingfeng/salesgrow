@@ -139,11 +139,11 @@ export const gamificationRouter = router({
         return { success: false, message: 'Task not found or already completed' };
       }
 
-      // 標記完成
+      // 標記完成（加 userId 確認所有權）
       const [updated] = await ctx.db
         .update(dailyTasks)
         .set({ status: 'completed' })
-        .where(eq(dailyTasks.id, input.id))
+        .where(and(eq(dailyTasks.id, input.id), eq(dailyTasks.userId, ctx.user.id)))
         .returning();
 
       // 加 XP

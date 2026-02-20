@@ -70,8 +70,9 @@ export async function getCurrentUser() {
         name: user.user_metadata?.full_name || user.email?.split('@')[0],
         avatarUrl: user.user_metadata?.avatar_url,
       })
+      .onConflictDoNothing()
       .returning();
-    return newUser;
+    return newUser ?? dbUser;
   }
 
   return dbUser;

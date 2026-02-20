@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ResearchResult } from "@/components/modules/research-result";
-import { Search, Loader2, RefreshCw } from "lucide-react";
+import { Search, Loader2, RefreshCw, LogIn } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
+import { trpc } from "@/lib/trpc";
+import { useUserStore } from "@/lib/stores/user-store";
 
 interface ResearchData {
   company: string;
@@ -24,12 +27,40 @@ export default function ResearchPage() {
   const t = useTranslations("research");
   const tErr = useTranslations("errors");
   const locale = useLocale();
+  const router = useRouter();
   const { toast } = useToast();
+  const { isAuthenticated } = useUserStore();
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<ResearchData | null>(null);
   const [hasError, setHasError] = useState(false);
   const [remaining, setRemaining] = useState(5);
+
+  const utils = trpc.useUtils();
+  const createClient = trpc.clients.create.useMutation({
+    onSuccess: () => {
+      toast("Client saved to pipeline!", "success");
+      utils.clients.list.invalidate();
+    },
+    onError: (err) => {
+      toast(err.message, "error");
+    },
+  });
+
+  const handleSaveToPipeline = () => {
+    if (!result) return;
+    createClient.mutate({
+      companyName: result.company,
+      industry: result.industry,
+      researchData: result,
+      pipelineStage: "lead",
+    });
+  };
+
+  const handleWriteEmail = () => {
+    if (!result) return;
+    router.push(`/${locale}/outreach?client=${encodeURIComponent(result.company)}`);
+  };
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -132,12 +163,22 @@ export default function ResearchPage() {
           </div>
         )}
 
+        {/* Auth prompt */}
+        {!isAuthenticated && result && (
+          <div className="flex items-center gap-2 rounded-lg border border-warning/30 bg-warning/5 px-4 py-3 text-sm text-text-secondary">
+            <LogIn className="h-4 w-4 shrink-0" />
+            Sign in to save research results to your pipeline.
+          </div>
+        )}
+
         {/* Results */}
         {!isLoading && result && (
           <ResearchResult
             {...result}
-            onWriteEmail={() => {}}
-            onSave={() => {}}
+            onWriteEmail={handleWriteEmail}
+            onSave={handleSaveToPipeline}
+            isSaving={createClient.isPending}
+            disableSave={!isAuthenticated}
           />
         )}
 

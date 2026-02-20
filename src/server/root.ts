@@ -9,7 +9,7 @@ import { coachRouter } from './routers/coach';
 
 export const appRouter = router({
   user: userRouter,
-  client: clientRouter,
+  clients: clientRouter,
   outreach: outreachRouter,
   visitLog: visitLogRouter,
   followUp: followUpRouter,

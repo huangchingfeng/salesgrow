@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
 import { router, protectedProcedure } from '../trpc';
 import { coachSessions } from '@/lib/db/schema';
 import { eq, and, desc } from 'drizzle-orm';
@@ -44,7 +45,7 @@ export const coachRouter = router({
         .limit(1);
 
       if (!session) {
-        throw new Error('Session not found');
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
       }
 
       const conversation = (session.conversation as Array<{ role: string; content: string }>) || [];
@@ -53,7 +54,7 @@ export const coachRouter = router({
       const [updated] = await ctx.db
         .update(coachSessions)
         .set({ conversation })
-        .where(eq(coachSessions.id, input.sessionId))
+        .where(and(eq(coachSessions.id, input.sessionId), eq(coachSessions.userId, ctx.user.id)))
         .returning();
 
       return updated;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,9 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Select } from "@/components/ui/select";
 import { VoiceRecorder } from "@/components/modules/voice-recorder";
 import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/toast";
+import { trpc } from "@/lib/trpc";
+import { useUserStore } from "@/lib/stores/user-store";
 import {
   Mic,
   Keyboard,
@@ -22,6 +25,7 @@ import {
   FileText,
   Loader2,
   RefreshCw,
+  Inbox,
 } from "lucide-react";
 
 interface VisitResult {
@@ -36,11 +40,102 @@ export default function VisitLogPage() {
   const tErr = useTranslations("errors");
   const locale = useLocale();
   const { toast } = useToast();
+  const { isAuthenticated } = useUserStore();
+  const utils = trpc.useUtils();
+
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<VisitResult | null>(null);
   const [textNotes, setTextNotes] = useState("");
   const [hasError, setHasError] = useState(false);
   const [lastTranscript, setLastTranscript] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
+  // --- Web Speech API for live transcription ---
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [liveTranscript, setLiveTranscript] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(true);
+
+  useEffect(() => {
+    const SR = typeof window !== "undefined"
+      ? (window.SpeechRecognition || window.webkitSpeechRecognition)
+      : null;
+    if (!SR) setSpeechSupported(false);
+  }, []);
+
+  const startSpeechRecognition = useCallback(() => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return;
+    const recognition = new SR();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = locale === "zh" ? "zh-TW" : "en-US";
+
+    let finalText = "";
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let interim = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalText += transcript + " ";
+        } else {
+          interim = transcript;
+        }
+      }
+      setLiveTranscript(finalText + interim);
+    };
+    recognition.onerror = () => {
+      setIsListening(false);
+    };
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+    recognition.start();
+    recognitionRef.current = recognition;
+    setIsListening(true);
+    setLiveTranscript("");
+  }, [locale]);
+
+  const stopSpeechRecognition = useCallback(() => {
+    recognitionRef.current?.stop();
+    setIsListening(false);
+  }, []);
+
+  // --- tRPC queries ---
+  const clientsQuery = trpc.clients.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const visitHistoryQuery = trpc.visitLog.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const createVisitLog = trpc.visitLog.create.useMutation({
+    onSuccess: () => {
+      toast(t("save") + " - Success!", "success");
+      utils.visitLog.list.invalidate();
+      setResult(null);
+      setTextNotes("");
+      setLiveTranscript("");
+      setSelectedClientId("");
+      setIsSaving(false);
+    },
+    onError: (err) => {
+      toast(err.message || tErr("aiError"), "error");
+      setIsSaving(false);
+    },
+  });
+
+  const clientOptions = (clientsQuery.data ?? []).map((c) => ({
+    value: c.id,
+    label: c.companyName,
+  }));
+
+  // 用 clientId 反查 client 名稱
+  const clientNameMap = new Map(
+    (clientsQuery.data ?? []).map((c) => [c.id, c.companyName])
+  );
 
   const summarizeTranscript = async (transcript: string) => {
     setIsProcessing(true);
@@ -88,41 +183,40 @@ export default function VisitLogPage() {
   };
 
   const handleRecordingComplete = async (_blob: Blob) => {
-    // For now, use a placeholder transcript since we don't have speech-to-text yet.
-    // In production, this would call a transcription API first.
-    const placeholderTranscript =
-      "Client meeting discussion about product demo and pricing. They expressed interest in the enterprise plan.";
-    await summarizeTranscript(placeholderTranscript);
+    // 如果有 live transcript 就用它，否則 fallback 到手動輸入提示
+    if (liveTranscript.trim()) {
+      await summarizeTranscript(liveTranscript.trim());
+    } else {
+      toast("No speech detected. Please try typing your notes instead.", "error");
+    }
   };
 
   const handleTextSubmit = async () => {
     if (!textNotes.trim()) {
-      toast(t("clientName"), "error");
+      toast(t("notesRequired") || "Please enter your notes", "error");
       return;
     }
     await summarizeTranscript(textNotes);
   };
 
-  const visitHistory = [
-    {
-      client: "TechCorp Inc.",
-      date: "Feb 19, 2026",
-      summary: "Initial discovery meeting. Discussed pain points.",
-      probability: 40,
-    },
-    {
-      client: "GlobalTrade",
-      date: "Feb 17, 2026",
-      summary: "Product demo. Positive feedback on analytics features.",
-      probability: 70,
-    },
-    {
-      client: "MediHealth",
-      date: "Feb 15, 2026",
-      summary: "Follow-up on proposal. Awaiting budget approval.",
-      probability: 55,
-    },
-  ];
+  const handleSaveVisit = () => {
+    if (!selectedClientId) {
+      toast("Please select a client first.", "error");
+      return;
+    }
+    if (!result) return;
+
+    setIsSaving(true);
+    createVisitLog.mutate({
+      clientId: selectedClientId,
+      transcript: lastTranscript || undefined,
+      summary: result.summary || undefined,
+      nextSteps: result.nextSteps.map((s) => s.action),
+      dealProbability: result.probability,
+      clientMood: (result.mood.toLowerCase() as "positive" | "neutral" | "negative" | "interested") || undefined,
+      visitDate: new Date().toISOString().split("T")[0],
+    });
+  };
 
   return (
     <AppShell>
@@ -134,14 +228,33 @@ export default function VisitLogPage() {
             <CardTitle>{t("newVisit")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="voice">
+            {/* Client selector */}
+            {isAuthenticated && (
+              <div className="mb-4">
+                {clientsQuery.isLoading ? (
+                  <Skeleton className="h-10 w-full rounded-lg" />
+                ) : (
+                  <Select
+                    label={t("clientName")}
+                    placeholder="Select a client..."
+                    options={clientOptions}
+                    value={selectedClientId}
+                    onChange={(e) => setSelectedClientId(e.target.value)}
+                  />
+                )}
+              </div>
+            )}
+
+            <Tabs defaultValue={speechSupported ? "voice" : "text"}>
               <TabList>
-                <Tab value="voice">
-                  <span className="flex items-center gap-1.5">
-                    <Mic className="h-4 w-4" />
-                    {t("recordVoice")}
-                  </span>
-                </Tab>
+                {speechSupported && (
+                  <Tab value="voice">
+                    <span className="flex items-center gap-1.5">
+                      <Mic className="h-4 w-4" />
+                      {t("recordVoice")}
+                    </span>
+                  </Tab>
+                )}
                 <Tab value="text">
                   <span className="flex items-center gap-1.5">
                     <Keyboard className="h-4 w-4" />
@@ -150,24 +263,53 @@ export default function VisitLogPage() {
                 </Tab>
               </TabList>
 
-              <TabPanel value="voice">
-                <div className="flex flex-col items-center">
-                  <VoiceRecorder
-                    onRecordingComplete={handleRecordingComplete}
-                    isProcessing={isProcessing}
-                    labels={{
-                      micDenied: t("micDenied"),
-                      processingVoice: t("processingVoice"),
-                      tapToStop: t("tapToStop"),
-                      tapToStart: t("tapToStart"),
-                    }}
-                  />
-                </div>
-              </TabPanel>
+              {speechSupported && (
+                <TabPanel value="voice">
+                  <div className="flex flex-col items-center">
+                    <VoiceRecorder
+                      onRecordingComplete={handleRecordingComplete}
+                      isProcessing={isProcessing}
+                      labels={{
+                        micDenied: t("micDenied"),
+                        processingVoice: t("processingVoice"),
+                        tapToStop: t("tapToStop"),
+                        tapToStart: t("tapToStart"),
+                      }}
+                    />
+                    {/* Live transcript display */}
+                    {liveTranscript && (
+                      <div className="mt-3 w-full rounded-lg bg-bg-muted p-3">
+                        <p className="text-xs text-text-muted mb-1">Live transcript:</p>
+                        <p className="text-sm text-text-secondary">{liveTranscript}</p>
+                      </div>
+                    )}
+                    {/* Start/stop speech recognition alongside audio recording */}
+                    <div className="mt-2">
+                      {!isListening ? (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={startSpeechRecognition}
+                        >
+                          <Mic className="h-3.5 w-3.5" />
+                          Start Live Transcription
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={stopSpeechRecognition}
+                        >
+                          Stop Transcription
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </TabPanel>
+              )}
 
               <TabPanel value="text">
                 <div className="space-y-4">
-                  <Input label={t("clientName")} placeholder="TechCorp Inc." />
                   <Textarea
                     label={t("meetingNotes")}
                     placeholder={t("summary")}
@@ -252,10 +394,21 @@ export default function VisitLogPage() {
                   <Badge variant="success">{result.mood}</Badge>
                 </div>
               </div>
-              <Button className="w-full sm:w-auto">
-                <Save className="h-4 w-4" />
-                {t("save")}
+              <Button
+                className="w-full sm:w-auto"
+                onClick={handleSaveVisit}
+                disabled={isSaving || !selectedClientId}
+              >
+                {isSaving ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Save className="h-4 w-4" />
+                )}
+                {isSaving ? t("processing") : t("save")}
               </Button>
+              {!selectedClientId && (
+                <p className="text-xs text-danger">Please select a client above before saving.</p>
+              )}
             </CardContent>
           </Card>
         )}
@@ -269,28 +422,55 @@ export default function VisitLogPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {visitHistory.map((visit, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 rounded-lg border border-border p-3 hover:bg-bg-muted transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="text-sm font-medium text-text">{visit.client}</p>
-                      <span className="text-xs text-text-muted">{visit.date}</span>
+            {!isAuthenticated ? (
+              <div className="rounded-lg border border-primary/30 bg-primary-light p-3 text-center text-sm text-primary">
+                Demo data shown. Sign in to see your real visit history.
+              </div>
+            ) : visitHistoryQuery.isLoading ? (
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => (
+                  <Skeleton key={i} className="h-16 w-full rounded-lg" />
+                ))}
+              </div>
+            ) : !visitHistoryQuery.data?.length ? (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <Inbox className="h-10 w-10 text-text-muted mb-3" />
+                <p className="text-sm text-text-secondary">
+                  No visits recorded yet. Start by recording your first client visit!
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {visitHistoryQuery.data.map((visit) => (
+                  <div
+                    key={visit.id}
+                    className="flex items-start gap-3 rounded-lg border border-border p-3 hover:bg-bg-muted transition-colors"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <p className="text-sm font-medium text-text">
+                          {clientNameMap.get(visit.clientId) ?? "Unknown Client"}
+                        </p>
+                        <span className="text-xs text-text-muted">{visit.visitDate}</span>
+                      </div>
+                      <p className="text-sm text-text-secondary truncate">
+                        {visit.summary ?? "No summary"}
+                      </p>
                     </div>
-                    <p className="text-sm text-text-secondary truncate">{visit.summary}</p>
+                    {visit.dealProbability != null && (
+                      <div className="text-right shrink-0">
+                        <div className="flex items-center gap-1">
+                          <TrendingUp className="h-3 w-3 text-success" />
+                          <span className="text-sm font-medium text-text">
+                            {visit.dealProbability}%
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="text-right shrink-0">
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3 text-success" />
-                      <span className="text-sm font-medium text-text">{visit.probability}%</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
