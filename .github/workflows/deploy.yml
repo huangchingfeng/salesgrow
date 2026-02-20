@@ -1,0 +1,51 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Vercel 自動部署（透過 Vercel GitHub Integration）
+      # 以下為部署後的 smoke test
+
+      - name: Wait for Vercel deployment
+        if: env.VERCEL_DEPLOYMENT_URL != ''
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 30
+
+      - name: Smoke test - Homepage
+        if: env.VERCEL_DEPLOYMENT_URL != ''
+        run: |
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" "$VERCEL_DEPLOYMENT_URL")
+          if [ "$STATUS" != "200" ]; then
+            echo "Homepage returned $STATUS"
+            exit 1
+          fi
+          echo "Homepage OK (200)"
+
+      - name: Smoke test - API health
+        if: env.VERCEL_DEPLOYMENT_URL != ''
+        run: |
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" "$VERCEL_DEPLOYMENT_URL/api/trpc")
+          echo "API endpoint returned $STATUS"
+
+    env:
+      VERCEL_DEPLOYMENT_URL: ${{ secrets.VERCEL_DEPLOYMENT_URL }}

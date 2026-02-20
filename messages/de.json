@@ -1,0 +1,340 @@
+{
+  "common": {
+    "appName": "SalesGrow",
+    "tagline": "Ihr KI-Vertriebscoach",
+    "loading": "Wird geladen...",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "copy": "Kopieren",
+    "share": "Teilen",
+    "search": "Suchen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "submit": "Absenden",
+    "close": "Schließen",
+    "confirm": "Bestätigen",
+    "yes": "Ja",
+    "no": "Nein",
+    "or": "oder",
+    "free": "Kostenlos",
+    "pro": "Pro",
+    "upgrade": "Auf Pro upgraden",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden",
+    "settings": "Einstellungen",
+    "profile": "Profil",
+    "help": "Hilfe",
+    "language": "Sprache"
+  },
+  "landing": {
+    "hero": {
+      "title": "Ihr KI-Vertriebscoach",
+      "subtitle": "Das Duolingo für Vertriebsprofis. KI-gestütztes Coaching, Kundenakquise und Kundenmanagement — für immer kostenlos.",
+      "cta": "Kostenlos starten — Keine Kreditkarte nötig",
+      "ctaSecondary": "Demo ansehen",
+      "socialProof": "Bereits {count}+ Vertriebsprofis wachsen mit uns"
+    },
+    "features": {
+      "title": "Alles, was Sie brauchen, um mehr Abschlüsse zu erzielen",
+      "research": {
+        "title": "Kundenrecherche",
+        "description": "Geben Sie einen Firmennamen ein und erhalten Sie in Sekunden ein vollständiges Briefing. Kennen Sie Ihren Kunden, bevor er Sie kennt."
+      },
+      "outreach": {
+        "title": "KI-Akquise-Mails",
+        "description": "Personalisierte Kaltakquise-Mails in jeder Sprache. Die KI bewertet Ihre E-Mail und schlägt Verbesserungen vor."
+      },
+      "visitLog": {
+        "title": "Sprach-Besuchsprotokoll",
+        "description": "Sprechen Sie 2 Minuten nach einem Meeting. Die KI erstellt automatisch strukturierte Notizen."
+      },
+      "followUp": {
+        "title": "Intelligente Nachverfolgung",
+        "description": "Vergessen Sie keinen Kunden mehr. Die KI erinnert Sie, wen Sie kontaktieren sollten, und entwirft die Nachricht."
+      },
+      "coach": {
+        "title": "KI-Vertriebscoach",
+        "description": "Tägliche Aufgaben, Rollenspiele und Echtzeit-Feedback. Wie ein Mentor, der rund um die Uhr verfügbar ist."
+      },
+      "gamification": {
+        "title": "Vertriebskompetenzen ausbauen",
+        "description": "Serien, XP, Erfolge, Bestenlisten. Vertriebstraining, das sich wie ein Spiel anfühlt."
+      }
+    },
+    "pricing": {
+      "title": "Einfache, transparente Preise",
+      "free": {
+        "title": "Kostenlos",
+        "price": "0 €",
+        "period": "für immer",
+        "features": [
+          "5 KI-Abfragen pro Tag",
+          "Kundenrecherche",
+          "Akquise-Mail-Erstellung",
+          "Besuchsprotokoll",
+          "Nachverfolgungserinnerungen",
+          "9 Sprachen"
+        ],
+        "cta": "Kostenlos starten"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "9,99 €",
+        "period": "/Monat",
+        "features": [
+          "Unbegrenzte KI-Abfragen",
+          "Erweiterte KI-Modelle",
+          "KI-Vertriebscoach",
+          "Rollenspiel-Training",
+          "Prioritäts-Support",
+          "Keine Werbung"
+        ],
+        "cta": "Pro testen"
+      },
+      "team": {
+        "title": "Team",
+        "price": "29,99 €",
+        "period": "/Nutzer/Monat",
+        "features": [
+          "Alle Pro-Funktionen",
+          "Team-Dashboard",
+          "Manager-Analysen",
+          "Individuelles KI-Training",
+          "API-Zugang",
+          "Prioritäts-SLA"
+        ],
+        "cta": "Vertrieb kontaktieren"
+      }
+    },
+    "testimonials": {
+      "title": "Von Vertriebsprofis weltweit geschätzt"
+    },
+    "faq": {
+      "title": "Häufig gestellte Fragen",
+      "items": {
+        "isFree": {
+          "q": "Ist SalesGrow wirklich kostenlos?",
+          "a": "Ja! Die Kernfunktionen sind dauerhaft kostenlos. Sie erhalten 5 KI-Abfragen pro Tag, Kundenrecherche, Akquise-Mails, Besuchsprotokolle und Nachverfolgung — alles kostenlos. Upgraden Sie auf Pro für unbegrenzte KI-Nutzung und erweitertes Coaching."
+        },
+        "languages": {
+          "q": "Welche Sprachen werden unterstützt?",
+          "a": "SalesGrow unterstützt 9 Sprachen: Englisch, Japanisch, Koreanisch, Thailändisch, Vietnamesisch, Traditionelles Chinesisch, Deutsch, Französisch und Spanisch. Die KI generiert Inhalte in der Muttersprache Ihres Kunden."
+        },
+        "data": {
+          "q": "Sind meine Daten sicher?",
+          "a": "Absolut. Wir sind von Anfang an DSGVO-konform. Ihre Daten werden verschlüsselt, niemals verkauft, und Sie können sie jederzeit exportieren oder löschen."
+        },
+        "crm": {
+          "q": "Ersetzt es mein CRM?",
+          "a": "Nein — SalesGrow ergänzt Ihr bestehendes CRM. Betrachten Sie es als Ihren KI-Copiloten, der mit Salesforce, HubSpot oder jedem anderen CRM zusammenarbeitet."
+        }
+      }
+    },
+    "cta": {
+      "title": "Bereit, Ihren Vertrieb zu stärken?",
+      "subtitle": "Schließen Sie sich Tausenden von Vertriebsprofis an, die mit KI mehr Abschlüsse erzielen.",
+      "button": "Heute kostenlos starten"
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "research": "Recherche",
+    "outreach": "Akquise-Mails",
+    "visitLog": "Besuchsprotokoll",
+    "followUp": "Nachverfolgung",
+    "coach": "KI-Coach",
+    "leaderboard": "Bestenliste",
+    "learning": "Lernen",
+    "settings": "Einstellungen"
+  },
+  "dashboard": {
+    "greeting": "Guten Morgen, {name}!",
+    "level": "Level {level}: {title}",
+    "xp": "{current}/{needed} XP bis zum nächsten Level",
+    "streak": "{days}-Tage-Serie 🔥",
+    "todayTasks": "Heutige Aufgaben",
+    "taskFollowUp": "Nachverfolgung bei {client}",
+    "taskPractice": "Ihren Pitch üben",
+    "taskResearch": "{client} recherchieren",
+    "pipeline": "Pipeline-Übersicht",
+    "deals": "{count} aktive Deals",
+    "revenue": "Prognose: {amount}",
+    "weeklyGoal": "Wochenziel",
+    "completed": "Abgeschlossen"
+  },
+  "research": {
+    "title": "Kundenrecherche",
+    "placeholder": "Firmenname oder Website eingeben...",
+    "button": "Recherchieren",
+    "loading": "{company} wird analysiert...",
+    "sections": {
+      "overview": "Unternehmensübersicht",
+      "news": "Aktuelle Nachrichten",
+      "painPoints": "Potenzielle Herausforderungen",
+      "icebreakers": "Gesprächseinstiege",
+      "contacts": "Schlüsselkontakte"
+    },
+    "actions": {
+      "writeEmail": "Akquise-Mail schreiben",
+      "saveClient": "In Pipeline speichern",
+      "exportPdf": "Als PDF exportieren"
+    },
+    "limitReached": "Tageslimit erreicht. Upgraden Sie auf Pro für unbegrenzte Recherche.",
+    "remaining": "Noch {count} Abfragen heute"
+  },
+  "outreach": {
+    "title": "KI-Akquise-Mails",
+    "clientLabel": "Kunde / Unternehmen",
+    "purposeLabel": "Zweck",
+    "purposes": {
+      "coldEmail": "Kaltakquise",
+      "followUp": "Nachverfolgung",
+      "introduction": "Vorstellung",
+      "proposal": "Angebot",
+      "thankYou": "Dankeschön"
+    },
+    "toneLabel": "Tonalität",
+    "tones": {
+      "professional": "Professionell",
+      "friendly": "Freundlich",
+      "formal": "Förmlich",
+      "casual": "Ungezwungen"
+    },
+    "languageLabel": "Ausgabesprache",
+    "generate": "E-Mail generieren",
+    "regenerate": "Neu generieren",
+    "score": "E-Mail-Bewertung",
+    "scoreExcellent": "Hervorragend — hohe Antwortwahrscheinlichkeit!",
+    "scoreGood": "Gut — mit kleinen Anpassungen noch besser",
+    "scoreAverage": "Durchschnittlich — beachten Sie die Vorschläge unten",
+    "suggestions": "Verbesserungsvorschläge",
+    "copy": "In Zwischenablage kopieren",
+    "copied": "Kopiert!",
+    "send": "Per E-Mail senden"
+  },
+  "visitLog": {
+    "title": "Besuchsprotokoll",
+    "newVisit": "Neues Besuchsprotokoll",
+    "recordVoice": "Sprachnotiz aufnehmen",
+    "recording": "Aufnahme läuft... {duration}",
+    "stopRecording": "Aufnahme stoppen",
+    "processing": "Ihre Sprachnotiz wird verarbeitet...",
+    "clientName": "Kundenname",
+    "visitDate": "Besuchsdatum",
+    "summary": "Gesprächszusammenfassung",
+    "nextSteps": "Nächste Schritte",
+    "dealProbability": "Abschlusswahrscheinlichkeit",
+    "mood": "Kundenstimmung",
+    "moods": {
+      "positive": "Positiv",
+      "neutral": "Neutral",
+      "negative": "Negativ",
+      "interested": "Interessiert"
+    },
+    "save": "Besuchsprotokoll speichern",
+    "history": "Besuchsverlauf"
+  },
+  "followUp": {
+    "title": "Nachverfolgung",
+    "today": "Heute fällig",
+    "overdue": "Überfällig",
+    "upcoming": "Anstehend",
+    "noOverdue": "Keine überfälligen Nachverfolgungen — hervorragend!",
+    "daysAgo": "Letzter Kontakt: vor {days} Tagen",
+    "suggestedMessage": "Vorgeschlagene Nachricht",
+    "markDone": "Als erledigt markieren",
+    "snooze": "Zurückstellen",
+    "pipeline": {
+      "title": "Vertriebspipeline",
+      "lead": "Lead",
+      "contacted": "Kontaktiert",
+      "meeting": "Meeting",
+      "proposal": "Angebot",
+      "negotiation": "Verhandlung",
+      "closed": "Abgeschlossen"
+    }
+  },
+  "coach": {
+    "title": "KI-Vertriebscoach",
+    "dailyChallenge": "Tagesherausforderung",
+    "rolePlay": "Rollenspiel-Training",
+    "rolePlayDesc": "Üben Sie Ihren Pitch, während die KI den Kunden spielt",
+    "startRolePlay": "Training starten",
+    "scenarios": {
+      "coldCall": "Kaltakquise-Anruf",
+      "objectionHandling": "Einwandbehandlung",
+      "closing": "Abschluss",
+      "needsDiscovery": "Bedarfsermittlung",
+      "priceNegotiation": "Preisverhandlung"
+    },
+    "feedback": "Coach-Feedback",
+    "score": "Ihre Bewertung: {score}/100",
+    "improvement": "Verbesserungspotenzial",
+    "strength": "Ihre Stärken",
+    "tip": "Pro-Tipp vom Coach"
+  },
+  "gamification": {
+    "level": "Level {level}",
+    "levels": {
+      "1": "Vertriebs-Neuling",
+      "2": "Vertriebs-Lehrling",
+      "3": "Vertriebs-Profi",
+      "4": "Vertriebs-Experte",
+      "5": "Vertriebs-Meister"
+    },
+    "xpEarned": "+{xp} XP",
+    "streakDays": "{days}-Tage-Serie",
+    "achievements": "Erfolge",
+    "leaderboard": "Bestenliste",
+    "weeklyRank": "Wochenranking: Platz {rank}",
+    "badges": {
+      "firstEmail": "Erste KI-E-Mail",
+      "streak7": "7-Tage-Serie",
+      "streak30": "30-Tage-Serie",
+      "firstDeal": "Erster Abschluss",
+      "researchPro": "Recherche-Profi (50 Recherchen)",
+      "globalSeller": "Globaler Verkäufer (5 Sprachen genutzt)"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "account": "Konto",
+    "language": "Sprache",
+    "notifications": "Benachrichtigungen",
+    "privacy": "Datenschutz",
+    "theme": "Design",
+    "themes": {
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "Systemeinstellung"
+    },
+    "exportData": "Meine Daten exportieren",
+    "deleteAccount": "Konto löschen",
+    "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Daten werden dauerhaft gelöscht."
+  },
+  "auth": {
+    "signInTitle": "Willkommen zurück",
+    "signUpTitle": "Starten Sie Ihr Vertriebswachstum",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccount": "Noch kein Konto?",
+    "hasAccount": "Bereits ein Konto?",
+    "orContinueWith": "Oder fortfahren mit",
+    "google": "Mit Google fortfahren",
+    "termsAgree": "Mit der Registrierung stimmen Sie unseren {terms} und der {privacy} zu.",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzerklärung"
+  },
+  "errors": {
+    "generic": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "notFound": "Seite nicht gefunden",
+    "unauthorized": "Bitte melden Sie sich an, um fortzufahren",
+    "rateLimit": "Zu viele Anfragen. Bitte warten Sie einen Moment.",
+    "aiError": "Die KI ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut."
+  }
+}

@@ -1,0 +1,340 @@
+{
+  "common": {
+    "appName": "SalesGrow",
+    "tagline": "Votre coach commercial IA",
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "copy": "Copier",
+    "share": "Partager",
+    "search": "Rechercher",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Envoyer",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non",
+    "or": "ou",
+    "free": "Gratuit",
+    "pro": "Pro",
+    "upgrade": "Passer au Pro",
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "signOut": "Se déconnecter",
+    "settings": "Paramètres",
+    "profile": "Profil",
+    "help": "Aide",
+    "language": "Langue"
+  },
+  "landing": {
+    "hero": {
+      "title": "Votre coach commercial IA",
+      "subtitle": "Le Duolingo des commerciaux. Coaching par IA, prospection et gestion client — gratuit pour toujours.",
+      "cta": "Commencer gratuitement — Sans carte bancaire",
+      "ctaSecondary": "Voir la démo",
+      "socialProof": "{count}+ commerciaux en pleine croissance"
+    },
+    "features": {
+      "title": "Tout ce qu'il vous faut pour conclure plus de ventes",
+      "research": {
+        "title": "Recherche client",
+        "description": "Saisissez un nom d'entreprise, obtenez un dossier complet en quelques secondes. Connaissez votre client avant qu'il ne vous connaisse."
+      },
+      "outreach": {
+        "title": "Rédaction d'e-mails par IA",
+        "description": "Des e-mails de prospection personnalisés dans toutes les langues. L'IA évalue votre e-mail et suggère des améliorations."
+      },
+      "visitLog": {
+        "title": "Journal de visites vocal",
+        "description": "Parlez 2 minutes après un rendez-vous. L'IA crée automatiquement des notes structurées."
+      },
+      "followUp": {
+        "title": "Suivi intelligent",
+        "description": "N'oubliez plus jamais un client. L'IA vous rappelle qui contacter et rédige le message à votre place."
+      },
+      "coach": {
+        "title": "Coach commercial IA",
+        "description": "Missions quotidiennes, jeux de rôle et retours en temps réel. Comme avoir un mentor disponible 24h/24."
+      },
+      "gamification": {
+        "title": "Progressez en vente",
+        "description": "Séries, XP, succès, classements. Une formation commerciale qui ressemble à un jeu."
+      }
+    },
+    "pricing": {
+      "title": "Des tarifs simples et transparents",
+      "free": {
+        "title": "Gratuit",
+        "price": "0 €",
+        "period": "pour toujours",
+        "features": [
+          "5 requêtes IA par jour",
+          "Recherche client",
+          "Rédaction d'e-mails",
+          "Journal de visites",
+          "Rappels de suivi",
+          "9 langues"
+        ],
+        "cta": "Commencer gratuitement"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "9,99 €",
+        "period": "/mois",
+        "features": [
+          "Requêtes IA illimitées",
+          "Modèles IA avancés",
+          "Coach commercial IA",
+          "Entraînement par jeux de rôle",
+          "Support prioritaire",
+          "Sans publicité"
+        ],
+        "cta": "Essayer le Pro"
+      },
+      "team": {
+        "title": "Équipe",
+        "price": "29,99 €",
+        "period": "/utilisateur/mois",
+        "features": [
+          "Toutes les fonctionnalités Pro",
+          "Tableau de bord d'équipe",
+          "Analyses pour managers",
+          "Formation IA personnalisée",
+          "Accès API",
+          "SLA prioritaire"
+        ],
+        "cta": "Contacter les ventes"
+      }
+    },
+    "testimonials": {
+      "title": "La confiance des commerciaux du monde entier"
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "items": {
+        "isFree": {
+          "q": "SalesGrow est-il vraiment gratuit ?",
+          "a": "Oui ! Les fonctionnalités essentielles sont gratuites pour toujours. Vous bénéficiez de 5 requêtes IA par jour, la recherche client, la rédaction d'e-mails, le journal de visites et le suivi — le tout gratuitement. Passez au Pro pour un accès illimité à l'IA et un coaching avancé."
+        },
+        "languages": {
+          "q": "Quelles langues sont prises en charge ?",
+          "a": "SalesGrow prend en charge 9 langues : anglais, japonais, coréen, thaï, vietnamien, chinois traditionnel, allemand, français et espagnol. L'IA génère du contenu dans la langue maternelle de votre client."
+        },
+        "data": {
+          "q": "Mes données sont-elles en sécurité ?",
+          "a": "Absolument. Nous sommes conformes au RGPD dès le premier jour. Vos données sont chiffrées, jamais vendues, et vous pouvez les exporter ou les supprimer à tout moment."
+        },
+        "crm": {
+          "q": "Est-ce que cela remplace mon CRM ?",
+          "a": "Non — SalesGrow complète votre CRM existant. Considérez-le comme votre copilote IA qui fonctionne aux côtés de Salesforce, HubSpot ou tout autre CRM."
+        }
+      }
+    },
+    "cta": {
+      "title": "Prêt à développer vos ventes ?",
+      "subtitle": "Rejoignez des milliers de commerciaux qui concluent plus de ventes grâce à l'IA.",
+      "button": "Commencer gratuitement aujourd'hui"
+    }
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "research": "Recherche",
+    "outreach": "Prospection",
+    "visitLog": "Journal de visites",
+    "followUp": "Suivi",
+    "coach": "Coach IA",
+    "leaderboard": "Classement",
+    "learning": "Formation",
+    "settings": "Paramètres"
+  },
+  "dashboard": {
+    "greeting": "Bonjour, {name} !",
+    "level": "Niveau {level} : {title}",
+    "xp": "{current}/{needed} XP pour le niveau suivant",
+    "streak": "Série de {days} jours 🔥",
+    "todayTasks": "Tâches du jour",
+    "taskFollowUp": "Relancer {client}",
+    "taskPractice": "Pratiquer votre argumentaire",
+    "taskResearch": "Rechercher {client}",
+    "pipeline": "Vue d'ensemble du pipeline",
+    "deals": "{count} affaires en cours",
+    "revenue": "Prévision : {amount}",
+    "weeklyGoal": "Objectif hebdomadaire",
+    "completed": "Terminé"
+  },
+  "research": {
+    "title": "Recherche client",
+    "placeholder": "Saisissez un nom d'entreprise ou un site web...",
+    "button": "Rechercher",
+    "loading": "Analyse de {company} en cours...",
+    "sections": {
+      "overview": "Présentation de l'entreprise",
+      "news": "Actualités récentes",
+      "painPoints": "Points de douleur potentiels",
+      "icebreakers": "Sujets d'accroche",
+      "contacts": "Contacts clés"
+    },
+    "actions": {
+      "writeEmail": "Rédiger un e-mail de prospection",
+      "saveClient": "Ajouter au pipeline",
+      "exportPdf": "Exporter en PDF"
+    },
+    "limitReached": "Limite quotidienne atteinte. Passez au Pro pour une recherche illimitée.",
+    "remaining": "{count} requêtes restantes aujourd'hui"
+  },
+  "outreach": {
+    "title": "Rédaction d'e-mails par IA",
+    "clientLabel": "Client / Entreprise",
+    "purposeLabel": "Objectif",
+    "purposes": {
+      "coldEmail": "E-mail de prospection",
+      "followUp": "Relance",
+      "introduction": "Présentation",
+      "proposal": "Proposition",
+      "thankYou": "Remerciement"
+    },
+    "toneLabel": "Ton",
+    "tones": {
+      "professional": "Professionnel",
+      "friendly": "Amical",
+      "formal": "Formel",
+      "casual": "Décontracté"
+    },
+    "languageLabel": "Langue de sortie",
+    "generate": "Générer l'e-mail",
+    "regenerate": "Régénérer",
+    "score": "Score de l'e-mail",
+    "scoreExcellent": "Excellent — forte probabilité de réponse !",
+    "scoreGood": "Bon — quelques ajustements pourraient aider",
+    "scoreAverage": "Moyen — consultez les suggestions ci-dessous",
+    "suggestions": "Suggestions d'amélioration",
+    "copy": "Copier dans le presse-papiers",
+    "copied": "Copié !",
+    "send": "Envoyer par e-mail"
+  },
+  "visitLog": {
+    "title": "Journal de visites",
+    "newVisit": "Nouveau compte-rendu",
+    "recordVoice": "Enregistrer une note vocale",
+    "recording": "Enregistrement... {duration}",
+    "stopRecording": "Arrêter l'enregistrement",
+    "processing": "Traitement de votre note vocale...",
+    "clientName": "Nom du client",
+    "visitDate": "Date de visite",
+    "summary": "Résumé du rendez-vous",
+    "nextSteps": "Prochaines étapes",
+    "dealProbability": "Probabilité de conclusion",
+    "mood": "Ressenti du client",
+    "moods": {
+      "positive": "Positif",
+      "neutral": "Neutre",
+      "negative": "Négatif",
+      "interested": "Intéressé"
+    },
+    "save": "Enregistrer le compte-rendu",
+    "history": "Historique des visites"
+  },
+  "followUp": {
+    "title": "Suivi commercial",
+    "today": "À faire aujourd'hui",
+    "overdue": "En retard",
+    "upcoming": "À venir",
+    "noOverdue": "Aucun suivi en retard — excellent !",
+    "daysAgo": "Dernier contact : il y a {days} jours",
+    "suggestedMessage": "Message suggéré",
+    "markDone": "Marquer comme fait",
+    "snooze": "Reporter",
+    "pipeline": {
+      "title": "Pipeline commercial",
+      "lead": "Prospect",
+      "contacted": "Contacté",
+      "meeting": "Rendez-vous",
+      "proposal": "Proposition",
+      "negotiation": "Négociation",
+      "closed": "Conclu"
+    }
+  },
+  "coach": {
+    "title": "Coach commercial IA",
+    "dailyChallenge": "Défi du jour",
+    "rolePlay": "Jeu de rôle",
+    "rolePlayDesc": "L'IA joue le rôle du client, entraînez-vous à votre argumentaire",
+    "startRolePlay": "Commencer l'entraînement",
+    "scenarios": {
+      "coldCall": "Appel à froid",
+      "objectionHandling": "Traitement des objections",
+      "closing": "Conclusion de vente",
+      "needsDiscovery": "Découverte des besoins",
+      "priceNegotiation": "Négociation de prix"
+    },
+    "feedback": "Retour du coach",
+    "score": "Votre score : {score}/100",
+    "improvement": "Axes d'amélioration",
+    "strength": "Vos points forts",
+    "tip": "Conseil Pro du coach"
+  },
+  "gamification": {
+    "level": "Niveau {level}",
+    "levels": {
+      "1": "Commercial débutant",
+      "2": "Commercial apprenti",
+      "3": "Commercial confirmé",
+      "4": "Commercial expert",
+      "5": "Commercial maître"
+    },
+    "xpEarned": "+{xp} XP",
+    "streakDays": "Série de {days} jours",
+    "achievements": "Succès",
+    "leaderboard": "Classement",
+    "weeklyRank": "Classement hebdomadaire : {rank}e",
+    "badges": {
+      "firstEmail": "Premier e-mail IA",
+      "streak7": "Série de 7 jours",
+      "streak30": "Série de 30 jours",
+      "firstDeal": "Première vente conclue",
+      "researchPro": "Pro de la recherche (50 recherches)",
+      "globalSeller": "Vendeur international (5 langues utilisées)"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "account": "Compte",
+    "language": "Langue",
+    "notifications": "Notifications",
+    "privacy": "Confidentialité",
+    "theme": "Thème",
+    "themes": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
+    "exportData": "Exporter mes données",
+    "deleteAccount": "Supprimer le compte",
+    "deleteWarning": "Cette action est irréversible. Toutes vos données seront définitivement supprimées."
+  },
+  "auth": {
+    "signInTitle": "Bon retour parmi nous",
+    "signUpTitle": "Développez vos ventes dès maintenant",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Vous avez déjà un compte ?",
+    "orContinueWith": "Ou continuer avec",
+    "google": "Continuer avec Google",
+    "termsAgree": "En vous inscrivant, vous acceptez nos {terms} et notre {privacy}.",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité"
+  },
+  "errors": {
+    "generic": "Une erreur est survenue. Veuillez réessayer.",
+    "notFound": "Page introuvable",
+    "unauthorized": "Veuillez vous connecter pour continuer",
+    "rateLimit": "Trop de requêtes. Veuillez patienter un instant.",
+    "aiError": "L'IA est temporairement indisponible. Veuillez réessayer plus tard."
+  }
+}

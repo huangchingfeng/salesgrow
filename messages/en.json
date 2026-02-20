@@ -1,0 +1,340 @@
+{
+  "common": {
+    "appName": "SalesGrow",
+    "tagline": "Your AI Sales Coach",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "copy": "Copy",
+    "share": "Share",
+    "search": "Search",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "or": "or",
+    "free": "Free",
+    "pro": "Pro",
+    "upgrade": "Upgrade to Pro",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "settings": "Settings",
+    "profile": "Profile",
+    "help": "Help",
+    "language": "Language"
+  },
+  "landing": {
+    "hero": {
+      "title": "Your AI Sales Coach",
+      "subtitle": "The Duolingo for salespeople. AI-powered coaching, prospecting, and client management — free forever.",
+      "cta": "Start Free — No Credit Card",
+      "ctaSecondary": "Watch Demo",
+      "socialProof": "{count}+ salespeople already growing"
+    },
+    "features": {
+      "title": "Everything you need to close more deals",
+      "research": {
+        "title": "Client Research",
+        "description": "Enter a company name, get a full briefing in seconds. Know your client before they know you."
+      },
+      "outreach": {
+        "title": "AI Outreach Writer",
+        "description": "Personalized cold emails in any language. AI scores your email and suggests improvements."
+      },
+      "visitLog": {
+        "title": "Voice Visit Logger",
+        "description": "Talk for 2 minutes after a meeting. AI creates structured notes automatically."
+      },
+      "followUp": {
+        "title": "Smart Follow-up",
+        "description": "Never forget a client. AI reminds you who to contact and drafts the message."
+      },
+      "coach": {
+        "title": "AI Sales Coach",
+        "description": "Daily tasks, role-play practice, and real-time feedback. Like having a mentor 24/7."
+      },
+      "gamification": {
+        "title": "Level Up Your Sales",
+        "description": "Streaks, XP, achievements, leaderboards. Sales training that feels like a game."
+      }
+    },
+    "pricing": {
+      "title": "Simple, transparent pricing",
+      "free": {
+        "title": "Free",
+        "price": "$0",
+        "period": "forever",
+        "features": [
+          "5 AI queries per day",
+          "Client Research",
+          "Outreach Writer",
+          "Visit Logger",
+          "Follow-up Reminders",
+          "9 languages"
+        ],
+        "cta": "Get Started Free"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "$9.99",
+        "period": "/month",
+        "features": [
+          "Unlimited AI queries",
+          "Advanced AI models",
+          "AI Sales Coach",
+          "Role-play practice",
+          "Priority support",
+          "No ads"
+        ],
+        "cta": "Start Pro Trial"
+      },
+      "team": {
+        "title": "Team",
+        "price": "$29.99",
+        "period": "/user/month",
+        "features": [
+          "Everything in Pro",
+          "Team dashboard",
+          "Manager analytics",
+          "Custom AI training",
+          "API access",
+          "Priority SLA"
+        ],
+        "cta": "Contact Sales"
+      }
+    },
+    "testimonials": {
+      "title": "Trusted by salespeople worldwide"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": {
+        "isFree": {
+          "q": "Is SalesGrow really free?",
+          "a": "Yes! Core features are free forever. You get 5 AI queries per day, client research, outreach writing, visit logging, and follow-up tracking — all at no cost. Upgrade to Pro for unlimited AI and advanced coaching."
+        },
+        "languages": {
+          "q": "What languages are supported?",
+          "a": "SalesGrow supports 9 languages: English, Japanese, Korean, Thai, Vietnamese, Traditional Chinese, German, French, and Spanish. AI generates content in your client's native language."
+        },
+        "data": {
+          "q": "Is my data safe?",
+          "a": "Absolutely. We're GDPR-compliant from day one. Your data is encrypted, never sold, and you can export or delete it anytime."
+        },
+        "crm": {
+          "q": "Does this replace my CRM?",
+          "a": "No — SalesGrow enhances your existing CRM. Think of it as your AI co-pilot that works alongside Salesforce, HubSpot, or any CRM you use."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to grow your sales?",
+      "subtitle": "Join thousands of salespeople who are closing more deals with AI.",
+      "button": "Start Free Today"
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "research": "Research",
+    "outreach": "Outreach",
+    "visitLog": "Visit Log",
+    "followUp": "Follow-up",
+    "coach": "AI Coach",
+    "leaderboard": "Leaderboard",
+    "learning": "Learning",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "greeting": "Good morning, {name}!",
+    "level": "Level {level}: {title}",
+    "xp": "{current}/{needed} XP to next level",
+    "streak": "{days}-day streak 🔥",
+    "todayTasks": "Today's Tasks",
+    "taskFollowUp": "Follow up with {client}",
+    "taskPractice": "Practice your pitch",
+    "taskResearch": "Research {client}",
+    "pipeline": "Pipeline Overview",
+    "deals": "{count} active deals",
+    "revenue": "Projected: {amount}",
+    "weeklyGoal": "Weekly Goal",
+    "completed": "Completed"
+  },
+  "research": {
+    "title": "Client Research",
+    "placeholder": "Enter company name or website...",
+    "button": "Research",
+    "loading": "Analyzing {company}...",
+    "sections": {
+      "overview": "Company Overview",
+      "news": "Recent News",
+      "painPoints": "Potential Pain Points",
+      "icebreakers": "Icebreaker Topics",
+      "contacts": "Key Contacts"
+    },
+    "actions": {
+      "writeEmail": "Write outreach email",
+      "saveClient": "Save to pipeline",
+      "exportPdf": "Export as PDF"
+    },
+    "limitReached": "Daily limit reached. Upgrade to Pro for unlimited research.",
+    "remaining": "{count} queries remaining today"
+  },
+  "outreach": {
+    "title": "AI Outreach Writer",
+    "clientLabel": "Client / Company",
+    "purposeLabel": "Purpose",
+    "purposes": {
+      "coldEmail": "Cold Email",
+      "followUp": "Follow-up",
+      "introduction": "Introduction",
+      "proposal": "Proposal",
+      "thankYou": "Thank You"
+    },
+    "toneLabel": "Tone",
+    "tones": {
+      "professional": "Professional",
+      "friendly": "Friendly",
+      "formal": "Formal",
+      "casual": "Casual"
+    },
+    "languageLabel": "Output Language",
+    "generate": "Generate Email",
+    "regenerate": "Regenerate",
+    "score": "Email Score",
+    "scoreExcellent": "Excellent — likely to get a response!",
+    "scoreGood": "Good — a few tweaks could help",
+    "scoreAverage": "Average — consider the suggestions below",
+    "suggestions": "Improvement Suggestions",
+    "copy": "Copy to Clipboard",
+    "copied": "Copied!",
+    "send": "Send via Email"
+  },
+  "visitLog": {
+    "title": "Visit Logger",
+    "newVisit": "New Visit Record",
+    "recordVoice": "Record Voice Note",
+    "recording": "Recording... {duration}",
+    "stopRecording": "Stop Recording",
+    "processing": "Processing your voice note...",
+    "clientName": "Client Name",
+    "visitDate": "Visit Date",
+    "summary": "Meeting Summary",
+    "nextSteps": "Next Steps",
+    "dealProbability": "Deal Probability",
+    "mood": "Client Mood",
+    "moods": {
+      "positive": "Positive",
+      "neutral": "Neutral",
+      "negative": "Negative",
+      "interested": "Interested"
+    },
+    "save": "Save Visit Record",
+    "history": "Visit History"
+  },
+  "followUp": {
+    "title": "Follow-up Tracker",
+    "today": "Due Today",
+    "overdue": "Overdue",
+    "upcoming": "Upcoming",
+    "noOverdue": "No overdue follow-ups — great job!",
+    "daysAgo": "Last contact: {days} days ago",
+    "suggestedMessage": "Suggested Message",
+    "markDone": "Mark as Done",
+    "snooze": "Snooze",
+    "pipeline": {
+      "title": "Sales Pipeline",
+      "lead": "Lead",
+      "contacted": "Contacted",
+      "meeting": "Meeting",
+      "proposal": "Proposal",
+      "negotiation": "Negotiation",
+      "closed": "Closed"
+    }
+  },
+  "coach": {
+    "title": "AI Sales Coach",
+    "dailyChallenge": "Daily Challenge",
+    "rolePlay": "Role-Play Practice",
+    "rolePlayDesc": "Practice your pitch with AI playing the client",
+    "startRolePlay": "Start Practice",
+    "scenarios": {
+      "coldCall": "Cold Call",
+      "objectionHandling": "Objection Handling",
+      "closing": "Closing the Deal",
+      "needsDiscovery": "Needs Discovery",
+      "priceNegotiation": "Price Negotiation"
+    },
+    "feedback": "Coach Feedback",
+    "score": "Your Score: {score}/100",
+    "improvement": "Areas to Improve",
+    "strength": "Your Strengths",
+    "tip": "Pro Tip from Coach"
+  },
+  "gamification": {
+    "level": "Level {level}",
+    "levels": {
+      "1": "Sales Rookie",
+      "2": "Sales Apprentice",
+      "3": "Sales Pro",
+      "4": "Sales Expert",
+      "5": "Sales Master"
+    },
+    "xpEarned": "+{xp} XP",
+    "streakDays": "{days}-day streak",
+    "achievements": "Achievements",
+    "leaderboard": "Leaderboard",
+    "weeklyRank": "Weekly Rank: #{rank}",
+    "badges": {
+      "firstEmail": "First AI Email",
+      "streak7": "7-Day Streak",
+      "streak30": "30-Day Streak",
+      "firstDeal": "First Deal Closed",
+      "researchPro": "Research Pro (50 researches)",
+      "globalSeller": "Global Seller (5 languages used)"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": "Account",
+    "language": "Language",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "theme": "Theme",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "exportData": "Export My Data",
+    "deleteAccount": "Delete Account",
+    "deleteWarning": "This action is irreversible. All your data will be permanently deleted."
+  },
+  "auth": {
+    "signInTitle": "Welcome back",
+    "signUpTitle": "Start growing your sales",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "orContinueWith": "Or continue with",
+    "google": "Continue with Google",
+    "termsAgree": "By signing up, you agree to our {terms} and {privacy}.",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFound": "Page not found",
+    "unauthorized": "Please sign in to continue",
+    "rateLimit": "Too many requests. Please wait a moment.",
+    "aiError": "AI is temporarily unavailable. Please try again."
+  }
+}

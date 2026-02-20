@@ -1,0 +1,340 @@
+{
+  "common": {
+    "appName": "SalesGrow",
+    "tagline": "あなたのAI営業コーチ",
+    "loading": "読み込み中...",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "copy": "コピー",
+    "share": "共有",
+    "search": "検索",
+    "back": "戻る",
+    "next": "次へ",
+    "submit": "送信",
+    "close": "閉じる",
+    "confirm": "確認",
+    "yes": "はい",
+    "no": "いいえ",
+    "or": "または",
+    "free": "無料",
+    "pro": "Pro",
+    "upgrade": "Pro にアップグレード",
+    "signIn": "ログイン",
+    "signUp": "新規登録",
+    "signOut": "ログアウト",
+    "settings": "設定",
+    "profile": "プロフィール",
+    "help": "ヘルプ",
+    "language": "言語"
+  },
+  "landing": {
+    "hero": {
+      "title": "あなたのAI営業コーチ",
+      "subtitle": "営業パーソンのためのDuolingo。AIによるコーチング、見込み客開拓、顧客管理を永久無料でご利用いただけます。",
+      "cta": "無料で始める — クレジットカード不要",
+      "ctaSecondary": "デモを見る",
+      "socialProof": "{count}人以上の営業パーソンが成長を実感中"
+    },
+    "features": {
+      "title": "より多くの商談を成約するために必要なすべてを",
+      "research": {
+        "title": "顧客リサーチ",
+        "description": "企業名を入力するだけで、数秒で詳細なレポートを取得。お客様より先に、お客様のことを把握できます。"
+      },
+      "outreach": {
+        "title": "AI営業メール作成",
+        "description": "あらゆる言語でパーソナライズされたコールドメールを作成。AIがメールを採点し、改善提案を行います。"
+      },
+      "visitLog": {
+        "title": "音声訪問記録",
+        "description": "商談後に2分間お話しください。AIが自動で構造化されたメモを作成します。"
+      },
+      "followUp": {
+        "title": "スマートフォローアップ",
+        "description": "お客様を忘れることはありません。AIが連絡すべき相手を通知し、メッセージの下書きを作成します。"
+      },
+      "coach": {
+        "title": "AI営業コーチ",
+        "description": "日々のタスク、ロールプレイ練習、リアルタイムフィードバック。24時間365日のメンターがいるようなものです。"
+      },
+      "gamification": {
+        "title": "営業スキルをレベルアップ",
+        "description": "連続記録、XP、実績、リーダーボード。ゲーム感覚で営業トレーニングができます。"
+      }
+    },
+    "pricing": {
+      "title": "シンプルで透明な料金プラン",
+      "free": {
+        "title": "無料プラン",
+        "price": "$0",
+        "period": "永久無料",
+        "features": [
+          "1日5回のAIクエリ",
+          "顧客リサーチ",
+          "営業メール作成",
+          "訪問記録",
+          "フォローアップリマインダー",
+          "9言語対応"
+        ],
+        "cta": "無料で始める"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "$9.99",
+        "period": "/月",
+        "features": [
+          "AIクエリ無制限",
+          "高度なAIモデル",
+          "AI営業コーチ",
+          "ロールプレイ練習",
+          "優先サポート",
+          "広告なし"
+        ],
+        "cta": "Pro トライアルを開始"
+      },
+      "team": {
+        "title": "チーム",
+        "price": "$29.99",
+        "period": "/ユーザー/月",
+        "features": [
+          "Proの全機能",
+          "チームダッシュボード",
+          "マネージャー分析",
+          "カスタムAIトレーニング",
+          "APIアクセス",
+          "優先SLA"
+        ],
+        "cta": "営業チームに問い合わせ"
+      }
+    },
+    "testimonials": {
+      "title": "世界中の営業パーソンから信頼されています"
+    },
+    "faq": {
+      "title": "よくあるご質問",
+      "items": {
+        "isFree": {
+          "q": "SalesGrowは本当に無料ですか？",
+          "a": "はい！コア機能は永久無料です。1日5回のAIクエリ、顧客リサーチ、営業メール作成、訪問記録、フォローアップ追跡のすべてを無料でご利用いただけます。Proにアップグレードすると、AIクエリ無制限と高度なコーチング機能をご利用いただけます。"
+        },
+        "languages": {
+          "q": "対応言語は何ですか？",
+          "a": "SalesGrowは9言語に対応しています：英語、日本語、韓国語、タイ語、ベトナム語、繁体字中国語、ドイツ語、フランス語、スペイン語。AIがお客様の母国語でコンテンツを生成します。"
+        },
+        "data": {
+          "q": "データは安全ですか？",
+          "a": "ご安心ください。初日からGDPRに準拠しています。データは暗号化され、第三者に販売されることはありません。いつでもエクスポートまたは削除が可能です。"
+        },
+        "crm": {
+          "q": "CRMの代わりになりますか？",
+          "a": "いいえ。SalesGrowは既存のCRMを強化するツールです。Salesforce、HubSpot、その他のCRMと併用できるAI副操縦士とお考えください。"
+        }
+      }
+    },
+    "cta": {
+      "title": "営業成績を伸ばす準備はできましたか？",
+      "subtitle": "AIでより多くの商談を成約している数千人の営業パーソンに加わりましょう。",
+      "button": "今すぐ無料で始める"
+    }
+  },
+  "nav": {
+    "dashboard": "ダッシュボード",
+    "research": "リサーチ",
+    "outreach": "営業メール",
+    "visitLog": "訪問記録",
+    "followUp": "フォローアップ",
+    "coach": "AIコーチ",
+    "leaderboard": "リーダーボード",
+    "learning": "学習",
+    "settings": "設定"
+  },
+  "dashboard": {
+    "greeting": "おはようございます、{name}さん！",
+    "level": "レベル {level}：{title}",
+    "xp": "{current}/{needed} XP 次のレベルまで",
+    "streak": "{days}日連続 🔥",
+    "todayTasks": "今日のタスク",
+    "taskFollowUp": "{client}にフォローアップ",
+    "taskPractice": "トークを練習する",
+    "taskResearch": "{client}をリサーチ",
+    "pipeline": "パイプライン概要",
+    "deals": "進行中の商談 {count}件",
+    "revenue": "見込み売上：{amount}",
+    "weeklyGoal": "週間目標",
+    "completed": "完了"
+  },
+  "research": {
+    "title": "顧客リサーチ",
+    "placeholder": "企業名またはウェブサイトを入力...",
+    "button": "リサーチ開始",
+    "loading": "{company}を分析中...",
+    "sections": {
+      "overview": "企業概要",
+      "news": "最新ニュース",
+      "painPoints": "想定される課題",
+      "icebreakers": "アイスブレイクの話題",
+      "contacts": "キーパーソン"
+    },
+    "actions": {
+      "writeEmail": "営業メールを作成",
+      "saveClient": "パイプラインに保存",
+      "exportPdf": "PDFでエクスポート"
+    },
+    "limitReached": "本日の利用回数に達しました。Proにアップグレードすると無制限でリサーチできます。",
+    "remaining": "本日の残りクエリ数：{count}回"
+  },
+  "outreach": {
+    "title": "AI営業メール作成",
+    "clientLabel": "顧客 / 企業",
+    "purposeLabel": "目的",
+    "purposes": {
+      "coldEmail": "コールドメール",
+      "followUp": "フォローアップ",
+      "introduction": "自己紹介",
+      "proposal": "提案",
+      "thankYou": "お礼"
+    },
+    "toneLabel": "トーン",
+    "tones": {
+      "professional": "プロフェッショナル",
+      "friendly": "フレンドリー",
+      "formal": "フォーマル",
+      "casual": "カジュアル"
+    },
+    "languageLabel": "出力言語",
+    "generate": "メールを生成",
+    "regenerate": "再生成",
+    "score": "メールスコア",
+    "scoreExcellent": "優秀 — 返信が期待できます！",
+    "scoreGood": "良好 — 少し調整するとさらに効果的です",
+    "scoreAverage": "平均的 — 以下の提案をご参考ください",
+    "suggestions": "改善提案",
+    "copy": "クリップボードにコピー",
+    "copied": "コピーしました！",
+    "send": "メールで送信"
+  },
+  "visitLog": {
+    "title": "訪問記録",
+    "newVisit": "新規訪問記録",
+    "recordVoice": "音声メモを録音",
+    "recording": "録音中... {duration}",
+    "stopRecording": "録音を停止",
+    "processing": "音声メモを処理中...",
+    "clientName": "顧客名",
+    "visitDate": "訪問日",
+    "summary": "商談概要",
+    "nextSteps": "次のステップ",
+    "dealProbability": "成約確率",
+    "mood": "顧客の雰囲気",
+    "moods": {
+      "positive": "好感触",
+      "neutral": "普通",
+      "negative": "否定的",
+      "interested": "興味あり"
+    },
+    "save": "訪問記録を保存",
+    "history": "訪問履歴"
+  },
+  "followUp": {
+    "title": "フォローアップ管理",
+    "today": "本日対応",
+    "overdue": "期限超過",
+    "upcoming": "今後の予定",
+    "noOverdue": "期限超過のフォローアップはありません。素晴らしいです！",
+    "daysAgo": "最終連絡：{days}日前",
+    "suggestedMessage": "おすすめメッセージ",
+    "markDone": "完了にする",
+    "snooze": "リマインドを延期",
+    "pipeline": {
+      "title": "営業パイプライン",
+      "lead": "リード",
+      "contacted": "連絡済み",
+      "meeting": "商談",
+      "proposal": "提案中",
+      "negotiation": "交渉中",
+      "closed": "成約"
+    }
+  },
+  "coach": {
+    "title": "AI営業コーチ",
+    "dailyChallenge": "今日のチャレンジ",
+    "rolePlay": "ロールプレイ練習",
+    "rolePlayDesc": "AIが顧客役を演じ、あなたのトークを練習できます",
+    "startRolePlay": "練習を開始",
+    "scenarios": {
+      "coldCall": "コールドコール",
+      "objectionHandling": "反論対応",
+      "closing": "クロージング",
+      "needsDiscovery": "ニーズ発掘",
+      "priceNegotiation": "価格交渉"
+    },
+    "feedback": "コーチのフィードバック",
+    "score": "あなたのスコア：{score}/100",
+    "improvement": "改善ポイント",
+    "strength": "あなたの強み",
+    "tip": "コーチからのProヒント"
+  },
+  "gamification": {
+    "level": "レベル {level}",
+    "levels": {
+      "1": "営業ルーキー",
+      "2": "営業アプレンティス",
+      "3": "営業プロ",
+      "4": "営業エキスパート",
+      "5": "営業マスター"
+    },
+    "xpEarned": "+{xp} XP",
+    "streakDays": "{days}日連続",
+    "achievements": "実績",
+    "leaderboard": "リーダーボード",
+    "weeklyRank": "週間ランキング：{rank}位",
+    "badges": {
+      "firstEmail": "初めてのAIメール",
+      "streak7": "7日連続達成",
+      "streak30": "30日連続達成",
+      "firstDeal": "初成約",
+      "researchPro": "リサーチのプロ（50回リサーチ）",
+      "globalSeller": "グローバル営業（5言語使用）"
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "account": "アカウント",
+    "language": "言語",
+    "notifications": "通知",
+    "privacy": "プライバシー",
+    "theme": "テーマ",
+    "themes": {
+      "light": "ライト",
+      "dark": "ダーク",
+      "system": "システム設定に従う"
+    },
+    "exportData": "データをエクスポート",
+    "deleteAccount": "アカウントを削除",
+    "deleteWarning": "この操作は取り消せません。すべてのデータが完全に削除されます。"
+  },
+  "auth": {
+    "signInTitle": "おかえりなさい",
+    "signUpTitle": "営業成績を伸ばしましょう",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "confirmPassword": "パスワード確認",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "hasAccount": "すでにアカウントをお持ちですか？",
+    "orContinueWith": "または以下で続ける",
+    "google": "Googleで続ける",
+    "termsAgree": "登録することで、{terms}と{privacy}に同意したものとみなされます。",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー"
+  },
+  "errors": {
+    "generic": "エラーが発生しました。もう一度お試しください。",
+    "notFound": "ページが見つかりません",
+    "unauthorized": "続行するにはログインしてください",
+    "rateLimit": "リクエストが多すぎます。しばらくお待ちください。",
+    "aiError": "AIが一時的にご利用いただけません。しばらくしてからお試しください。"
+  }
+}

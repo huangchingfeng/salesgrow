@@ -1,0 +1,340 @@
+{
+  "common": {
+    "appName": "SalesGrow",
+    "tagline": "Huấn luyện viên bán hàng AI của bạn",
+    "loading": "Đang tải...",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "copy": "Sao chép",
+    "share": "Chia sẻ",
+    "search": "Tìm kiếm",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "submit": "Gửi",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
+    "yes": "Có",
+    "no": "Không",
+    "or": "hoặc",
+    "free": "Miễn phí",
+    "pro": "Pro",
+    "upgrade": "Nâng cấp lên Pro",
+    "signIn": "Đăng nhập",
+    "signUp": "Đăng ký",
+    "signOut": "Đăng xuất",
+    "settings": "Cài đặt",
+    "profile": "Hồ sơ",
+    "help": "Trợ giúp",
+    "language": "Ngôn ngữ"
+  },
+  "landing": {
+    "hero": {
+      "title": "Huấn luyện viên bán hàng AI của bạn",
+      "subtitle": "Duolingo dành cho nhân viên kinh doanh. Huấn luyện bằng AI, tìm kiếm khách hàng và quản lý khách hàng — miễn phí mãi mãi.",
+      "cta": "Bắt đầu miễn phí — Không cần thẻ tín dụng",
+      "ctaSecondary": "Xem Demo",
+      "socialProof": "Hơn {count}+ nhân viên kinh doanh đang phát triển"
+    },
+    "features": {
+      "title": "Mọi thứ bạn cần để chốt nhiều giao dịch hơn",
+      "research": {
+        "title": "Nghiên cứu khách hàng",
+        "description": "Nhập tên công ty, nhận báo cáo đầy đủ trong vài giây. Hiểu khách hàng trước khi họ biết về bạn."
+      },
+      "outreach": {
+        "title": "AI viết email bán hàng",
+        "description": "Email tiếp cận được cá nhân hóa bằng bất kỳ ngôn ngữ nào. AI chấm điểm email và đề xuất cải thiện."
+      },
+      "visitLog": {
+        "title": "Ghi chú bằng giọng nói",
+        "description": "Nói trong 2 phút sau cuộc họp. AI tự động tạo ghi chú có cấu trúc."
+      },
+      "followUp": {
+        "title": "Theo dõi thông minh",
+        "description": "Không bao giờ quên khách hàng nào. AI nhắc bạn cần liên hệ ai và soạn sẵn tin nhắn."
+      },
+      "coach": {
+        "title": "Huấn luyện viên bán hàng AI",
+        "description": "Nhiệm vụ hàng ngày, luyện tập đóng vai và phản hồi theo thời gian thực. Như có một người hướng dẫn 24/7."
+      },
+      "gamification": {
+        "title": "Nâng cấp kỹ năng bán hàng",
+        "description": "Chuỗi ngày liên tiếp, XP, thành tích, bảng xếp hạng. Đào tạo bán hàng như chơi game."
+      }
+    },
+    "pricing": {
+      "title": "Bảng giá đơn giản, minh bạch",
+      "free": {
+        "title": "Miễn phí",
+        "price": "$0",
+        "period": "miễn phí mãi mãi",
+        "features": [
+          "5 truy vấn AI mỗi ngày",
+          "Nghiên cứu khách hàng",
+          "Viết email bán hàng",
+          "Ghi chú cuộc gặp",
+          "Nhắc theo dõi",
+          "Hỗ trợ 9 ngôn ngữ"
+        ],
+        "cta": "Bắt đầu miễn phí"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "$9.99",
+        "period": "/tháng",
+        "features": [
+          "Truy vấn AI không giới hạn",
+          "Mô hình AI nâng cao",
+          "Huấn luyện viên bán hàng AI",
+          "Luyện tập đóng vai",
+          "Hỗ trợ ưu tiên",
+          "Không quảng cáo"
+        ],
+        "cta": "Dùng thử Pro"
+      },
+      "team": {
+        "title": "Nhóm",
+        "price": "$29.99",
+        "period": "/người dùng/tháng",
+        "features": [
+          "Tất cả tính năng Pro",
+          "Bảng điều khiển nhóm",
+          "Phân tích cho quản lý",
+          "Đào tạo AI tùy chỉnh",
+          "Truy cập API",
+          "SLA ưu tiên"
+        ],
+        "cta": "Liên hệ kinh doanh"
+      }
+    },
+    "testimonials": {
+      "title": "Được tin tưởng bởi nhân viên kinh doanh trên toàn thế giới"
+    },
+    "faq": {
+      "title": "Câu hỏi thường gặp",
+      "items": {
+        "isFree": {
+          "q": "SalesGrow có thực sự miễn phí không?",
+          "a": "Có! Các tính năng cốt lõi miễn phí mãi mãi. Bạn được 5 truy vấn AI mỗi ngày, nghiên cứu khách hàng, viết email bán hàng, ghi chú cuộc gặp và theo dõi khách hàng — tất cả miễn phí. Nâng cấp lên Pro để sử dụng AI không giới hạn và huấn luyện nâng cao."
+        },
+        "languages": {
+          "q": "Hỗ trợ những ngôn ngữ nào?",
+          "a": "SalesGrow hỗ trợ 9 ngôn ngữ: Tiếng Anh, Tiếng Nhật, Tiếng Hàn, Tiếng Thái, Tiếng Việt, Tiếng Trung phồn thể, Tiếng Đức, Tiếng Pháp và Tiếng Tây Ban Nha. AI tạo nội dung bằng ngôn ngữ mẹ đẻ của khách hàng."
+        },
+        "data": {
+          "q": "Dữ liệu của tôi có an toàn không?",
+          "a": "Hoàn toàn an toàn. Chúng tôi tuân thủ GDPR ngay từ ngày đầu. Dữ liệu của bạn được mã hóa, không bao giờ bị bán, và bạn có thể xuất hoặc xóa bất cứ lúc nào."
+        },
+        "crm": {
+          "q": "Liệu có thay thế CRM của tôi không?",
+          "a": "Không — SalesGrow bổ trợ cho CRM hiện tại của bạn. Hãy xem nó như một trợ lý AI hoạt động cùng Salesforce, HubSpot hoặc bất kỳ CRM nào bạn đang dùng."
+        }
+      }
+    },
+    "cta": {
+      "title": "Sẵn sàng tăng trưởng doanh số?",
+      "subtitle": "Tham gia cùng hàng nghìn nhân viên kinh doanh đang chốt nhiều giao dịch hơn nhờ AI.",
+      "button": "Bắt đầu miễn phí ngay hôm nay"
+    }
+  },
+  "nav": {
+    "dashboard": "Bảng điều khiển",
+    "research": "Nghiên cứu",
+    "outreach": "Email bán hàng",
+    "visitLog": "Nhật ký thăm",
+    "followUp": "Theo dõi",
+    "coach": "Huấn luyện AI",
+    "leaderboard": "Bảng xếp hạng",
+    "learning": "Học tập",
+    "settings": "Cài đặt"
+  },
+  "dashboard": {
+    "greeting": "Chào buổi sáng, {name}!",
+    "level": "Cấp {level}: {title}",
+    "xp": "{current}/{needed} XP đến cấp tiếp theo",
+    "streak": "Chuỗi {days} ngày 🔥",
+    "todayTasks": "Nhiệm vụ hôm nay",
+    "taskFollowUp": "Theo dõi {client}",
+    "taskPractice": "Luyện tập kịch bản bán hàng",
+    "taskResearch": "Nghiên cứu {client}",
+    "pipeline": "Tổng quan quy trình",
+    "deals": "{count} giao dịch đang tiến hành",
+    "revenue": "Dự kiến: {amount}",
+    "weeklyGoal": "Mục tiêu tuần",
+    "completed": "Hoàn thành"
+  },
+  "research": {
+    "title": "Nghiên cứu khách hàng",
+    "placeholder": "Nhập tên công ty hoặc website...",
+    "button": "Nghiên cứu",
+    "loading": "Đang phân tích {company}...",
+    "sections": {
+      "overview": "Tổng quan công ty",
+      "news": "Tin tức gần đây",
+      "painPoints": "Vấn đề tiềm năng",
+      "icebreakers": "Chủ đề mở đầu",
+      "contacts": "Người liên hệ chính"
+    },
+    "actions": {
+      "writeEmail": "Viết email bán hàng",
+      "saveClient": "Lưu vào quy trình",
+      "exportPdf": "Xuất PDF"
+    },
+    "limitReached": "Đã đạt giới hạn hôm nay. Nâng cấp lên Pro để nghiên cứu không giới hạn.",
+    "remaining": "Còn {count} truy vấn hôm nay"
+  },
+  "outreach": {
+    "title": "AI viết email bán hàng",
+    "clientLabel": "Khách hàng / Công ty",
+    "purposeLabel": "Mục đích",
+    "purposes": {
+      "coldEmail": "Email tiếp cận",
+      "followUp": "Theo dõi",
+      "introduction": "Giới thiệu",
+      "proposal": "Đề xuất",
+      "thankYou": "Cảm ơn"
+    },
+    "toneLabel": "Giọng điệu",
+    "tones": {
+      "professional": "Chuyên nghiệp",
+      "friendly": "Thân thiện",
+      "formal": "Trang trọng",
+      "casual": "Thoải mái"
+    },
+    "languageLabel": "Ngôn ngữ đầu ra",
+    "generate": "Tạo email",
+    "regenerate": "Tạo lại",
+    "score": "Điểm email",
+    "scoreExcellent": "Xuất sắc — rất có khả năng nhận được phản hồi!",
+    "scoreGood": "Tốt — điều chỉnh đôi chút sẽ tốt hơn",
+    "scoreAverage": "Trung bình — hãy xem gợi ý bên dưới",
+    "suggestions": "Gợi ý cải thiện",
+    "copy": "Sao chép vào clipboard",
+    "copied": "Đã sao chép!",
+    "send": "Gửi qua email"
+  },
+  "visitLog": {
+    "title": "Nhật ký thăm",
+    "newVisit": "Bản ghi mới",
+    "recordVoice": "Ghi chú bằng giọng nói",
+    "recording": "Đang ghi... {duration}",
+    "stopRecording": "Dừng ghi",
+    "processing": "Đang xử lý ghi chú giọng nói...",
+    "clientName": "Tên khách hàng",
+    "visitDate": "Ngày thăm",
+    "summary": "Tóm tắt cuộc họp",
+    "nextSteps": "Bước tiếp theo",
+    "dealProbability": "Xác suất chốt giao dịch",
+    "mood": "Tâm trạng khách hàng",
+    "moods": {
+      "positive": "Tích cực",
+      "neutral": "Trung lập",
+      "negative": "Tiêu cực",
+      "interested": "Quan tâm"
+    },
+    "save": "Lưu bản ghi",
+    "history": "Lịch sử thăm"
+  },
+  "followUp": {
+    "title": "Quản lý theo dõi",
+    "today": "Hôm nay",
+    "overdue": "Quá hạn",
+    "upcoming": "Sắp tới",
+    "noOverdue": "Không có mục theo dõi quá hạn — tuyệt vời!",
+    "daysAgo": "Liên hệ lần cuối: {days} ngày trước",
+    "suggestedMessage": "Tin nhắn gợi ý",
+    "markDone": "Đánh dấu hoàn thành",
+    "snooze": "Tạm hoãn",
+    "pipeline": {
+      "title": "Quy trình bán hàng",
+      "lead": "Tiềm năng",
+      "contacted": "Đã liên hệ",
+      "meeting": "Cuộc họp",
+      "proposal": "Đề xuất",
+      "negotiation": "Đàm phán",
+      "closed": "Đã chốt"
+    }
+  },
+  "coach": {
+    "title": "Huấn luyện viên bán hàng AI",
+    "dailyChallenge": "Thử thách hàng ngày",
+    "rolePlay": "Luyện tập đóng vai",
+    "rolePlayDesc": "AI đóng vai khách hàng, giúp bạn luyện tập kịch bản bán hàng",
+    "startRolePlay": "Bắt đầu luyện tập",
+    "scenarios": {
+      "coldCall": "Gọi điện tiếp cận",
+      "objectionHandling": "Xử lý phản đối",
+      "closing": "Chốt giao dịch",
+      "needsDiscovery": "Khám phá nhu cầu",
+      "priceNegotiation": "Đàm phán giá"
+    },
+    "feedback": "Phản hồi từ huấn luyện viên",
+    "score": "Điểm của bạn: {score}/100",
+    "improvement": "Cần cải thiện",
+    "strength": "Điểm mạnh của bạn",
+    "tip": "Mẹo Pro từ huấn luyện viên"
+  },
+  "gamification": {
+    "level": "Cấp {level}",
+    "levels": {
+      "1": "Tân binh bán hàng",
+      "2": "Học viên bán hàng",
+      "3": "Chuyên viên bán hàng",
+      "4": "Chuyên gia bán hàng",
+      "5": "Bậc thầy bán hàng"
+    },
+    "xpEarned": "+{xp} XP",
+    "streakDays": "Chuỗi {days} ngày",
+    "achievements": "Thành tích",
+    "leaderboard": "Bảng xếp hạng",
+    "weeklyRank": "Xếp hạng tuần: Hạng {rank}",
+    "badges": {
+      "firstEmail": "Email AI đầu tiên",
+      "streak7": "Chuỗi 7 ngày",
+      "streak30": "Chuỗi 30 ngày",
+      "firstDeal": "Giao dịch đầu tiên",
+      "researchPro": "Chuyên gia nghiên cứu (50 lần)",
+      "globalSeller": "Bán hàng toàn cầu (5 ngôn ngữ)"
+    }
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "account": "Tài khoản",
+    "language": "Ngôn ngữ",
+    "notifications": "Thông báo",
+    "privacy": "Quyền riêng tư",
+    "theme": "Giao diện",
+    "themes": {
+      "light": "Sáng",
+      "dark": "Tối",
+      "system": "Theo hệ thống"
+    },
+    "exportData": "Xuất dữ liệu của tôi",
+    "deleteAccount": "Xóa tài khoản",
+    "deleteWarning": "Hành động này không thể hoàn tác. Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn."
+  },
+  "auth": {
+    "signInTitle": "Chào mừng trở lại",
+    "signUpTitle": "Bắt đầu tăng trưởng doanh số",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
+    "noAccount": "Chưa có tài khoản?",
+    "hasAccount": "Đã có tài khoản?",
+    "orContinueWith": "Hoặc tiếp tục với",
+    "google": "Tiếp tục với Google",
+    "termsAgree": "Bằng việc đăng ký, bạn đồng ý với {terms} và {privacy} của chúng tôi.",
+    "terms": "Điều khoản dịch vụ",
+    "privacy": "Chính sách bảo mật"
+  },
+  "errors": {
+    "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "notFound": "Không tìm thấy trang",
+    "unauthorized": "Vui lòng đăng nhập để tiếp tục",
+    "rateLimit": "Quá nhiều yêu cầu. Vui lòng đợi một chút.",
+    "aiError": "AI tạm thời không khả dụng. Vui lòng thử lại sau."
+  }
+}

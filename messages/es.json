@@ -1,0 +1,340 @@
+{
+  "common": {
+    "appName": "SalesGrow",
+    "tagline": "Tu coach de ventas con IA",
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "copy": "Copiar",
+    "share": "Compartir",
+    "search": "Buscar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "or": "o",
+    "free": "Gratis",
+    "pro": "Pro",
+    "upgrade": "Actualizar a Pro",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar sesión",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "help": "Ayuda",
+    "language": "Idioma"
+  },
+  "landing": {
+    "hero": {
+      "title": "Tu coach de ventas con IA",
+      "subtitle": "El Duolingo para vendedores. Coaching con IA, prospección y gestión de clientes — gratis para siempre.",
+      "cta": "Comenzar gratis — Sin tarjeta de crédito",
+      "ctaSecondary": "Ver demo",
+      "socialProof": "Más de {count}+ vendedores ya están creciendo"
+    },
+    "features": {
+      "title": "Todo lo que necesita para cerrar más ventas",
+      "research": {
+        "title": "Investigación de clientes",
+        "description": "Ingrese el nombre de una empresa y obtenga un informe completo en segundos. Conozca a su cliente antes de que lo conozca a usted."
+      },
+      "outreach": {
+        "title": "Redacción de correos con IA",
+        "description": "Correos de prospección personalizados en cualquier idioma. La IA califica su correo y sugiere mejoras."
+      },
+      "visitLog": {
+        "title": "Registro de visitas por voz",
+        "description": "Hable 2 minutos después de una reunión. La IA crea notas estructuradas automáticamente."
+      },
+      "followUp": {
+        "title": "Seguimiento inteligente",
+        "description": "No olvide a ningún cliente. La IA le recuerda a quién contactar y redacta el mensaje."
+      },
+      "coach": {
+        "title": "Coach de ventas con IA",
+        "description": "Tareas diarias, práctica de role-play y retroalimentación en tiempo real. Como tener un mentor las 24 horas."
+      },
+      "gamification": {
+        "title": "Suba de nivel en ventas",
+        "description": "Rachas, XP, logros, tablas de clasificación. Entrenamiento de ventas que se siente como un juego."
+      }
+    },
+    "pricing": {
+      "title": "Precios simples y transparentes",
+      "free": {
+        "title": "Gratis",
+        "price": "$0",
+        "period": "para siempre",
+        "features": [
+          "5 consultas de IA al día",
+          "Investigación de clientes",
+          "Redacción de correos",
+          "Registro de visitas",
+          "Recordatorios de seguimiento",
+          "9 idiomas"
+        ],
+        "cta": "Comenzar gratis"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "$9.99",
+        "period": "/mes",
+        "features": [
+          "Consultas de IA ilimitadas",
+          "Modelos de IA avanzados",
+          "Coach de ventas con IA",
+          "Práctica de role-play",
+          "Soporte prioritario",
+          "Sin anuncios"
+        ],
+        "cta": "Probar Pro"
+      },
+      "team": {
+        "title": "Equipo",
+        "price": "$29.99",
+        "period": "/usuario/mes",
+        "features": [
+          "Todo lo de Pro",
+          "Panel del equipo",
+          "Análisis para gerentes",
+          "Entrenamiento IA personalizado",
+          "Acceso API",
+          "SLA prioritario"
+        ],
+        "cta": "Contactar ventas"
+      }
+    },
+    "testimonials": {
+      "title": "La confianza de vendedores en todo el mundo"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": {
+        "isFree": {
+          "q": "¿SalesGrow es realmente gratis?",
+          "a": "¡Sí! Las funciones principales son gratis para siempre. Obtiene 5 consultas de IA al día, investigación de clientes, redacción de correos, registro de visitas y seguimiento — todo sin costo. Actualice a Pro para IA ilimitada y coaching avanzado."
+        },
+        "languages": {
+          "q": "¿Qué idiomas están disponibles?",
+          "a": "SalesGrow soporta 9 idiomas: inglés, japonés, coreano, tailandés, vietnamita, chino tradicional, alemán, francés y español. La IA genera contenido en el idioma nativo de su cliente."
+        },
+        "data": {
+          "q": "¿Mis datos están seguros?",
+          "a": "Por supuesto. Cumplimos con el RGPD desde el primer día. Sus datos están cifrados, nunca se venden y puede exportarlos o eliminarlos en cualquier momento."
+        },
+        "crm": {
+          "q": "¿Reemplaza mi CRM?",
+          "a": "No — SalesGrow complementa su CRM actual. Piénselo como su copiloto de IA que trabaja junto a Salesforce, HubSpot o cualquier CRM que utilice."
+        }
+      }
+    },
+    "cta": {
+      "title": "¿Listo para hacer crecer sus ventas?",
+      "subtitle": "Únase a miles de vendedores que están cerrando más ventas con IA.",
+      "button": "Comenzar gratis hoy"
+    }
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "research": "Investigación",
+    "outreach": "Prospección",
+    "visitLog": "Registro de visitas",
+    "followUp": "Seguimiento",
+    "coach": "Coach IA",
+    "leaderboard": "Clasificación",
+    "learning": "Aprendizaje",
+    "settings": "Configuración"
+  },
+  "dashboard": {
+    "greeting": "¡Buenos días, {name}!",
+    "level": "Nivel {level}: {title}",
+    "xp": "{current}/{needed} XP para el siguiente nivel",
+    "streak": "Racha de {days} días 🔥",
+    "todayTasks": "Tareas de hoy",
+    "taskFollowUp": "Dar seguimiento a {client}",
+    "taskPractice": "Practicar su presentación",
+    "taskResearch": "Investigar a {client}",
+    "pipeline": "Resumen del pipeline",
+    "deals": "{count} negocios activos",
+    "revenue": "Proyección: {amount}",
+    "weeklyGoal": "Meta semanal",
+    "completed": "Completado"
+  },
+  "research": {
+    "title": "Investigación de clientes",
+    "placeholder": "Ingrese el nombre de la empresa o sitio web...",
+    "button": "Investigar",
+    "loading": "Analizando {company}...",
+    "sections": {
+      "overview": "Resumen de la empresa",
+      "news": "Noticias recientes",
+      "painPoints": "Puntos de dolor potenciales",
+      "icebreakers": "Temas para romper el hielo",
+      "contacts": "Contactos clave"
+    },
+    "actions": {
+      "writeEmail": "Redactar correo de prospección",
+      "saveClient": "Guardar en el pipeline",
+      "exportPdf": "Exportar como PDF"
+    },
+    "limitReached": "Límite diario alcanzado. Actualice a Pro para investigación ilimitada.",
+    "remaining": "{count} consultas restantes hoy"
+  },
+  "outreach": {
+    "title": "Redacción de correos con IA",
+    "clientLabel": "Cliente / Empresa",
+    "purposeLabel": "Propósito",
+    "purposes": {
+      "coldEmail": "Correo de prospección",
+      "followUp": "Seguimiento",
+      "introduction": "Presentación",
+      "proposal": "Propuesta",
+      "thankYou": "Agradecimiento"
+    },
+    "toneLabel": "Tono",
+    "tones": {
+      "professional": "Profesional",
+      "friendly": "Amigable",
+      "formal": "Formal",
+      "casual": "Informal"
+    },
+    "languageLabel": "Idioma de salida",
+    "generate": "Generar correo",
+    "regenerate": "Regenerar",
+    "score": "Puntuación del correo",
+    "scoreExcellent": "Excelente — ¡alta probabilidad de respuesta!",
+    "scoreGood": "Bueno — algunos ajustes podrían ayudar",
+    "scoreAverage": "Promedio — revise las sugerencias a continuación",
+    "suggestions": "Sugerencias de mejora",
+    "copy": "Copiar al portapapeles",
+    "copied": "¡Copiado!",
+    "send": "Enviar por correo electrónico"
+  },
+  "visitLog": {
+    "title": "Registro de visitas",
+    "newVisit": "Nuevo registro de visita",
+    "recordVoice": "Grabar nota de voz",
+    "recording": "Grabando... {duration}",
+    "stopRecording": "Detener grabación",
+    "processing": "Procesando su nota de voz...",
+    "clientName": "Nombre del cliente",
+    "visitDate": "Fecha de visita",
+    "summary": "Resumen de la reunión",
+    "nextSteps": "Próximos pasos",
+    "dealProbability": "Probabilidad de cierre",
+    "mood": "Ánimo del cliente",
+    "moods": {
+      "positive": "Positivo",
+      "neutral": "Neutral",
+      "negative": "Negativo",
+      "interested": "Interesado"
+    },
+    "save": "Guardar registro",
+    "history": "Historial de visitas"
+  },
+  "followUp": {
+    "title": "Seguimiento comercial",
+    "today": "Para hoy",
+    "overdue": "Atrasados",
+    "upcoming": "Próximos",
+    "noOverdue": "No hay seguimientos atrasados — ¡excelente!",
+    "daysAgo": "Último contacto: hace {days} días",
+    "suggestedMessage": "Mensaje sugerido",
+    "markDone": "Marcar como hecho",
+    "snooze": "Posponer",
+    "pipeline": {
+      "title": "Pipeline de ventas",
+      "lead": "Prospecto",
+      "contacted": "Contactado",
+      "meeting": "Reunión",
+      "proposal": "Propuesta",
+      "negotiation": "Negociación",
+      "closed": "Cerrado"
+    }
+  },
+  "coach": {
+    "title": "Coach de ventas con IA",
+    "dailyChallenge": "Desafío del día",
+    "rolePlay": "Práctica de role-play",
+    "rolePlayDesc": "La IA actúa como el cliente, practique su presentación de ventas",
+    "startRolePlay": "Iniciar práctica",
+    "scenarios": {
+      "coldCall": "Llamada en frío",
+      "objectionHandling": "Manejo de objeciones",
+      "closing": "Cierre de ventas",
+      "needsDiscovery": "Descubrimiento de necesidades",
+      "priceNegotiation": "Negociación de precios"
+    },
+    "feedback": "Retroalimentación del coach",
+    "score": "Su puntuación: {score}/100",
+    "improvement": "Áreas de mejora",
+    "strength": "Sus fortalezas",
+    "tip": "Consejo Pro del coach"
+  },
+  "gamification": {
+    "level": "Nivel {level}",
+    "levels": {
+      "1": "Novato en ventas",
+      "2": "Aprendiz en ventas",
+      "3": "Profesional en ventas",
+      "4": "Experto en ventas",
+      "5": "Maestro en ventas"
+    },
+    "xpEarned": "+{xp} XP",
+    "streakDays": "Racha de {days} días",
+    "achievements": "Logros",
+    "leaderboard": "Clasificación",
+    "weeklyRank": "Ranking semanal: puesto {rank}",
+    "badges": {
+      "firstEmail": "Primer correo con IA",
+      "streak7": "Racha de 7 días",
+      "streak30": "Racha de 30 días",
+      "firstDeal": "Primera venta cerrada",
+      "researchPro": "Experto en investigación (50 investigaciones)",
+      "globalSeller": "Vendedor global (5 idiomas usados)"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "account": "Cuenta",
+    "language": "Idioma",
+    "notifications": "Notificaciones",
+    "privacy": "Privacidad",
+    "theme": "Tema",
+    "themes": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+    "exportData": "Exportar mis datos",
+    "deleteAccount": "Eliminar cuenta",
+    "deleteWarning": "Esta acción es irreversible. Todos sus datos serán eliminados permanentemente."
+  },
+  "auth": {
+    "signInTitle": "Bienvenido de vuelta",
+    "signUpTitle": "Comience a hacer crecer sus ventas",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "forgotPassword": "¿Olvidó su contraseña?",
+    "noAccount": "¿No tiene una cuenta?",
+    "hasAccount": "¿Ya tiene una cuenta?",
+    "orContinueWith": "O continuar con",
+    "google": "Continuar con Google",
+    "termsAgree": "Al registrarse, acepta nuestros {terms} y nuestra {privacy}.",
+    "terms": "Términos de servicio",
+    "privacy": "Política de privacidad"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Por favor, inténtelo de nuevo.",
+    "notFound": "Página no encontrada",
+    "unauthorized": "Por favor, inicie sesión para continuar",
+    "rateLimit": "Demasiadas solicitudes. Por favor, espere un momento.",
+    "aiError": "La IA no está disponible temporalmente. Por favor, inténtelo más tarde."
+  }
+}
