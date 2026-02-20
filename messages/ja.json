@@ -258,7 +258,11 @@
     "save": "訪問記録を保存",
     "history": "訪問履歴",
     "meetingNotes": "商談メモ",
-    "aiAnalysis": "AI分析"
+    "aiAnalysis": "AI分析",
+    "micDenied": "マイクへのアクセスが拒否されました。ブラウザの設定でマイクの権限を許可してください。",
+    "processingVoice": "音声メモを処理しています...",
+    "tapToStop": "タップして録音を停止",
+    "tapToStart": "タップして録音を開始"
   },
   "followUp": {
     "title": "フォローアップ管理",

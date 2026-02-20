@@ -258,7 +258,11 @@
     "save": "儲存拜訪紀錄",
     "history": "拜訪歷史",
     "meetingNotes": "會議筆記",
-    "aiAnalysis": "AI 分析"
+    "aiAnalysis": "AI 分析",
+    "micDenied": "麥克風存取被拒絕。請在瀏覽器設定中允許麥克風權限。",
+    "processingVoice": "正在處理您的語音記錄...",
+    "tapToStop": "點擊停止錄音",
+    "tapToStart": "點擊開始錄音"
   },
   "followUp": {
     "title": "跟進追蹤",

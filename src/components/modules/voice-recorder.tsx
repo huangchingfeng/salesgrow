@@ -10,12 +10,19 @@ interface VoiceRecorderProps {
   onRecordingComplete?: (blob: Blob) => void;
   isProcessing?: boolean;
   className?: string;
+  labels?: {
+    micDenied?: string;
+    processingVoice?: string;
+    tapToStop?: string;
+    tapToStart?: string;
+  };
 }
 
 export function VoiceRecorder({
   onRecordingComplete,
   isProcessing = false,
   className,
+  labels,
 }: VoiceRecorderProps) {
   const { toast } = useToast();
   const [isRecording, setIsRecording] = useState(false);
@@ -61,7 +68,7 @@ export function VoiceRecorder({
         setDuration((d) => d + 1);
       }, 1000);
     } catch {
-      toast("Microphone access denied. Please allow microphone permission in your browser settings.", "error");
+      toast(labels?.micDenied ?? "Microphone access denied. Please allow microphone permission in your browser settings.", "error");
     }
   };
 
@@ -75,7 +82,7 @@ export function VoiceRecorder({
     return (
       <div className={cn("flex flex-col items-center gap-4 py-8", className)}>
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
-        <p className="text-sm text-text-secondary">Processing your voice note...</p>
+        <p className="text-sm text-text-secondary">{labels?.processingVoice ?? "Processing your voice note..."}</p>
       </div>
     );
   }
@@ -120,7 +127,7 @@ export function VoiceRecorder({
       </Button>
 
       <p className="text-sm text-text-muted">
-        {isRecording ? "Tap to stop recording" : "Tap to start recording"}
+        {isRecording ? (labels?.tapToStop ?? "Tap to stop recording") : (labels?.tapToStart ?? "Tap to start recording")}
       </p>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { EmailEditor } from "@/components/modules/email-editor";
 import { EmailScore } from "@/components/modules/email-score";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Wand2, Loader2 } from "lucide-react";
+import { Wand2, Loader2, RefreshCw } from "lucide-react";
 import { localeNames, locales } from "@/i18n/routing";
 import { useToast } from "@/components/ui/toast";
 
@@ -22,13 +22,16 @@ interface ScoreData {
 
 export default function OutreachPage() {
   const t = useTranslations("outreach");
+  const tErr = useTranslations("errors");
+  const locale = useLocale();
   const { toast } = useToast();
   const [client, setClient] = useState("");
   const [purpose, setPurpose] = useState("cold_email");
   const [tone, setTone] = useState("formal");
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState(locale);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -66,12 +69,13 @@ export default function OutreachPage() {
 
   const handleGenerate = async () => {
     if (!client.trim()) {
-      toast("Please enter a client name", "error");
+      toast(t("clientLabel"), "error");
       return;
     }
     setIsGenerating(true);
     setGenerated(false);
     setScore(null);
+    setHasError(false);
 
     try {
       const res = await fetch("/api/ai/outreach", {
@@ -83,7 +87,8 @@ export default function OutreachPage() {
       const json = await res.json();
 
       if (!json.success) {
-        toast(json.error?.message || "Failed to generate email", "error");
+        toast(json.error?.message || tErr("aiError"), "error");
+        setHasError(true);
         return;
       }
 
@@ -94,7 +99,8 @@ export default function OutreachPage() {
       // Auto-score the generated email
       scoreEmail(`Subject: ${json.data.subject}\n\n${json.data.body}`);
     } catch {
-      toast("Failed to connect to AI service", "error");
+      toast(tErr("aiError"), "error");
+      setHasError(true);
     } finally {
       setIsGenerating(false);
     }
@@ -165,7 +171,7 @@ export default function OutreachPage() {
                 ) : (
                   <Wand2 className="h-4 w-4" />
                 )}
-                {isGenerating ? "Generating..." : t("generate")}
+                {isGenerating ? t("generate") : t("generate")}
               </Button>
             </div>
           </CardContent>
@@ -176,9 +182,20 @@ export default function OutreachPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-sm text-text-secondary">
               <Loader2 className="h-4 w-4 animate-spin" />
-              Generating your email...
+              {t("generate")}...
             </div>
             <Skeleton className="h-48 w-full rounded-xl" />
+          </div>
+        )}
+
+        {/* Error with retry */}
+        {!isGenerating && hasError && (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <p className="text-sm text-text-secondary mb-3">{tErr("aiError")}</p>
+            <Button variant="outline" onClick={handleGenerate}>
+              <RefreshCw className="h-4 w-4 mr-1.5" />
+              {t("regenerate")}
+            </Button>
           </div>
         )}
 
@@ -207,16 +224,16 @@ export default function OutreachPage() {
         )}
 
         {/* Empty state */}
-        {!generated && !isGenerating && (
+        {!generated && !isGenerating && !hasError && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="rounded-full bg-primary-light p-4 mb-4">
               <Wand2 className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-text mb-1">
-              Write your first AI email
+              {t("title")}
             </h3>
             <p className="text-sm text-text-secondary max-w-sm">
-              Fill in the settings above and let AI generate a personalized outreach email for you.
+              {t("suggestions")}
             </p>
           </div>
         )}

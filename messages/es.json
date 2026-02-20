@@ -258,7 +258,11 @@
     "save": "Guardar registro",
     "history": "Historial de visitas",
     "meetingNotes": "Notas de la reunión",
-    "aiAnalysis": "Análisis de IA"
+    "aiAnalysis": "Análisis de IA",
+    "micDenied": "Acceso al micrófono denegado. Por favor, permita el acceso al micrófono en la configuración de su navegador.",
+    "processingVoice": "Procesando su nota de voz...",
+    "tapToStop": "Toque para detener la grabación",
+    "tapToStart": "Toque para iniciar la grabación"
   },
   "followUp": {
     "title": "Seguimiento comercial",

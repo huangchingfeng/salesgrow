@@ -258,7 +258,11 @@
     "save": "Lưu bản ghi",
     "history": "Lịch sử thăm",
     "meetingNotes": "Ghi chú cuộc họp",
-    "aiAnalysis": "Phân tích AI"
+    "aiAnalysis": "Phân tích AI",
+    "micDenied": "Quyền truy cập micrô bị từ chối. Vui lòng cho phép quyền micrô trong cài đặt trình duyệt.",
+    "processingVoice": "Đang xử lý ghi chú thoại của bạn...",
+    "tapToStop": "Nhấn để dừng ghi âm",
+    "tapToStart": "Nhấn để bắt đầu ghi âm"
   },
   "followUp": {
     "title": "Quản lý theo dõi",

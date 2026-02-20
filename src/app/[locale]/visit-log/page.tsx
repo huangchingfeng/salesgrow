@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,7 @@ import {
   Clock,
   FileText,
   Loader2,
+  RefreshCw,
 } from "lucide-react";
 
 interface VisitResult {
@@ -32,26 +33,33 @@ interface VisitResult {
 
 export default function VisitLogPage() {
   const t = useTranslations("visitLog");
+  const tErr = useTranslations("errors");
+  const locale = useLocale();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<VisitResult | null>(null);
   const [textNotes, setTextNotes] = useState("");
+  const [hasError, setHasError] = useState(false);
+  const [lastTranscript, setLastTranscript] = useState("");
 
   const summarizeTranscript = async (transcript: string) => {
     setIsProcessing(true);
     setResult(null);
+    setHasError(false);
+    setLastTranscript(transcript);
 
     try {
       const res = await fetch("/api/ai/summarize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transcript, locale: "en" }),
+        body: JSON.stringify({ transcript, locale }),
       });
 
       const json = await res.json();
 
       if (!json.success) {
-        toast(json.error?.message || "Failed to analyze visit", "error");
+        toast(json.error?.message || tErr("aiError"), "error");
+        setHasError(true);
         return;
       }
 
@@ -66,9 +74,16 @@ export default function VisitLogPage() {
         mood: data.clientReaction,
       });
     } catch {
-      toast("Failed to connect to AI service", "error");
+      toast(tErr("aiError"), "error");
+      setHasError(true);
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleRetry = () => {
+    if (lastTranscript) {
+      summarizeTranscript(lastTranscript);
     }
   };
 
@@ -82,7 +97,7 @@ export default function VisitLogPage() {
 
   const handleTextSubmit = async () => {
     if (!textNotes.trim()) {
-      toast("Please enter your meeting notes", "error");
+      toast(t("clientName"), "error");
       return;
     }
     await summarizeTranscript(textNotes);
@@ -124,13 +139,13 @@ export default function VisitLogPage() {
                 <Tab value="voice">
                   <span className="flex items-center gap-1.5">
                     <Mic className="h-4 w-4" />
-                    Voice
+                    {t("recordVoice")}
                   </span>
                 </Tab>
                 <Tab value="text">
                   <span className="flex items-center gap-1.5">
                     <Keyboard className="h-4 w-4" />
-                    Text
+                    {t("meetingNotes")}
                   </span>
                 </Tab>
               </TabList>
@@ -140,6 +155,12 @@ export default function VisitLogPage() {
                   <VoiceRecorder
                     onRecordingComplete={handleRecordingComplete}
                     isProcessing={isProcessing}
+                    labels={{
+                      micDenied: t("micDenied"),
+                      processingVoice: t("processingVoice"),
+                      tapToStop: t("tapToStop"),
+                      tapToStart: t("tapToStart"),
+                    }}
                   />
                 </div>
               </TabPanel>
@@ -148,8 +169,8 @@ export default function VisitLogPage() {
                 <div className="space-y-4">
                   <Input label={t("clientName")} placeholder="TechCorp Inc." />
                   <Textarea
-                    label="Meeting Notes"
-                    placeholder="What happened during the meeting? Key takeaways, decisions, next steps..."
+                    label={t("meetingNotes")}
+                    placeholder={t("summary")}
                     className="min-h-[160px]"
                     value={textNotes}
                     onChange={(e) => setTextNotes(e.target.value)}
@@ -160,7 +181,7 @@ export default function VisitLogPage() {
                     ) : (
                       <Save className="h-4 w-4" />
                     )}
-                    {isProcessing ? "Analyzing..." : t("save")}
+                    {isProcessing ? t("processing") : t("save")}
                   </Button>
                 </div>
               </TabPanel>
@@ -173,9 +194,20 @@ export default function VisitLogPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-sm text-text-secondary">
               <Loader2 className="h-4 w-4 animate-spin" />
-              Analyzing your meeting notes...
+              {t("processing")}
             </div>
             <Skeleton className="h-48 w-full rounded-xl" />
+          </div>
+        )}
+
+        {/* Error with retry */}
+        {!isProcessing && hasError && (
+          <div className="flex flex-col items-center justify-center py-8 text-center">
+            <p className="text-sm text-text-secondary mb-3">{tErr("aiError")}</p>
+            <Button variant="outline" onClick={handleRetry}>
+              <RefreshCw className="h-4 w-4 mr-1.5" />
+              {t("save")}
+            </Button>
           </div>
         )}
 
@@ -185,7 +217,7 @@ export default function VisitLogPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-primary" />
-                AI Analysis
+                {t("aiAnalysis")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">

@@ -258,7 +258,11 @@
     "save": "Enregistrer le compte-rendu",
     "history": "Historique des visites",
     "meetingNotes": "Notes de réunion",
-    "aiAnalysis": "Analyse IA"
+    "aiAnalysis": "Analyse IA",
+    "micDenied": "Accès au microphone refusé. Veuillez autoriser le microphone dans les paramètres de votre navigateur.",
+    "processingVoice": "Traitement de votre note vocale en cours...",
+    "tapToStop": "Appuyez pour arrêter l'enregistrement",
+    "tapToStart": "Appuyez pour commencer l'enregistrement"
   },
   "followUp": {
     "title": "Suivi commercial",

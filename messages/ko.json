@@ -258,7 +258,11 @@
     "save": "방문 기록 저장",
     "history": "방문 이력",
     "meetingNotes": "미팅 메모",
-    "aiAnalysis": "AI 분석"
+    "aiAnalysis": "AI 분석",
+    "micDenied": "마이크 접근이 거부되었습니다. 브라우저 설정에서 마이크 권한을 허용해 주세요.",
+    "processingVoice": "음성 메모를 처리하고 있습니다...",
+    "tapToStop": "탭하여 녹음 중지",
+    "tapToStart": "탭하여 녹음 시작"
   },
   "followUp": {
     "title": "팔로업 관리",

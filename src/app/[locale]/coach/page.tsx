@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import {
   DollarSign,
   Brain,
   History,
+  RefreshCw,
 } from "lucide-react";
 
 const SCENARIOS = [
@@ -34,10 +35,13 @@ interface ChatMessage {
 
 export default function CoachPage() {
   const t = useTranslations("coach");
+  const tErr = useTranslations("errors");
+  const locale = useLocale();
   const { toast } = useToast();
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [feedback, setFeedback] = useState<{
     score: number;
     strengths: string[];
@@ -54,6 +58,7 @@ export default function CoachPage() {
     setMessages([]);
     setFeedback(null);
     setIsLoading(true);
+    setHasError(false);
 
     try {
       const res = await fetch("/api/ai/coach", {
@@ -62,15 +67,16 @@ export default function CoachPage() {
         body: JSON.stringify({
           action: "start",
           scenario: scenario.apiKey,
-          locale: "en",
+          locale,
           culture: "taiwan",
         }),
       });
 
       const json = await res.json();
       if (!json.success) {
-        toast(json.error?.message || "Failed to start session", "error");
+        toast(json.error?.message || tErr("aiError"), "error");
         setActiveScenario(null);
+        setHasError(true);
         return;
       }
 
@@ -83,8 +89,9 @@ export default function CoachPage() {
         },
       ]);
     } catch {
-      toast("Failed to connect to AI service", "error");
+      toast(tErr("aiError"), "error");
       setActiveScenario(null);
+      setHasError(true);
     } finally {
       setIsLoading(false);
     }
@@ -110,7 +117,7 @@ export default function CoachPage() {
 
       const json = await res.json();
       if (!json.success) {
-        toast(json.error?.message || "Failed to get response", "error");
+        toast(json.error?.message || tErr("aiError"), "error");
         setIsLoading(false);
         return;
       }
@@ -127,7 +134,7 @@ export default function CoachPage() {
         await endSession();
       }
     } catch {
-      toast("Failed to connect to AI service", "error");
+      toast(tErr("aiError"), "error");
     } finally {
       setIsLoading(false);
     }
@@ -165,57 +172,70 @@ export default function CoachPage() {
 
         {!activeScenario ? (
           <>
+            {/* Error retry */}
+            {hasError && (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <p className="text-sm text-text-secondary mb-3">{tErr("aiError")}</p>
+                <Button variant="outline" onClick={() => setHasError(false)}>
+                  <RefreshCw className="h-4 w-4 mr-1.5" />
+                  {t("startRolePlay")}
+                </Button>
+              </div>
+            )}
+
             {/* Scenario selection */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Brain className="h-5 w-5 text-primary" />
-                  {t("rolePlay")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-text-secondary mb-4">
-                  {t("rolePlayDesc")}
-                </p>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {SCENARIOS.map((scenario) => {
-                    const Icon = scenario.icon;
-                    return (
-                      <button
-                        key={scenario.key}
-                        onClick={() => startScenario(scenario.key)}
-                        className="flex items-center gap-3 rounded-xl border border-border p-4 text-left hover:bg-bg-muted hover:shadow-sm transition-all"
-                      >
-                        <div className={`rounded-lg p-2 ${scenario.color}`}>
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-text">
-                            {t(`scenarios.${scenario.key}`)}
-                          </p>
-                          <p className="text-xs text-text-muted">Practice this scenario</p>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
+            {!hasError && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Brain className="h-5 w-5 text-primary" />
+                    {t("rolePlay")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-text-secondary mb-4">
+                    {t("rolePlayDesc")}
+                  </p>
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {SCENARIOS.map((scenario) => {
+                      const Icon = scenario.icon;
+                      return (
+                        <button
+                          key={scenario.key}
+                          onClick={() => startScenario(scenario.key)}
+                          className="flex items-center gap-3 rounded-xl border border-border p-4 text-left hover:bg-bg-muted hover:shadow-sm transition-all"
+                        >
+                          <div className={`rounded-lg p-2 ${scenario.color}`}>
+                            <Icon className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-text">
+                              {t(`scenarios.${scenario.key}`)}
+                            </p>
+                            <p className="text-xs text-text-muted">{t("practiceThis")}</p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* History */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <History className="h-5 w-5 text-primary" />
-                  Practice History
+                  {t("practiceHistory")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {[
-                    { scenario: "Cold Call", score: 72, date: "Feb 19" },
-                    { scenario: "Objection Handling", score: 85, date: "Feb 18" },
-                    { scenario: "Closing", score: 68, date: "Feb 17" },
+                    { scenario: t("scenarios.coldCall"), score: 72, date: "Feb 19" },
+                    { scenario: t("scenarios.objectionHandling"), score: 85, date: "Feb 18" },
+                    { scenario: t("scenarios.closing"), score: 68, date: "Feb 17" },
                   ].map((item, i) => (
                     <div
                       key={i}
@@ -247,7 +267,7 @@ export default function CoachPage() {
               }}
               className="mb-4"
             >
-              ← Back to scenarios
+              {t("backToScenarios")}
             </Button>
             <Card className="overflow-hidden">
               <CoachChat

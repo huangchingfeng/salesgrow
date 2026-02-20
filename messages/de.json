@@ -258,7 +258,11 @@
     "save": "Besuchsprotokoll speichern",
     "history": "Besuchsverlauf",
     "meetingNotes": "Gesprächsnotizen",
-    "aiAnalysis": "KI-Analyse"
+    "aiAnalysis": "KI-Analyse",
+    "micDenied": "Mikrofonzugriff verweigert. Bitte erlauben Sie die Mikrofonberechtigung in Ihren Browsereinstellungen.",
+    "processingVoice": "Ihre Sprachnotiz wird verarbeitet...",
+    "tapToStop": "Tippen, um die Aufnahme zu stoppen",
+    "tapToStart": "Tippen, um die Aufnahme zu starten"
   },
   "followUp": {
     "title": "Nachverfolgung",

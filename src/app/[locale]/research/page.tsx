@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ResearchResult } from "@/components/modules/research-result";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, RefreshCw } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 
 interface ResearchData {
@@ -21,27 +22,38 @@ interface ResearchData {
 
 export default function ResearchPage() {
   const t = useTranslations("research");
+  const tErr = useTranslations("errors");
+  const locale = useLocale();
   const { toast } = useToast();
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<ResearchData | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const [remaining, setRemaining] = useState(5);
 
   const handleSearch = async () => {
     if (!query.trim()) return;
     setIsLoading(true);
     setResult(null);
+    setHasError(false);
 
     try {
       const res = await fetch("/api/ai/research", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ company: query, locale: "en" }),
+        body: JSON.stringify({ company: query, locale }),
       });
 
       const json = await res.json();
 
       if (!json.success) {
-        toast(json.error?.message || "Research failed", "error");
+        if (json.error?.code === "RATE_LIMIT") {
+          toast(t("limitReached"), "error");
+          setRemaining(0);
+        } else {
+          toast(json.error?.message || tErr("aiError"), "error");
+          setHasError(true);
+        }
         return;
       }
 
@@ -58,8 +70,10 @@ export default function ResearchPage() {
           title: c.suggestedApproach,
         })),
       });
+      setRemaining((prev) => Math.max(0, prev - 1));
     } catch {
-      toast("Failed to connect to AI service", "error");
+      toast(tErr("aiError"), "error");
+      setHasError(true);
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +85,7 @@ export default function ResearchPage() {
         <div>
           <h1 className="text-2xl font-bold text-text">{t("title")}</h1>
           <p className="text-sm text-text-secondary mt-1">
-            {t("remaining", { count: 5 })}
+            {t("remaining", { count: remaining })}
           </p>
         </div>
 
@@ -107,6 +121,17 @@ export default function ResearchPage() {
           </div>
         )}
 
+        {/* Error with retry */}
+        {!isLoading && hasError && (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <p className="text-sm text-text-secondary mb-3">{tErr("aiError")}</p>
+            <Button variant="outline" onClick={handleSearch}>
+              <RefreshCw className="h-4 w-4 mr-1.5" />
+              {t("button")}
+            </Button>
+          </div>
+        )}
+
         {/* Results */}
         {!isLoading && result && (
           <ResearchResult
@@ -117,16 +142,16 @@ export default function ResearchPage() {
         )}
 
         {/* Empty state */}
-        {!isLoading && !result && (
+        {!isLoading && !result && !hasError && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="rounded-full bg-primary-light p-4 mb-4">
               <Search className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-text mb-1">
-              Start your research
+              {t("title")}
             </h3>
             <p className="text-sm text-text-secondary max-w-sm">
-              Enter a company name or website to get a comprehensive briefing powered by AI.
+              {t("placeholder")}
             </p>
           </div>
         )}

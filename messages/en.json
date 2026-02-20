@@ -258,7 +258,11 @@
     "save": "Save Visit Record",
     "history": "Visit History",
     "meetingNotes": "Meeting Notes",
-    "aiAnalysis": "AI Analysis"
+    "aiAnalysis": "AI Analysis",
+    "micDenied": "Microphone access denied. Please allow microphone permission in your browser settings.",
+    "processingVoice": "Processing your voice note...",
+    "tapToStop": "Tap to stop recording",
+    "tapToStart": "Tap to start recording"
   },
   "followUp": {
     "title": "Follow-up Tracker",
