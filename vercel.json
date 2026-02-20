@@ -1,7 +1,7 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "regions": ["hnd1", "icn1", "sfo1", "fra1", "sin1"],
+  "regions": ["hnd1"],
   "headers": [
     {
       "source": "/(.*)",
