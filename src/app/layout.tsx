@@ -10,6 +10,9 @@ const notoSans = Noto_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://salesgrow.vercel.app"
+  ),
   title: {
     default: "SalesGrow - Your AI Sales Coach",
     template: "%s | SalesGrow",
