@@ -48,32 +48,37 @@ export async function createServerSupabase() {
 
 // 取得目前登入的使用者
 export async function getCurrentUser() {
-  const supabase = await createServerSupabase();
-  const { data: { user }, error } = await supabase.auth.getUser();
+  try {
+    const supabase = await createServerSupabase();
+    const { data: { user }, error } = await supabase.auth.getUser();
 
-  if (error || !user) return null;
+    if (error || !user) return null;
 
-  // 從 DB 取得完整 user profile
-  const [dbUser] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, user.id))
-    .limit(1);
+    // 從 DB 取得完整 user profile
+    const [dbUser] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, user.id))
+      .limit(1);
 
-  if (!dbUser) {
-    // 第一次登入：建立 user record
-    const [newUser] = await db
-      .insert(users)
-      .values({
-        id: user.id,
-        email: user.email!,
-        name: user.user_metadata?.full_name || user.email?.split('@')[0],
-        avatarUrl: user.user_metadata?.avatar_url,
-      })
-      .onConflictDoNothing()
-      .returning();
-    return newUser ?? dbUser;
+    if (!dbUser) {
+      // 第一次登入：建立 user record
+      const [newUser] = await db
+        .insert(users)
+        .values({
+          id: user.id,
+          email: user.email!,
+          name: user.user_metadata?.full_name || user.email?.split('@')[0],
+          avatarUrl: user.user_metadata?.avatar_url,
+        })
+        .onConflictDoNothing()
+        .returning();
+      return newUser ?? null;
+    }
+
+    return dbUser;
+  } catch (err) {
+    console.error('[getCurrentUser] DB error:', err);
+    return null;
   }
-
-  return dbUser;
 }

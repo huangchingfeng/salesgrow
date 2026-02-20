@@ -10,10 +10,12 @@ function createDb() {
   if (!connectionString) {
     throw new Error('DATABASE_URL is not set');
   }
+  const isPooler = connectionString.includes('pooler.supabase.com');
   const queryClient = postgres(connectionString, {
-    max: 10,
+    max: 1, // serverless：每個 function instance 用一個連線
     idle_timeout: 20,
     connect_timeout: 10,
+    prepare: isPooler ? false : true, // pooler 不支援 prepared statements
   });
   return drizzle(queryClient, { schema });
 }
