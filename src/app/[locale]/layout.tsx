@@ -3,6 +3,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ToastProvider } from "@/components/ui/toast";
+import { AuthProvider } from "@/components/auth/auth-provider";
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
@@ -23,7 +24,9 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <ToastProvider>{children}</ToastProvider>
+      <AuthProvider>
+        <ToastProvider>{children}</ToastProvider>
+      </AuthProvider>
     </NextIntlClientProvider>
   );
 }

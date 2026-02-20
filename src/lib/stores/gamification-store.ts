@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface DailyTask {
   id: string;
@@ -52,7 +53,9 @@ function getLevelFromXp(totalXp: number): { level: number; currentXp: number; ne
   };
 }
 
-export const useGamificationStore = create<GamificationState>((set) => ({
+export const useGamificationStore = create<GamificationState>()(
+  persist(
+    (set) => ({
   level: 1,
   xp: 0,
   xpToNextLevel: 100,
@@ -131,4 +134,16 @@ export const useGamificationStore = create<GamificationState>((set) => ({
           : a
       ),
     })),
-}));
+    }),
+    {
+      name: "salesgrow-gamification",
+      partialize: (state) => ({
+        xp: state.xp,
+        level: state.level,
+        xpToNextLevel: state.xpToNextLevel,
+        streak: state.streak,
+        achievements: state.achievements,
+      }),
+    }
+  )
+);

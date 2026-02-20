@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { Menu, X, TrendingUp } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Menu, X, TrendingUp, LogOut } from "lucide-react";
+import { createBrowserClient } from "@supabase/ssr";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { LanguageSwitcher } from "./language-switcher";
@@ -15,14 +17,25 @@ export function Header() {
   const t = useTranslations("common");
   const nav = useTranslations("nav");
   const locale = useLocale();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { isAuthenticated, name } = useUserStore();
+  const { isAuthenticated, name, avatarUrl, clearUser } = useUserStore();
 
   const navItems = [
     { href: `/${locale}/research`, label: nav("research") },
     { href: `/${locale}/outreach`, label: nav("outreach") },
     { href: `/${locale}/coach`, label: nav("coach") },
   ];
+
+  async function handleSignOut() {
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    await supabase.auth.signOut();
+    clearUser();
+    router.push(`/${locale}`);
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-bg-card/80 backdrop-blur-md">
@@ -54,15 +67,27 @@ export function Header() {
         <div className="hidden md:flex items-center gap-3">
           <LanguageSwitcher />
           {isAuthenticated ? (
-            <Link href={`/${locale}/dashboard`}>
-              <Avatar name={name || "User"} size="sm" />
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href={`/${locale}/dashboard`}>
+                <Avatar src={avatarUrl} name={name || "User"} size="sm" />
+              </Link>
+              <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                <LogOut className="h-4 w-4" />
+                {t("signOut")}
+              </Button>
+            </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href={`/${locale}/dashboard`} className={buttonVariants({ variant: "ghost", size: "sm" })}>
+              <Link
+                href={`/${locale}/auth/sign-in`}
+                className={buttonVariants({ variant: "ghost", size: "sm" })}
+              >
                 {t("signIn")}
               </Link>
-              <Link href={`/${locale}/dashboard`} className={buttonVariants({ size: "sm" })}>
+              <Link
+                href={`/${locale}/auth/sign-up`}
+                className={buttonVariants({ size: "sm" })}
+              >
                 {t("signUp")}
               </Link>
             </div>
@@ -96,14 +121,46 @@ export function Header() {
             <div className="border-t border-border pt-3 mt-1">
               <LanguageSwitcher />
             </div>
-            {!isAuthenticated && (
+            {isAuthenticated ? (
+              <div className="flex items-center gap-3 mt-2">
+                <Link
+                  href={`/${locale}/dashboard`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Avatar src={avatarUrl} name={name || "User"} size="sm" />
+                </Link>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => {
+                    handleSignOut();
+                    setMobileOpen(false);
+                  }}
+                >
+                  <LogOut className="h-4 w-4" />
+                  {t("signOut")}
+                </Button>
+              </div>
+            ) : (
               <div className="flex gap-2 mt-2">
-                <Button variant="outline" size="sm" className="flex-1">
+                <Link
+                  href={`/${locale}/auth/sign-in`}
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    "flex-1"
+                  )}
+                  onClick={() => setMobileOpen(false)}
+                >
                   {t("signIn")}
-                </Button>
-                <Button size="sm" className="flex-1">
+                </Link>
+                <Link
+                  href={`/${locale}/auth/sign-up`}
+                  className={cn(buttonVariants({ size: "sm" }), "flex-1")}
+                  onClick={() => setMobileOpen(false)}
+                >
                   {t("signUp")}
-                </Button>
+                </Link>
               </div>
             )}
           </nav>

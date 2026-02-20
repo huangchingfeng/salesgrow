@@ -9,16 +9,12 @@ import type { DailyTasksInput, APIResponse, DailyTasksOutput, SupportedLocale } 
 
 export async function POST(req: NextRequest) {
   try {
-    const user = await getCurrentUser()
-    if (!user) {
-      return NextResponse.json<APIResponse<never>>(
-        { success: false, error: { code: 'UNAUTHORIZED', message: 'Please sign in' } },
-        { status: 401 }
-      )
-    }
+    const dbUser = await getCurrentUser()
+    const user = dbUser ?? { id: 'demo-user', plan: 'free' as const, name: 'Demo User', email: 'demo@salesgrow.app', locale: 'en', level: 1 }
+    const isDemo = !dbUser
 
     // 取得使用者的客戶列表
-    const userClients = await db
+    const userClients = isDemo ? [] : await db
       .select()
       .from(clients)
       .where(eq(clients.userId, user.id))
@@ -26,7 +22,7 @@ export async function POST(req: NextRequest) {
       .limit(20)
 
     // 取得最近活動（拜訪記錄）
-    const recentVisits = await db
+    const recentVisits = isDemo ? [] : await db
       .select()
       .from(visitLogs)
       .where(eq(visitLogs.userId, user.id))

@@ -9,43 +9,83 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 import { VoiceRecorder } from "@/components/modules/voice-recorder";
 import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs";
+import { useToast } from "@/components/ui/toast";
 import {
   Mic,
   Keyboard,
   Save,
-  Calendar,
   TrendingUp,
   Clock,
   FileText,
+  Loader2,
 } from "lucide-react";
+
+interface VisitResult {
+  summary: string;
+  nextSteps: { action: string; priority: string }[];
+  probability: number;
+  mood: string;
+}
 
 export default function VisitLogPage() {
   const t = useTranslations("visitLog");
+  const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<null | {
-    summary: string;
-    nextSteps: string[];
-    probability: number;
-    mood: string;
-  }>(null);
+  const [result, setResult] = useState<VisitResult | null>(null);
+  const [textNotes, setTextNotes] = useState("");
+
+  const summarizeTranscript = async (transcript: string) => {
+    setIsProcessing(true);
+    setResult(null);
+
+    try {
+      const res = await fetch("/api/ai/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ transcript, locale: "en" }),
+      });
+
+      const json = await res.json();
+
+      if (!json.success) {
+        toast(json.error?.message || "Failed to analyze visit", "error");
+        return;
+      }
+
+      const data = json.data;
+      setResult({
+        summary: data.summary,
+        nextSteps: data.actionItems.map((a: { action: string; priority: string }) => ({
+          action: a.action,
+          priority: a.priority,
+        })),
+        probability: data.closeProbability,
+        mood: data.clientReaction,
+      });
+    } catch {
+      toast("Failed to connect to AI service", "error");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const handleRecordingComplete = async (_blob: Blob) => {
-    setIsProcessing(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setResult({
-      summary:
-        "Met with Sarah Chen at TechCorp office. Discussed their CRM migration needs and current pain points with their legacy system. They are evaluating 3 vendors including us. Decision expected by end of March.",
-      nextSteps: [
-        "Send product demo recording by Friday",
-        "Schedule technical deep-dive with their IT team",
-        "Prepare custom pricing proposal for 500 seats",
-      ],
-      probability: 65,
-      mood: "interested",
-    });
-    setIsProcessing(false);
+    // For now, use a placeholder transcript since we don't have speech-to-text yet.
+    // In production, this would call a transcription API first.
+    const placeholderTranscript =
+      "Client meeting discussion about product demo and pricing. They expressed interest in the enterprise plan.";
+    await summarizeTranscript(placeholderTranscript);
+  };
+
+  const handleTextSubmit = async () => {
+    if (!textNotes.trim()) {
+      toast("Please enter your meeting notes", "error");
+      return;
+    }
+    await summarizeTranscript(textNotes);
   };
 
   const visitHistory = [
@@ -111,10 +151,16 @@ export default function VisitLogPage() {
                     label="Meeting Notes"
                     placeholder="What happened during the meeting? Key takeaways, decisions, next steps..."
                     className="min-h-[160px]"
+                    value={textNotes}
+                    onChange={(e) => setTextNotes(e.target.value)}
                   />
-                  <Button>
-                    <Save className="h-4 w-4" />
-                    {t("save")}
+                  <Button onClick={handleTextSubmit} disabled={isProcessing}>
+                    {isProcessing ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Save className="h-4 w-4" />
+                    )}
+                    {isProcessing ? "Analyzing..." : t("save")}
                   </Button>
                 </div>
               </TabPanel>
@@ -122,8 +168,19 @@ export default function VisitLogPage() {
           </CardContent>
         </Card>
 
+        {/* Loading state */}
+        {isProcessing && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-sm text-text-secondary">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Analyzing your meeting notes...
+            </div>
+            <Skeleton className="h-48 w-full rounded-xl" />
+          </div>
+        )}
+
         {/* AI Results */}
-        {result && (
+        {result && !isProcessing && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -142,7 +199,10 @@ export default function VisitLogPage() {
                   {result.nextSteps.map((step, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
                       <span className="text-primary font-bold">{i + 1}.</span>
-                      {step}
+                      {step.action}
+                      <Badge variant={step.priority === "high" ? "destructive" : step.priority === "medium" ? "warning" : "secondary"} className="ml-auto text-xs">
+                        {step.priority}
+                      </Badge>
                     </li>
                   ))}
                 </ul>
@@ -157,7 +217,7 @@ export default function VisitLogPage() {
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-text mb-1">{t("mood")}</h4>
-                  <Badge variant="success">{t(`moods.${result.mood}`)}</Badge>
+                  <Badge variant="success">{result.mood}</Badge>
                 </div>
               </div>
               <Button className="w-full sm:w-auto">

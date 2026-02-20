@@ -9,6 +9,7 @@ import { StreakFlame } from "@/components/gamification/streak-flame";
 import { XpBar } from "@/components/gamification/xp-bar";
 import { DailyTaskCard } from "@/components/modules/daily-task-card";
 import { useGamificationStore } from "@/lib/stores/gamification-store";
+import { useUserStore } from "@/lib/stores/user-store";
 import {
   Search,
   Mail,
@@ -31,12 +32,23 @@ const iconMap: Record<string, any> = {
   ClipboardList,
 };
 
+function getGreetingKey(): string {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return "greetingMorning";
+  if (hour >= 12 && hour < 18) return "greetingAfternoon";
+  return "greetingEvening";
+}
+
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
   const gamT = useTranslations("gamification");
   const locale = useLocale();
   const { level, xp, xpToNextLevel, streak, dailyTasks, completeTask, addXp } =
     useGamificationStore();
+  const { isAuthenticated, name } = useUserStore();
+
+  const displayName = name || "Sales Pro";
+  const greetingKey = getGreetingKey();
 
   const levelTitles: Record<number, string> = {
     1: gamT("levels.1"),
@@ -51,6 +63,7 @@ export default function DashboardPage() {
     addXp(xpReward);
   };
 
+  // TODO: fetch from DB
   const pipelineStages = [
     { label: "Lead", count: 12, color: "bg-blue-500" },
     { label: "Contacted", count: 8, color: "bg-purple-500" },
@@ -59,6 +72,7 @@ export default function DashboardPage() {
     { label: "Closed", count: 2, color: "bg-success" },
   ];
 
+  // TODO: fetch from DB
   const recentActivities = [
     { action: "Researched", target: "TechCorp Inc.", time: "2h ago", icon: Search },
     { action: "Sent email to", target: "Sarah Chen", time: "4h ago", icon: Mail },
@@ -68,11 +82,18 @@ export default function DashboardPage() {
   return (
     <AppShell>
       <div className="space-y-6">
+        {/* Login prompt for unauthenticated users */}
+        {!isAuthenticated && (
+          <div className="rounded-lg border border-primary/30 bg-primary-light p-3 text-center text-sm text-primary">
+            {locale === "zh-TW" ? "登入以保存你的進度" : "Sign in to save your progress"}
+          </div>
+        )}
+
         {/* Greeting + Streak + XP */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text">
-              {t("greeting", { name: "Alex" })}
+              {t(greetingKey, { name: displayName })}
             </h1>
             <p className="text-sm text-text-secondary mt-1">
               {t("level", { level, title: levelTitles[level] || "Sales Rookie" })}
@@ -151,7 +172,7 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Clock className="h-5 w-5 text-primary" />
-                Recent Activity
+                {t("recentActivity")}
               </CardTitle>
             </CardHeader>
             <CardContent>

@@ -1,12 +1,15 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import { useRouter, usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useUserStore } from "@/lib/stores/user-store";
 import { locales, localeNames } from "@/i18n/routing";
 import {
   User,
@@ -22,11 +25,26 @@ import {
 
 export default function SettingsPage() {
   const t = useTranslations("settings");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const { isAuthenticated, name, email } = useUserStore();
+
+  const displayName = name || "Sales Pro";
+  const displayEmail = email || "user@example.com";
 
   const languageOptions = locales.map((loc) => ({
     value: loc,
     label: localeNames[loc],
   }));
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLocale = e.target.value;
+    const segments = pathname.split("/");
+    segments[1] = newLocale;
+    router.push(segments.join("/"));
+  };
 
   return (
     <AppShell>
@@ -43,11 +61,11 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Input label="Name" defaultValue="Alex Johnson" />
-              <Input label="Email" defaultValue="alex@example.com" type="email" />
+              <Input label="Name" defaultValue={displayName} />
+              <Input label="Email" defaultValue={displayEmail} type="email" />
             </div>
-            <Input label="Company" defaultValue="SalesGrow Inc." />
-            <Button size="sm">Save Changes</Button>
+            <Input label="Company" defaultValue="" />
+            <Button size="sm">{t("saveChanges")}</Button>
           </CardContent>
         </Card>
 
@@ -63,7 +81,8 @@ export default function SettingsPage() {
             <Select
               label="Interface Language"
               options={languageOptions}
-              defaultValue="en"
+              value={locale}
+              onChange={handleLanguageChange}
             />
           </CardContent>
         </Card>
@@ -82,15 +101,23 @@ export default function SettingsPage() {
                 { value: "light", icon: Sun, label: t("themes.light") },
                 { value: "dark", icon: Moon, label: t("themes.dark") },
                 { value: "system", icon: Monitor, label: t("themes.system") },
-              ].map((theme) => {
-                const Icon = theme.icon;
+              ].map((themeOption) => {
+                const Icon = themeOption.icon;
+                const isActive = theme === themeOption.value;
                 return (
                   <button
-                    key={theme.value}
-                    className="flex flex-col items-center gap-2 rounded-xl border border-border p-4 hover:bg-bg-muted transition-colors flex-1"
+                    key={themeOption.value}
+                    onClick={() => setTheme(themeOption.value)}
+                    className={`flex flex-col items-center gap-2 rounded-xl border p-4 transition-colors flex-1 ${
+                      isActive
+                        ? "border-primary bg-primary-light text-primary"
+                        : "border-border hover:bg-bg-muted"
+                    }`}
                   >
-                    <Icon className="h-5 w-5 text-text-secondary" />
-                    <span className="text-sm text-text">{theme.label}</span>
+                    <Icon className={`h-5 w-5 ${isActive ? "text-primary" : "text-text-secondary"}`} />
+                    <span className={`text-sm ${isActive ? "font-medium text-primary" : "text-text"}`}>
+                      {themeOption.label}
+                    </span>
                   </button>
                 );
               })}

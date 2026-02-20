@@ -133,6 +133,23 @@
         }
       }
     },
+    "howItWorks": {
+      "title": "이용 방법",
+      "steps": {
+        "step1": {
+          "title": "무료 가입",
+          "description": "30초 만에 계정을 만드세요. 신용카드가 필요하지 않습니다."
+        },
+        "step2": {
+          "title": "목표 설정",
+          "description": "업종, 직무, 영업 목표를 알려주세요."
+        },
+        "step3": {
+          "title": "성장 시작",
+          "description": "매일 과제, AI 코칭을 받고 영업 성과가 향상되는 것을 확인하세요."
+        }
+      }
+    },
     "cta": {
       "title": "매출 성장을 시작할 준비가 되셨나요?",
       "subtitle": "AI로 더 많은 거래를 성사시키고 있는 수천 명의 영업 전문가와 함께하세요.",
@@ -152,6 +169,10 @@
   },
   "dashboard": {
     "greeting": "좋은 아침이에요, {name}님!",
+    "recentActivity": "최근 활동",
+    "greetingMorning": "좋은 아침입니다, {name}님!",
+    "greetingAfternoon": "좋은 오후입니다, {name}님!",
+    "greetingEvening": "좋은 저녁입니다, {name}님!",
     "level": "레벨 {level}: {title}",
     "xp": "{current}/{needed} XP 다음 레벨까지",
     "streak": "{days}일 연속 🔥",
@@ -235,7 +256,9 @@
       "interested": "관심 있음"
     },
     "save": "방문 기록 저장",
-    "history": "방문 이력"
+    "history": "방문 이력",
+    "meetingNotes": "미팅 메모",
+    "aiAnalysis": "AI 분석"
   },
   "followUp": {
     "title": "팔로업 관리",
@@ -274,7 +297,10 @@
     "score": "당신의 점수: {score}/100",
     "improvement": "개선할 점",
     "strength": "당신의 강점",
-    "tip": "코치의 Pro 팁"
+    "tip": "코치의 Pro 팁",
+    "practiceThis": "이 시나리오 연습하기",
+    "backToScenarios": "← 시나리오 목록으로 돌아가기",
+    "practiceHistory": "연습 기록"
   },
   "gamification": {
     "level": "레벨 {level}",
@@ -313,7 +339,8 @@
     },
     "exportData": "내 데이터 내보내기",
     "deleteAccount": "계정 삭제",
-    "deleteWarning": "이 작업은 되돌릴 수 없습니다. 모든 데이터가 영구적으로 삭제됩니다."
+    "deleteWarning": "이 작업은 되돌릴 수 없습니다. 모든 데이터가 영구적으로 삭제됩니다.",
+    "saveChanges": "변경 사항 저장"
   },
   "auth": {
     "signInTitle": "다시 오신 것을 환영합니다",
@@ -336,5 +363,58 @@
     "unauthorized": "계속하려면 로그인해 주세요",
     "rateLimit": "요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.",
     "aiError": "AI가 일시적으로 사용할 수 없습니다. 잠시 후 다시 시도해 주세요."
+  },
+  "learning": {
+    "title": "학습 센터",
+    "subtitle": "AI가 엄선한 콘텐츠로 영업 스킬을 향상시키세요",
+    "categories": {
+      "all": "전체",
+      "prospecting": "고객 발굴",
+      "negotiation": "협상 기술",
+      "closing": "클로징 기술",
+      "communication": "커뮤니케이션"
+    },
+    "readTime": "{min}분 소요",
+    "articles": {
+      "coldEmail": {
+        "title": "콜드 이메일의 기술",
+        "description": "답장을 받는 콜드 이메일 작성법을 배웁니다"
+      },
+      "objectionHandling": {
+        "title": "이의 처리 마스터",
+        "description": "이의를 기회로 전환하는 방법을 알아봅니다"
+      },
+      "closingTechniques": {
+        "title": "5가지 클로징 기법",
+        "description": "더 많은 거래를 성사시키는 검증된 방법입니다"
+      },
+      "needsDiscovery": {
+        "title": "니즈 파악 프레임워크",
+        "description": "올바른 질문으로 고객의 진정한 니즈를 파악합니다"
+      },
+      "followUpStrategy": {
+        "title": "팔로업 전략 가이드",
+        "description": "효과적인 팔로업의 시기와 방법을 안내합니다"
+      },
+      "socialSelling": {
+        "title": "LinkedIn 소셜 셀링",
+        "description": "소셜 미디어를 통해 고객과의 관계를 구축합니다"
+      }
+    },
+    "startReading": "기사 읽기",
+    "bookmarkSaved": "북마크되었습니다!",
+    "filterBy": "주제별 필터"
+  },
+  "leaderboard": {
+    "title": "리더보드",
+    "tabs": {
+      "weekly": "이번 주",
+      "monthly": "이번 달",
+      "allTime": "전체 기간"
+    },
+    "yourRank": "내 순위",
+    "xpToRankUp": "랭크업까지 {xp} XP 필요",
+    "rank": "{rank}위",
+    "topPerformer": "최우수 성과자"
   }
 }

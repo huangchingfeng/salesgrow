@@ -133,6 +133,23 @@
         }
       }
     },
+    "howItWorks": {
+      "title": "Comment ça marche",
+      "steps": {
+        "step1": {
+          "title": "Inscrivez-vous gratuitement",
+          "description": "Créez votre compte en 30 secondes. Aucune carte bancaire requise."
+        },
+        "step2": {
+          "title": "Définissez vos objectifs",
+          "description": "Indiquez-nous votre secteur, votre rôle et vos objectifs commerciaux."
+        },
+        "step3": {
+          "title": "Commencez à progresser",
+          "description": "Recevez des tâches quotidiennes, un coaching IA et observez vos ventes s'améliorer."
+        }
+      }
+    },
     "cta": {
       "title": "Prêt à développer vos ventes ?",
       "subtitle": "Rejoignez des milliers de commerciaux qui concluent plus de ventes grâce à l'IA.",
@@ -152,6 +169,10 @@
   },
   "dashboard": {
     "greeting": "Bonjour, {name} !",
+    "recentActivity": "Activité récente",
+    "greetingMorning": "Bonjour, {name} !",
+    "greetingAfternoon": "Bon après-midi, {name} !",
+    "greetingEvening": "Bonsoir, {name} !",
     "level": "Niveau {level} : {title}",
     "xp": "{current}/{needed} XP pour le niveau suivant",
     "streak": "Série de {days} jours 🔥",
@@ -235,7 +256,9 @@
       "interested": "Intéressé"
     },
     "save": "Enregistrer le compte-rendu",
-    "history": "Historique des visites"
+    "history": "Historique des visites",
+    "meetingNotes": "Notes de réunion",
+    "aiAnalysis": "Analyse IA"
   },
   "followUp": {
     "title": "Suivi commercial",
@@ -274,7 +297,10 @@
     "score": "Votre score : {score}/100",
     "improvement": "Axes d'amélioration",
     "strength": "Vos points forts",
-    "tip": "Conseil Pro du coach"
+    "tip": "Conseil Pro du coach",
+    "practiceThis": "Pratiquer ce scénario",
+    "backToScenarios": "← Retour aux scénarios",
+    "practiceHistory": "Historique des pratiques"
   },
   "gamification": {
     "level": "Niveau {level}",
@@ -313,7 +339,8 @@
     },
     "exportData": "Exporter mes données",
     "deleteAccount": "Supprimer le compte",
-    "deleteWarning": "Cette action est irréversible. Toutes vos données seront définitivement supprimées."
+    "deleteWarning": "Cette action est irréversible. Toutes vos données seront définitivement supprimées.",
+    "saveChanges": "Enregistrer les modifications"
   },
   "auth": {
     "signInTitle": "Bon retour parmi nous",
@@ -336,5 +363,58 @@
     "unauthorized": "Veuillez vous connecter pour continuer",
     "rateLimit": "Trop de requêtes. Veuillez patienter un instant.",
     "aiError": "L'IA est temporairement indisponible. Veuillez réessayer plus tard."
+  },
+  "learning": {
+    "title": "Centre de formation",
+    "subtitle": "Améliorez vos compétences commerciales avec du contenu sélectionné par l'IA",
+    "categories": {
+      "all": "Tout",
+      "prospecting": "Prospection",
+      "negotiation": "Négociation",
+      "closing": "Conclusion",
+      "communication": "Communication"
+    },
+    "readTime": "{min} min de lecture",
+    "articles": {
+      "coldEmail": {
+        "title": "L'art de l'e-mail de prospection",
+        "description": "Apprenez à rédiger des e-mails de prospection qui obtiennent des réponses"
+      },
+      "objectionHandling": {
+        "title": "Maîtrise du traitement des objections",
+        "description": "Transformez les objections en opportunités"
+      },
+      "closingTechniques": {
+        "title": "5 techniques de conclusion",
+        "description": "Des méthodes éprouvées pour conclure plus de ventes"
+      },
+      "needsDiscovery": {
+        "title": "Framework de découverte des besoins",
+        "description": "Posez les bonnes questions pour identifier les besoins du client"
+      },
+      "followUpStrategy": {
+        "title": "Guide de stratégie de suivi",
+        "description": "Quand et comment effectuer un suivi efficace"
+      },
+      "socialSelling": {
+        "title": "Social Selling sur LinkedIn",
+        "description": "Construisez des relations via les réseaux sociaux"
+      }
+    },
+    "startReading": "Lire l'article",
+    "bookmarkSaved": "Ajouté aux favoris !",
+    "filterBy": "Filtrer par sujet"
+  },
+  "leaderboard": {
+    "title": "Classement",
+    "tabs": {
+      "weekly": "Cette semaine",
+      "monthly": "Ce mois-ci",
+      "allTime": "Depuis toujours"
+    },
+    "yourRank": "Votre classement",
+    "xpToRankUp": "Encore {xp} XP pour monter en rang",
+    "rank": "{rank}e",
+    "topPerformer": "Meilleur performeur"
   }
 }

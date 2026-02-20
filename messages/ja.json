@@ -133,6 +133,23 @@
         }
       }
     },
+    "howItWorks": {
+      "title": "ご利用の流れ",
+      "steps": {
+        "step1": {
+          "title": "無料で登録",
+          "description": "30秒でアカウントを作成できます。クレジットカードは不要です。"
+        },
+        "step2": {
+          "title": "目標を設定",
+          "description": "業種、役職、営業目標をお聞かせください。"
+        },
+        "step3": {
+          "title": "成長を始める",
+          "description": "日々のタスク、AIコーチング、そして営業成績の向上を実感してください。"
+        }
+      }
+    },
     "cta": {
       "title": "営業成績を伸ばす準備はできましたか？",
       "subtitle": "AIでより多くの商談を成約している数千人の営業パーソンに加わりましょう。",
@@ -152,6 +169,10 @@
   },
   "dashboard": {
     "greeting": "おはようございます、{name}さん！",
+    "recentActivity": "最近のアクティビティ",
+    "greetingMorning": "おはようございます、{name}さん！",
+    "greetingAfternoon": "こんにちは、{name}さん！",
+    "greetingEvening": "こんばんは、{name}さん！",
     "level": "レベル {level}：{title}",
     "xp": "{current}/{needed} XP 次のレベルまで",
     "streak": "{days}日連続 🔥",
@@ -235,7 +256,9 @@
       "interested": "興味あり"
     },
     "save": "訪問記録を保存",
-    "history": "訪問履歴"
+    "history": "訪問履歴",
+    "meetingNotes": "商談メモ",
+    "aiAnalysis": "AI分析"
   },
   "followUp": {
     "title": "フォローアップ管理",
@@ -274,7 +297,10 @@
     "score": "あなたのスコア：{score}/100",
     "improvement": "改善ポイント",
     "strength": "あなたの強み",
-    "tip": "コーチからのProヒント"
+    "tip": "コーチからのProヒント",
+    "practiceThis": "このシナリオを練習する",
+    "backToScenarios": "← シナリオ一覧に戻る",
+    "practiceHistory": "練習履歴"
   },
   "gamification": {
     "level": "レベル {level}",
@@ -313,7 +339,8 @@
     },
     "exportData": "データをエクスポート",
     "deleteAccount": "アカウントを削除",
-    "deleteWarning": "この操作は取り消せません。すべてのデータが完全に削除されます。"
+    "deleteWarning": "この操作は取り消せません。すべてのデータが完全に削除されます。",
+    "saveChanges": "変更を保存"
   },
   "auth": {
     "signInTitle": "おかえりなさい",
@@ -336,5 +363,58 @@
     "unauthorized": "続行するにはログインしてください",
     "rateLimit": "リクエストが多すぎます。しばらくお待ちください。",
     "aiError": "AIが一時的にご利用いただけません。しばらくしてからお試しください。"
+  },
+  "learning": {
+    "title": "学習センター",
+    "subtitle": "AIが厳選したコンテンツで営業スキルを向上させましょう",
+    "categories": {
+      "all": "すべて",
+      "prospecting": "見込み客開拓",
+      "negotiation": "交渉術",
+      "closing": "クロージング",
+      "communication": "コミュニケーション"
+    },
+    "readTime": "{min}分で読めます",
+    "articles": {
+      "coldEmail": {
+        "title": "コールドメールの技術",
+        "description": "返信が得られるコールドメールの書き方を学びます"
+      },
+      "objectionHandling": {
+        "title": "反論対応の極意",
+        "description": "反論を商機に変える方法をご紹介します"
+      },
+      "closingTechniques": {
+        "title": "5つのクロージング手法",
+        "description": "より多くの商談を成約するための実証済みの方法です"
+      },
+      "needsDiscovery": {
+        "title": "ニーズ発掘フレームワーク",
+        "description": "適切な質問で顧客の真のニーズを引き出します"
+      },
+      "followUpStrategy": {
+        "title": "フォローアップ戦略ガイド",
+        "description": "効果的なフォローアップのタイミングと方法をご紹介します"
+      },
+      "socialSelling": {
+        "title": "LinkedInでのソーシャルセリング",
+        "description": "ソーシャルメディアを通じて顧客との関係を構築します"
+      }
+    },
+    "startReading": "記事を読む",
+    "bookmarkSaved": "ブックマークしました！",
+    "filterBy": "トピックで絞り込む"
+  },
+  "leaderboard": {
+    "title": "リーダーボード",
+    "tabs": {
+      "weekly": "今週",
+      "monthly": "今月",
+      "allTime": "全期間"
+    },
+    "yourRank": "あなたの順位",
+    "xpToRankUp": "ランクアップまであと{xp} XP",
+    "rank": "{rank}位",
+    "topPerformer": "トップパフォーマー"
   }
 }

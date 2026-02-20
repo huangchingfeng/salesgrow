@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,9 +8,11 @@ import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { FollowUpCard } from "@/components/modules/follow-up-card";
 import { PipelineBoard } from "@/components/modules/pipeline-board";
+import { useUserStore } from "@/lib/stores/user-store";
 import { Bell, AlertTriangle, Calendar } from "lucide-react";
 
-const MOCK_FOLLOW_UPS = {
+// TODO: fetch from DB via tRPC when authenticated
+const DEMO_FOLLOW_UPS = {
   today: [
     {
       clientName: "Sarah Chen (TechCorp)",
@@ -42,7 +45,8 @@ const MOCK_FOLLOW_UPS = {
   ],
 };
 
-const MOCK_PIPELINE = [
+// TODO: fetch from DB via tRPC when authenticated
+const DEMO_PIPELINE = [
   {
     key: "lead",
     label: "Lead",
@@ -94,11 +98,42 @@ const MOCK_PIPELINE = [
 
 export default function FollowUpPage() {
   const t = useTranslations("followUp");
+  const { isAuthenticated } = useUserStore();
+
+  // TODO: replace with real data fetch when authenticated
+  const followUps = DEMO_FOLLOW_UPS;
+  const pipeline = DEMO_PIPELINE;
+
+  const [pipelineStages, setPipelineStages] = useState(pipeline);
+
+  const handleMoveDeal = (dealId: string, fromStageKey: string, toStageKey: string) => {
+    setPipelineStages((prev) => {
+      const fromStage = prev.find((s) => s.key === fromStageKey);
+      const deal = fromStage?.deals.find((d) => d.id === dealId);
+      if (!deal) return prev;
+
+      return prev.map((stage) => {
+        if (stage.key === fromStageKey) {
+          return { ...stage, deals: stage.deals.filter((d) => d.id !== dealId) };
+        }
+        if (stage.key === toStageKey) {
+          return { ...stage, deals: [...stage.deals, { ...deal, daysInStage: 0 }] };
+        }
+        return stage;
+      });
+    });
+  };
 
   return (
     <AppShell>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold text-text">{t("title")}</h1>
+
+        {!isAuthenticated && (
+          <div className="rounded-lg border border-primary/30 bg-primary-light p-3 text-center text-sm text-primary">
+            Demo data shown. Sign in to see your real follow-ups.
+          </div>
+        )}
 
         {/* Follow-up tabs */}
         <Tabs defaultValue="today">
@@ -107,28 +142,28 @@ export default function FollowUpPage() {
               <span className="flex items-center gap-1.5">
                 <Bell className="h-4 w-4" />
                 {t("today")}
-                <Badge variant="default">{MOCK_FOLLOW_UPS.today.length}</Badge>
+                <Badge variant="default">{followUps.today.length}</Badge>
               </span>
             </Tab>
             <Tab value="overdue">
               <span className="flex items-center gap-1.5">
                 <AlertTriangle className="h-4 w-4" />
                 {t("overdue")}
-                <Badge variant="destructive">{MOCK_FOLLOW_UPS.overdue.length}</Badge>
+                <Badge variant="destructive">{followUps.overdue.length}</Badge>
               </span>
             </Tab>
             <Tab value="upcoming">
               <span className="flex items-center gap-1.5">
                 <Calendar className="h-4 w-4" />
                 {t("upcoming")}
-                <Badge variant="secondary">{MOCK_FOLLOW_UPS.upcoming.length}</Badge>
+                <Badge variant="secondary">{followUps.upcoming.length}</Badge>
               </span>
             </Tab>
           </TabList>
 
           <TabPanel value="today">
             <div className="space-y-3">
-              {MOCK_FOLLOW_UPS.today.map((item, i) => (
+              {followUps.today.map((item, i) => (
                 <FollowUpCard key={i} {...item} />
               ))}
             </div>
@@ -136,12 +171,12 @@ export default function FollowUpPage() {
 
           <TabPanel value="overdue">
             <div className="space-y-3">
-              {MOCK_FOLLOW_UPS.overdue.length === 0 ? (
+              {followUps.overdue.length === 0 ? (
                 <p className="py-8 text-center text-sm text-text-secondary">
                   {t("noOverdue")}
                 </p>
               ) : (
-                MOCK_FOLLOW_UPS.overdue.map((item, i) => (
+                followUps.overdue.map((item, i) => (
                   <FollowUpCard key={i} {...item} />
                 ))
               )}
@@ -150,7 +185,7 @@ export default function FollowUpPage() {
 
           <TabPanel value="upcoming">
             <div className="space-y-3">
-              {MOCK_FOLLOW_UPS.upcoming.map((item, i) => (
+              {followUps.upcoming.map((item, i) => (
                 <FollowUpCard key={i} {...item} />
               ))}
             </div>
@@ -163,7 +198,7 @@ export default function FollowUpPage() {
             <CardTitle>{t("pipeline.title")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <PipelineBoard stages={MOCK_PIPELINE} />
+            <PipelineBoard stages={pipelineStages} onMoveDeal={handleMoveDeal} />
           </CardContent>
         </Card>
       </div>

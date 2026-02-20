@@ -133,6 +133,23 @@
         }
       }
     },
+    "howItWorks": {
+      "title": "Cách thức hoạt động",
+      "steps": {
+        "step1": {
+          "title": "Đăng ký miễn phí",
+          "description": "Tạo tài khoản trong 30 giây. Không cần thẻ tín dụng."
+        },
+        "step2": {
+          "title": "Đặt mục tiêu",
+          "description": "Cho chúng tôi biết ngành nghề, vị trí và mục tiêu doanh số của bạn."
+        },
+        "step3": {
+          "title": "Bắt đầu phát triển",
+          "description": "Nhận nhiệm vụ hàng ngày, huấn luyện AI và theo dõi doanh số cải thiện."
+        }
+      }
+    },
     "cta": {
       "title": "Sẵn sàng tăng trưởng doanh số?",
       "subtitle": "Tham gia cùng hàng nghìn nhân viên kinh doanh đang chốt nhiều giao dịch hơn nhờ AI.",
@@ -152,6 +169,10 @@
   },
   "dashboard": {
     "greeting": "Chào buổi sáng, {name}!",
+    "recentActivity": "Hoạt động gần đây",
+    "greetingMorning": "Chào buổi sáng, {name}!",
+    "greetingAfternoon": "Chào buổi chiều, {name}!",
+    "greetingEvening": "Chào buổi tối, {name}!",
     "level": "Cấp {level}: {title}",
     "xp": "{current}/{needed} XP đến cấp tiếp theo",
     "streak": "Chuỗi {days} ngày 🔥",
@@ -235,7 +256,9 @@
       "interested": "Quan tâm"
     },
     "save": "Lưu bản ghi",
-    "history": "Lịch sử thăm"
+    "history": "Lịch sử thăm",
+    "meetingNotes": "Ghi chú cuộc họp",
+    "aiAnalysis": "Phân tích AI"
   },
   "followUp": {
     "title": "Quản lý theo dõi",
@@ -274,7 +297,10 @@
     "score": "Điểm của bạn: {score}/100",
     "improvement": "Cần cải thiện",
     "strength": "Điểm mạnh của bạn",
-    "tip": "Mẹo Pro từ huấn luyện viên"
+    "tip": "Mẹo Pro từ huấn luyện viên",
+    "practiceThis": "Luyện tập tình huống này",
+    "backToScenarios": "← Quay lại danh sách tình huống",
+    "practiceHistory": "Lịch sử luyện tập"
   },
   "gamification": {
     "level": "Cấp {level}",
@@ -313,7 +339,8 @@
     },
     "exportData": "Xuất dữ liệu của tôi",
     "deleteAccount": "Xóa tài khoản",
-    "deleteWarning": "Hành động này không thể hoàn tác. Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn."
+    "deleteWarning": "Hành động này không thể hoàn tác. Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn.",
+    "saveChanges": "Lưu thay đổi"
   },
   "auth": {
     "signInTitle": "Chào mừng trở lại",
@@ -336,5 +363,58 @@
     "unauthorized": "Vui lòng đăng nhập để tiếp tục",
     "rateLimit": "Quá nhiều yêu cầu. Vui lòng đợi một chút.",
     "aiError": "AI tạm thời không khả dụng. Vui lòng thử lại sau."
+  },
+  "learning": {
+    "title": "Trung tâm học tập",
+    "subtitle": "Nâng cao kỹ năng bán hàng với nội dung do AI tuyển chọn",
+    "categories": {
+      "all": "Tất cả",
+      "prospecting": "Tìm kiếm khách hàng",
+      "negotiation": "Đàm phán",
+      "closing": "Chốt giao dịch",
+      "communication": "Giao tiếp"
+    },
+    "readTime": "{min} phút đọc",
+    "articles": {
+      "coldEmail": {
+        "title": "Nghệ thuật viết email tiếp cận",
+        "description": "Học cách viết email tiếp cận để nhận được phản hồi"
+      },
+      "objectionHandling": {
+        "title": "Thành thạo xử lý phản đối",
+        "description": "Biến phản đối thành cơ hội kinh doanh"
+      },
+      "closingTechniques": {
+        "title": "5 kỹ thuật chốt giao dịch",
+        "description": "Các phương pháp đã được chứng minh để chốt nhiều giao dịch hơn"
+      },
+      "needsDiscovery": {
+        "title": "Khung khám phá nhu cầu",
+        "description": "Đặt đúng câu hỏi để khám phá nhu cầu thực sự của khách hàng"
+      },
+      "followUpStrategy": {
+        "title": "Hướng dẫn chiến lược theo dõi",
+        "description": "Khi nào và cách theo dõi hiệu quả"
+      },
+      "socialSelling": {
+        "title": "Bán hàng qua LinkedIn",
+        "description": "Xây dựng mối quan hệ thông qua mạng xã hội"
+      }
+    },
+    "startReading": "Đọc bài viết",
+    "bookmarkSaved": "Đã đánh dấu!",
+    "filterBy": "Lọc theo chủ đề"
+  },
+  "leaderboard": {
+    "title": "Bảng xếp hạng",
+    "tabs": {
+      "weekly": "Tuần này",
+      "monthly": "Tháng này",
+      "allTime": "Tất cả thời gian"
+    },
+    "yourRank": "Hạng của bạn",
+    "xpToRankUp": "Cần thêm {xp} XP để thăng hạng",
+    "rank": "Hạng {rank}",
+    "topPerformer": "Người xuất sắc nhất"
   }
 }

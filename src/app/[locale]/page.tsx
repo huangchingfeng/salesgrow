@@ -42,7 +42,7 @@ export default function LandingPage() {
       <Header />
 
       {/* Hero */}
-      <section className="relative overflow-hidden px-4 pt-20 pb-16 md:pt-32 md:pb-24">
+      <section id="hero" className="relative overflow-hidden px-4 pt-20 pb-16 md:pt-32 md:pb-24">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial="hidden"
@@ -73,7 +73,11 @@ export default function LandingPage() {
               {t("hero.cta")}
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <Button size="lg" variant="outline">
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
+            >
               {t("hero.ctaSecondary")}
             </Button>
           </motion.div>
@@ -95,7 +99,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="px-4 py-16 md:py-24">
+      <section id="features" className="px-4 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
           <h2 className="text-center text-3xl font-bold text-text mb-12">
             {t("features.title")}
@@ -141,7 +145,7 @@ export default function LandingPage() {
       </section>
 
       {/* How it Works */}
-      <section className="bg-bg-muted px-4 py-16 md:py-24">
+      <section id="how-it-works" className="bg-bg-muted px-4 py-16 md:py-24">
         <div className="mx-auto max-w-4xl">
           <h2 className="text-center text-3xl font-bold text-text mb-12">
             How It Works
@@ -176,7 +180,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section className="px-4 py-16 md:py-24">
+      <section id="pricing" className="px-4 py-16 md:py-24">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-center text-3xl font-bold text-text mb-12">
             {t("pricing.title")}
@@ -240,7 +244,7 @@ export default function LandingPage() {
       <FAQSection />
 
       {/* Final CTA */}
-      <section className="bg-primary px-4 py-16 md:py-24">
+      <section id="cta" className="bg-primary px-4 py-16 md:py-24">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             {t("cta.title")}
@@ -275,7 +279,7 @@ function FAQSection() {
   ];
 
   return (
-    <section className="bg-bg-muted px-4 py-16 md:py-24">
+    <section id="faq" className="bg-bg-muted px-4 py-16 md:py-24">
       <div className="mx-auto max-w-2xl">
         <h2 className="text-center text-3xl font-bold text-text mb-12">
           {t("faq.title")}

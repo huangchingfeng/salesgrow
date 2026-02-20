@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Mic, Square, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast";
 
 interface VoiceRecorderProps {
   onRecordingComplete?: (blob: Blob) => void;
@@ -16,6 +17,7 @@ export function VoiceRecorder({
   isProcessing = false,
   className,
 }: VoiceRecorderProps) {
+  const { toast } = useToast();
   const [isRecording, setIsRecording] = useState(false);
   const [duration, setDuration] = useState(0);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -59,7 +61,7 @@ export function VoiceRecorder({
         setDuration((d) => d + 1);
       }, 1000);
     } catch {
-      // Microphone permission denied
+      toast("Microphone access denied. Please allow microphone permission in your browser settings.", "error");
     }
   };
 

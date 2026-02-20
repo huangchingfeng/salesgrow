@@ -3,54 +3,66 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ResearchResult } from "@/components/modules/research-result";
 import { Search, Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/toast";
 
-const MOCK_RESULT = {
-  company: "TechCorp Inc.",
-  overview:
-    "TechCorp is a mid-size SaaS company specializing in enterprise project management tools. Founded in 2018, they have 500+ employees and serve clients across APAC.",
-  industry: "Enterprise SaaS",
-  news: [
-    "Raised $50M Series C in January 2026",
-    "Launched AI-powered project scheduling feature",
-    "Expanded to Japanese market last quarter",
-  ],
-  painPoints: [
-    "Customer churn in SMB segment",
-    "Sales team scaling challenges",
-    "CRM migration from legacy system",
-  ],
-  icebreakers: [
-    "Congratulate on Series C funding round",
-    "Ask about their AI feature launch experience",
-    "Discuss APAC expansion challenges",
-  ],
-  contacts: [
-    { name: "Sarah Chen", title: "VP of Sales" },
-    { name: "Michael Park", title: "Head of Business Development" },
-    { name: "Lisa Wong", title: "Chief Revenue Officer" },
-  ],
-};
+interface ResearchData {
+  company: string;
+  overview: string;
+  industry: string;
+  news: string[];
+  painPoints: string[];
+  icebreakers: string[];
+  contacts: { name: string; title: string }[];
+}
 
 export default function ResearchPage() {
   const t = useTranslations("research");
+  const { toast } = useToast();
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<typeof MOCK_RESULT | null>(null);
-  const remainingQueries = 4;
+  const [result, setResult] = useState<ResearchData | null>(null);
 
   const handleSearch = async () => {
     if (!query.trim()) return;
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setResult(MOCK_RESULT);
-    setIsLoading(false);
+    setResult(null);
+
+    try {
+      const res = await fetch("/api/ai/research", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ company: query, locale: "en" }),
+      });
+
+      const json = await res.json();
+
+      if (!json.success) {
+        toast(json.error?.message || "Research failed", "error");
+        return;
+      }
+
+      const data = json.data;
+      setResult({
+        company: query,
+        overview: data.companyOverview,
+        industry: data.industry,
+        news: data.recentNews,
+        painPoints: data.painPoints,
+        icebreakers: data.icebreakers,
+        contacts: data.keyContacts.map((c: { role: string; suggestedApproach: string }) => ({
+          name: c.role,
+          title: c.suggestedApproach,
+        })),
+      });
+    } catch {
+      toast("Failed to connect to AI service", "error");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -59,7 +71,7 @@ export default function ResearchPage() {
         <div>
           <h1 className="text-2xl font-bold text-text">{t("title")}</h1>
           <p className="text-sm text-text-secondary mt-1">
-            {t("remaining", { count: remainingQueries })}
+            {t("remaining", { count: 5 })}
           </p>
         </div>
 

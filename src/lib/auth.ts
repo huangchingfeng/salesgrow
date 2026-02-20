@@ -1,12 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient, createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/auth-helpers-nextjs';
 import { db } from './db';
 import { users } from './db/schema';
 import { eq } from 'drizzle-orm';
-
-// 延遲初始化，避免 build time 缺少環境變數時報錯
-let _supabase: ReturnType<typeof createClient> | null = null;
 
 function getSupabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -15,12 +11,14 @@ function getSupabaseConfig() {
   return { url, key };
 }
 
-// 公開 client（前端使用）
-export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
+// 公開 client（前端使用）- 延遲初始化，避免 build time 缺少環境變數時報錯
+let _supabase: ReturnType<typeof createBrowserClient> | null = null;
+
+export const supabase = new Proxy({} as ReturnType<typeof createBrowserClient>, {
   get(_target, prop) {
     if (!_supabase) {
       const { url, key } = getSupabaseConfig();
-      _supabase = createClient(url, key);
+      _supabase = createBrowserClient(url, key);
     }
     return (_supabase as any)[prop];
   },
@@ -28,16 +26,20 @@ export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
 
 // 伺服器端 client（帶 cookie auth）
 export async function createServerSupabase() {
-  const { url: supabaseUrl, key: supabaseAnonKey } = getSupabaseConfig();
+  const { url, key } = getSupabaseConfig();
   const cookieStore = await cookies();
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
+  return createServerClient(url, key, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
       },
       setAll(cookiesToSet) {
         for (const { name, value, options } of cookiesToSet) {
-          cookieStore.set(name, value, options);
+          try {
+            cookieStore.set(name, value, options);
+          } catch {
+            // Server Component 中無法設 cookie，忽略即可
+          }
         }
       },
     },

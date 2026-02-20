@@ -133,6 +133,23 @@
         }
       }
     },
+    "howItWorks": {
+      "title": "How It Works",
+      "steps": {
+        "step1": {
+          "title": "Sign Up Free",
+          "description": "Create your account in 30 seconds. No credit card required."
+        },
+        "step2": {
+          "title": "Set Your Goals",
+          "description": "Tell us your industry, role, and sales targets."
+        },
+        "step3": {
+          "title": "Start Growing",
+          "description": "Get daily tasks, AI coaching, and watch your sales improve."
+        }
+      }
+    },
     "cta": {
       "title": "Ready to grow your sales?",
       "subtitle": "Join thousands of salespeople who are closing more deals with AI.",
@@ -152,6 +169,10 @@
   },
   "dashboard": {
     "greeting": "Good morning, {name}!",
+    "recentActivity": "Recent Activity",
+    "greetingMorning": "Good morning, {name}!",
+    "greetingAfternoon": "Good afternoon, {name}!",
+    "greetingEvening": "Good evening, {name}!",
     "level": "Level {level}: {title}",
     "xp": "{current}/{needed} XP to next level",
     "streak": "{days}-day streak 🔥",
@@ -235,7 +256,9 @@
       "interested": "Interested"
     },
     "save": "Save Visit Record",
-    "history": "Visit History"
+    "history": "Visit History",
+    "meetingNotes": "Meeting Notes",
+    "aiAnalysis": "AI Analysis"
   },
   "followUp": {
     "title": "Follow-up Tracker",
@@ -274,7 +297,10 @@
     "score": "Your Score: {score}/100",
     "improvement": "Areas to Improve",
     "strength": "Your Strengths",
-    "tip": "Pro Tip from Coach"
+    "tip": "Pro Tip from Coach",
+    "practiceThis": "Practice this scenario",
+    "backToScenarios": "← Back to scenarios",
+    "practiceHistory": "Practice History"
   },
   "gamification": {
     "level": "Level {level}",
@@ -313,7 +339,8 @@
     },
     "exportData": "Export My Data",
     "deleteAccount": "Delete Account",
-    "deleteWarning": "This action is irreversible. All your data will be permanently deleted."
+    "deleteWarning": "This action is irreversible. All your data will be permanently deleted.",
+    "saveChanges": "Save Changes"
   },
   "auth": {
     "signInTitle": "Welcome back",
@@ -336,5 +363,58 @@
     "unauthorized": "Please sign in to continue",
     "rateLimit": "Too many requests. Please wait a moment.",
     "aiError": "AI is temporarily unavailable. Please try again."
+  },
+  "learning": {
+    "title": "Learning Center",
+    "subtitle": "Improve your sales skills with AI-curated content",
+    "categories": {
+      "all": "All",
+      "prospecting": "Prospecting",
+      "negotiation": "Negotiation",
+      "closing": "Closing",
+      "communication": "Communication"
+    },
+    "readTime": "{min} min read",
+    "articles": {
+      "coldEmail": {
+        "title": "The Art of Cold Email",
+        "description": "Learn how to write cold emails that get responses"
+      },
+      "objectionHandling": {
+        "title": "Objection Handling Mastery",
+        "description": "Turn objections into opportunities"
+      },
+      "closingTechniques": {
+        "title": "5 Closing Techniques",
+        "description": "Proven methods to close more deals"
+      },
+      "needsDiscovery": {
+        "title": "Needs Discovery Framework",
+        "description": "Ask the right questions to uncover client needs"
+      },
+      "followUpStrategy": {
+        "title": "Follow-up Strategy Guide",
+        "description": "When and how to follow up effectively"
+      },
+      "socialSelling": {
+        "title": "Social Selling on LinkedIn",
+        "description": "Build relationships through social media"
+      }
+    },
+    "startReading": "Read Article",
+    "bookmarkSaved": "Bookmarked!",
+    "filterBy": "Filter by topic"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "tabs": {
+      "weekly": "This Week",
+      "monthly": "This Month",
+      "allTime": "All Time"
+    },
+    "yourRank": "Your Rank",
+    "xpToRankUp": "{xp} XP to rank up",
+    "rank": "#{rank}",
+    "topPerformer": "Top Performer"
   }
 }

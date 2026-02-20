@@ -133,6 +133,23 @@
         }
       }
     },
+    "howItWorks": {
+      "title": "Cómo funciona",
+      "steps": {
+        "step1": {
+          "title": "Regístrese gratis",
+          "description": "Cree su cuenta en 30 segundos. No se necesita tarjeta de crédito."
+        },
+        "step2": {
+          "title": "Defina sus objetivos",
+          "description": "Indíquenos su sector, cargo y metas de ventas."
+        },
+        "step3": {
+          "title": "Comience a crecer",
+          "description": "Reciba tareas diarias, coaching con IA y observe cómo mejoran sus ventas."
+        }
+      }
+    },
     "cta": {
       "title": "¿Listo para hacer crecer sus ventas?",
       "subtitle": "Únase a miles de vendedores que están cerrando más ventas con IA.",
@@ -152,6 +169,10 @@
   },
   "dashboard": {
     "greeting": "¡Buenos días, {name}!",
+    "recentActivity": "Actividad reciente",
+    "greetingMorning": "¡Buenos días, {name}!",
+    "greetingAfternoon": "¡Buenas tardes, {name}!",
+    "greetingEvening": "¡Buenas noches, {name}!",
     "level": "Nivel {level}: {title}",
     "xp": "{current}/{needed} XP para el siguiente nivel",
     "streak": "Racha de {days} días 🔥",
@@ -235,7 +256,9 @@
       "interested": "Interesado"
     },
     "save": "Guardar registro",
-    "history": "Historial de visitas"
+    "history": "Historial de visitas",
+    "meetingNotes": "Notas de la reunión",
+    "aiAnalysis": "Análisis de IA"
   },
   "followUp": {
     "title": "Seguimiento comercial",
@@ -274,7 +297,10 @@
     "score": "Su puntuación: {score}/100",
     "improvement": "Áreas de mejora",
     "strength": "Sus fortalezas",
-    "tip": "Consejo Pro del coach"
+    "tip": "Consejo Pro del coach",
+    "practiceThis": "Practicar este escenario",
+    "backToScenarios": "← Volver a los escenarios",
+    "practiceHistory": "Historial de práctica"
   },
   "gamification": {
     "level": "Nivel {level}",
@@ -313,7 +339,8 @@
     },
     "exportData": "Exportar mis datos",
     "deleteAccount": "Eliminar cuenta",
-    "deleteWarning": "Esta acción es irreversible. Todos sus datos serán eliminados permanentemente."
+    "deleteWarning": "Esta acción es irreversible. Todos sus datos serán eliminados permanentemente.",
+    "saveChanges": "Guardar cambios"
   },
   "auth": {
     "signInTitle": "Bienvenido de vuelta",
@@ -336,5 +363,58 @@
     "unauthorized": "Por favor, inicie sesión para continuar",
     "rateLimit": "Demasiadas solicitudes. Por favor, espere un momento.",
     "aiError": "La IA no está disponible temporalmente. Por favor, inténtelo más tarde."
+  },
+  "learning": {
+    "title": "Centro de aprendizaje",
+    "subtitle": "Mejore sus habilidades de ventas con contenido seleccionado por IA",
+    "categories": {
+      "all": "Todo",
+      "prospecting": "Prospección",
+      "negotiation": "Negociación",
+      "closing": "Cierre",
+      "communication": "Comunicación"
+    },
+    "readTime": "{min} min de lectura",
+    "articles": {
+      "coldEmail": {
+        "title": "El arte del correo de prospección",
+        "description": "Aprenda a escribir correos de prospección que obtengan respuestas"
+      },
+      "objectionHandling": {
+        "title": "Dominio del manejo de objeciones",
+        "description": "Convierta las objeciones en oportunidades"
+      },
+      "closingTechniques": {
+        "title": "5 técnicas de cierre",
+        "description": "Métodos probados para cerrar más ventas"
+      },
+      "needsDiscovery": {
+        "title": "Marco de descubrimiento de necesidades",
+        "description": "Haga las preguntas correctas para descubrir las necesidades del cliente"
+      },
+      "followUpStrategy": {
+        "title": "Guía de estrategia de seguimiento",
+        "description": "Cuándo y cómo realizar un seguimiento efectivo"
+      },
+      "socialSelling": {
+        "title": "Social Selling en LinkedIn",
+        "description": "Construya relaciones a través de las redes sociales"
+      }
+    },
+    "startReading": "Leer artículo",
+    "bookmarkSaved": "¡Guardado en favoritos!",
+    "filterBy": "Filtrar por tema"
+  },
+  "leaderboard": {
+    "title": "Clasificación",
+    "tabs": {
+      "weekly": "Esta semana",
+      "monthly": "Este mes",
+      "allTime": "Histórico"
+    },
+    "yourRank": "Su posición",
+    "xpToRankUp": "{xp} XP para subir de rango",
+    "rank": "Puesto {rank}",
+    "topPerformer": "Mejor rendimiento"
   }
 }

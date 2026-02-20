@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CoachChat } from "@/components/modules/coach-chat";
+import { useToast } from "@/components/ui/toast";
 import {
   Phone,
   ShieldAlert,
@@ -18,11 +19,11 @@ import {
 } from "lucide-react";
 
 const SCENARIOS = [
-  { key: "coldCall", icon: Phone, color: "text-blue-500 bg-blue-50 dark:bg-blue-950" },
-  { key: "objectionHandling", icon: ShieldAlert, color: "text-red-500 bg-red-50 dark:bg-red-950" },
-  { key: "closing", icon: Handshake, color: "text-green-500 bg-green-50 dark:bg-green-950" },
-  { key: "needsDiscovery", icon: Search, color: "text-purple-500 bg-purple-50 dark:bg-purple-950" },
-  { key: "priceNegotiation", icon: DollarSign, color: "text-amber-500 bg-amber-50 dark:bg-amber-950" },
+  { key: "coldCall", apiKey: "cold_call", icon: Phone, color: "text-blue-500 bg-blue-50 dark:bg-blue-950" },
+  { key: "objectionHandling", apiKey: "objection_price", icon: ShieldAlert, color: "text-red-500 bg-red-50 dark:bg-red-950" },
+  { key: "closing", apiKey: "closing_assumptive", icon: Handshake, color: "text-green-500 bg-green-50 dark:bg-green-950" },
+  { key: "needsDiscovery", apiKey: "needs_discovery", icon: Search, color: "text-purple-500 bg-purple-50 dark:bg-purple-950" },
+  { key: "priceNegotiation", apiKey: "negotiation_discount", icon: DollarSign, color: "text-amber-500 bg-amber-50 dark:bg-amber-950" },
 ];
 
 interface ChatMessage {
@@ -31,67 +32,130 @@ interface ChatMessage {
   content: string;
 }
 
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: "1",
-    role: "coach",
-    content:
-      "Welcome! I'm your AI Sales Coach. I'll play the role of a potential client. Your task is to handle my objection professionally. Ready?",
-  },
-  {
-    id: "2",
-    role: "coach",
-    content:
-      "Scenario: You're calling the VP of Sales at a mid-size SaaS company. They said: 'We already have a CRM solution and we're happy with it. Why should we switch?' Go ahead and respond.",
-  },
-];
-
 export default function CoachPage() {
   const t = useTranslations("coach");
+  const { toast } = useToast();
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
-  const [messages, setMessages] = useState(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [feedback, setFeedback] = useState<any>(null);
+  const [feedback, setFeedback] = useState<{
+    score: number;
+    strengths: string[];
+    improvements: string[];
+    tip: string;
+  } | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+
+  const startScenario = async (key: string) => {
+    const scenario = SCENARIOS.find((s) => s.key === key);
+    if (!scenario) return;
+
+    setActiveScenario(key);
+    setMessages([]);
+    setFeedback(null);
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/ai/coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "start",
+          scenario: scenario.apiKey,
+          locale: "en",
+          culture: "taiwan",
+        }),
+      });
+
+      const json = await res.json();
+      if (!json.success) {
+        toast(json.error?.message || "Failed to start session", "error");
+        setActiveScenario(null);
+        return;
+      }
+
+      setSessionId(json.data.sessionId);
+      setMessages([
+        {
+          id: crypto.randomUUID(),
+          role: "coach",
+          content: json.data.initialMessage,
+        },
+      ]);
+    } catch {
+      toast("Failed to connect to AI service", "error");
+      setActiveScenario(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSendMessage = async (content: string) => {
-    const userMsg = { id: crypto.randomUUID(), role: "user" as const, content };
+    if (!sessionId) return;
+
+    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: "user", content };
     setMessages((prev) => [...prev, userMsg]);
     setIsLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    if (messages.length >= 4) {
-      // Give feedback after a few exchanges
-      setFeedback({
-        score: 78,
-        strengths: [
-          "Good acknowledgment of their current solution",
-          "Strong value proposition delivery",
-        ],
-        improvements: [
-          "Ask more discovery questions before pitching",
-          "Use a specific case study for credibility",
-        ],
-        tip: "When facing 'we already have a solution' objection, focus on gaps they might not have considered.",
+    try {
+      const res = await fetch("/api/ai/coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "message",
+          sessionId,
+          message: content,
+        }),
       });
-      setIsLoading(false);
-      return;
-    }
 
-    const coachMsg = {
-      id: crypto.randomUUID(),
-      role: "coach" as const,
-      content:
-        "Interesting approach. But I'm still not convinced. Our current vendor gave us a 20% discount last quarter, and the team is already trained on their platform. Switching costs seem too high. What would you say to that?",
-    };
-    setMessages((prev) => [...prev, coachMsg]);
-    setIsLoading(false);
+      const json = await res.json();
+      if (!json.success) {
+        toast(json.error?.message || "Failed to get response", "error");
+        setIsLoading(false);
+        return;
+      }
+
+      const coachMsg: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: "coach",
+        content: json.data.reply,
+      };
+      setMessages((prev) => [...prev, coachMsg]);
+
+      // If session is complete, get feedback
+      if (json.data.isComplete) {
+        await endSession();
+      }
+    } catch {
+      toast("Failed to connect to AI service", "error");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const startScenario = (key: string) => {
-    setActiveScenario(key);
-    setMessages(INITIAL_MESSAGES);
-    setFeedback(null);
+  const endSession = async () => {
+    if (!sessionId) return;
+
+    try {
+      const res = await fetch("/api/ai/coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "end", sessionId }),
+      });
+
+      const json = await res.json();
+      if (json.success) {
+        const d = json.data;
+        setFeedback({
+          score: d.totalScore,
+          strengths: d.strengths,
+          improvements: d.improvements,
+          tip: d.encouragement,
+        });
+      }
+    } catch {
+      // Feedback is best-effort
+    }
   };
 
   return (
@@ -177,7 +241,10 @@ export default function CoachPage() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setActiveScenario(null)}
+              onClick={() => {
+                setActiveScenario(null);
+                setSessionId(null);
+              }}
               className="mb-4"
             >
               ← Back to scenarios
@@ -185,7 +252,7 @@ export default function CoachPage() {
             <Card className="overflow-hidden">
               <CoachChat
                 messages={messages}
-                feedback={feedback}
+                feedback={feedback ?? undefined}
                 onSendMessage={handleSendMessage}
                 isLoading={isLoading}
                 scenario={t(`scenarios.${activeScenario}`)}

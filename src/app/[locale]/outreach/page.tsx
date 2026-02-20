@@ -3,51 +3,116 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { EmailEditor } from "@/components/modules/email-editor";
 import { EmailScore } from "@/components/modules/email-score";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Wand2, Loader2 } from "lucide-react";
 import { localeNames, locales } from "@/i18n/routing";
+import { useToast } from "@/components/ui/toast";
+
+interface ScoreData {
+  totalScore: number;
+  breakdown: { label: string; score: number }[];
+  suggestions: string[];
+}
 
 export default function OutreachPage() {
   const t = useTranslations("outreach");
+  const { toast } = useToast();
   const [client, setClient] = useState("");
-  const [purpose, setPurpose] = useState("coldEmail");
-  const [tone, setTone] = useState("professional");
+  const [purpose, setPurpose] = useState("cold_email");
+  const [tone, setTone] = useState("formal");
   const [language, setLanguage] = useState("en");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
 
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [score, setScore] = useState<ScoreData | null>(null);
+  const [isScoring, setIsScoring] = useState(false);
+
+  const scoreEmail = async (emailContent: string) => {
+    setIsScoring(true);
+    try {
+      const res = await fetch("/api/ai/score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ emailContent, language }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        const d = json.data;
+        setScore({
+          totalScore: d.totalScore,
+          breakdown: [
+            { label: "Personalization", score: d.dimensions.personalization.score * 4 },
+            { label: "Value Proposition", score: d.dimensions.valueProposition.score * 4 },
+            { label: "Call to Action", score: d.dimensions.callToAction.score * 4 },
+            { label: "Tone", score: d.dimensions.toneAppropriateness.score * 4 },
+          ],
+          suggestions: d.improvements,
+        });
+      }
+    } catch {
+      // Score is optional, don't block on failure
+    } finally {
+      setIsScoring(false);
+    }
+  };
 
   const handleGenerate = async () => {
+    if (!client.trim()) {
+      toast("Please enter a client name", "error");
+      return;
+    }
     setIsGenerating(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setSubject(`Re: Partnership Opportunity with ${client || "Your Company"}`);
-    setBody(
-      `Dear Sarah,\n\nI hope this message finds you well. I recently came across your company's impressive work in the enterprise SaaS space, particularly your recent Series C funding round.\n\nAt our company, we specialize in helping fast-growing SaaS companies like yours optimize their sales processes. Given your expansion into the APAC market, I believe we could provide significant value.\n\nWould you be open to a brief 15-minute call this week to explore potential synergies?\n\nBest regards,\nAlex`
-    );
-    setGenerated(true);
-    setIsGenerating(false);
+    setGenerated(false);
+    setScore(null);
+
+    try {
+      const res = await fetch("/api/ai/outreach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ client, purpose, tone, language }),
+      });
+
+      const json = await res.json();
+
+      if (!json.success) {
+        toast(json.error?.message || "Failed to generate email", "error");
+        return;
+      }
+
+      setSubject(json.data.subject);
+      setBody(json.data.body);
+      setGenerated(true);
+
+      // Auto-score the generated email
+      scoreEmail(`Subject: ${json.data.subject}\n\n${json.data.body}`);
+    } catch {
+      toast("Failed to connect to AI service", "error");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const purposeOptions = [
-    { value: "coldEmail", label: t("purposes.coldEmail") },
-    { value: "followUp", label: t("purposes.followUp") },
+    { value: "cold_email", label: t("purposes.coldEmail") },
+    { value: "follow_up", label: t("purposes.followUp") },
     { value: "introduction", label: t("purposes.introduction") },
     { value: "proposal", label: t("purposes.proposal") },
-    { value: "thankYou", label: t("purposes.thankYou") },
+    { value: "thank_you", label: t("purposes.thankYou") },
   ];
 
   const toneOptions = [
-    { value: "professional", label: t("tones.professional") },
+    { value: "formal", label: t("tones.professional") },
     { value: "friendly", label: t("tones.friendly") },
-    { value: "formal", label: t("tones.formal") },
-    { value: "casual", label: t("tones.casual") },
+    { value: "urgent", label: t("tones.formal") },
+    { value: "consultative", label: t("tones.casual") },
   ];
 
   const languageOptions = locales.map((loc) => ({
@@ -106,8 +171,19 @@ export default function OutreachPage() {
           </CardContent>
         </Card>
 
+        {/* Loading state */}
+        {isGenerating && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-sm text-text-secondary">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Generating your email...
+            </div>
+            <Skeleton className="h-48 w-full rounded-xl" />
+          </div>
+        )}
+
         {/* Generated content */}
-        {generated && (
+        {generated && !isGenerating && (
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <EmailEditor
@@ -118,20 +194,15 @@ export default function OutreachPage() {
                 onRegenerate={handleGenerate}
               />
             </div>
-            <EmailScore
-              totalScore={82}
-              breakdown={[
-                { label: "Personalization", score: 90 },
-                { label: "Clarity", score: 85 },
-                { label: "Call to Action", score: 75 },
-                { label: "Subject Line", score: 78 },
-              ]}
-              suggestions={[
-                "Add a specific metric or case study to build credibility",
-                "Make your CTA more specific with a date suggestion",
-                "Consider mentioning a mutual connection if available",
-              ]}
-            />
+            {isScoring ? (
+              <Skeleton className="h-64 rounded-xl" />
+            ) : score ? (
+              <EmailScore
+                totalScore={score.totalScore}
+                breakdown={score.breakdown}
+                suggestions={score.suggestions}
+              />
+            ) : null}
           </div>
         )}
 

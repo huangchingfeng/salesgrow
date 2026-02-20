@@ -133,6 +133,23 @@
         }
       }
     },
+    "howItWorks": {
+      "title": "如何運作",
+      "steps": {
+        "step1": {
+          "title": "免費註冊",
+          "description": "30 秒建立帳號，不需要信用卡。"
+        },
+        "step2": {
+          "title": "設定目標",
+          "description": "告訴我們你的產業、職位和業績目標。"
+        },
+        "step3": {
+          "title": "開始成長",
+          "description": "取得每日任務、AI 教練指導，看著你的業績提升。"
+        }
+      }
+    },
     "cta": {
       "title": "準備好讓業績成長了嗎？",
       "subtitle": "加入數千位正在用 AI 成交更多訂單的業務夥伴。",
@@ -152,6 +169,10 @@
   },
   "dashboard": {
     "greeting": "早安，{name}！",
+    "recentActivity": "最近活動",
+    "greetingMorning": "早安，{name}！",
+    "greetingAfternoon": "午安，{name}！",
+    "greetingEvening": "晚安，{name}！",
     "level": "等級 {level}：{title}",
     "xp": "{current}/{needed} XP 升級",
     "streak": "連續 {days} 天 🔥",
@@ -235,7 +256,9 @@
       "interested": "有興趣"
     },
     "save": "儲存拜訪紀錄",
-    "history": "拜訪歷史"
+    "history": "拜訪歷史",
+    "meetingNotes": "會議筆記",
+    "aiAnalysis": "AI 分析"
   },
   "followUp": {
     "title": "跟進追蹤",
@@ -274,7 +297,10 @@
     "score": "你的得分：{score}/100",
     "improvement": "待改善項目",
     "strength": "你的優勢",
-    "tip": "教練的 Pro 秘訣"
+    "tip": "教練的 Pro 秘訣",
+    "practiceThis": "練習此情境",
+    "backToScenarios": "← 返回情境列表",
+    "practiceHistory": "練習紀錄"
   },
   "gamification": {
     "level": "等級 {level}",
@@ -313,7 +339,8 @@
     },
     "exportData": "匯出我的資料",
     "deleteAccount": "刪除帳號",
-    "deleteWarning": "此操作無法復原。你的所有資料將被永久刪除。"
+    "deleteWarning": "此操作無法復原。你的所有資料將被永久刪除。",
+    "saveChanges": "儲存變更"
   },
   "auth": {
     "signInTitle": "歡迎回來",
@@ -336,5 +363,58 @@
     "unauthorized": "請先登入後繼續",
     "rateLimit": "請求次數過多，請稍候再試。",
     "aiError": "AI 暫時無法使用，請稍後再試。"
+  },
+  "learning": {
+    "title": "學習中心",
+    "subtitle": "透過 AI 精選內容提升你的業務技巧",
+    "categories": {
+      "all": "全部",
+      "prospecting": "客戶開發",
+      "negotiation": "談判技巧",
+      "closing": "成交技巧",
+      "communication": "溝通技巧"
+    },
+    "readTime": "{min} 分鐘閱讀",
+    "articles": {
+      "coldEmail": {
+        "title": "開發信的藝術",
+        "description": "學習如何撰寫能獲得回覆的開發信"
+      },
+      "objectionHandling": {
+        "title": "異議處理大師",
+        "description": "將異議轉化為成交機會"
+      },
+      "closingTechniques": {
+        "title": "5 大成交技巧",
+        "description": "經過驗證的成交方法，幫你成交更多訂單"
+      },
+      "needsDiscovery": {
+        "title": "需求探詢架構",
+        "description": "問對問題，發掘客戶真正的需求"
+      },
+      "followUpStrategy": {
+        "title": "跟進策略指南",
+        "description": "何時以及如何有效地跟進客戶"
+      },
+      "socialSelling": {
+        "title": "LinkedIn 社群銷售",
+        "description": "透過社群媒體建立客戶關係"
+      }
+    },
+    "startReading": "閱讀文章",
+    "bookmarkSaved": "已收藏！",
+    "filterBy": "依主題篩選"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "tabs": {
+      "weekly": "本週",
+      "monthly": "本月",
+      "allTime": "歷史總榜"
+    },
+    "yourRank": "你的排名",
+    "xpToRankUp": "還需 {xp} XP 晉級",
+    "rank": "第 {rank} 名",
+    "topPerformer": "最佳表現者"
   }
 }

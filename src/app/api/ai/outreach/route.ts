@@ -4,25 +4,39 @@ import { aiGateway } from '@/lib/ai/gateway'
 import { buildOutreachPrompt } from '@/lib/ai/prompts/outreach-writer'
 import type { OutreachInput, APIResponse, OutreachOutput } from '@/lib/ai/types'
 
+// 前端傳入的扁平格式
+interface OutreachRequestBody {
+  client: string
+  purpose: string
+  tone: string
+  language: string
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const user = await getCurrentUser()
-    if (!user) {
-      return NextResponse.json<APIResponse<never>>(
-        { success: false, error: { code: 'UNAUTHORIZED', message: 'Please sign in' } },
-        { status: 401 }
-      )
-    }
+    const dbUser = await getCurrentUser()
+    const user = dbUser ?? { id: 'demo-user', plan: 'free' as const, name: 'Demo User', email: 'demo@salesgrow.app', locale: 'en', level: 1 }
 
-    const body = (await req.json()) as OutreachInput
-    if (!body.clientData?.name || !body.clientData?.company) {
+    const body = (await req.json()) as OutreachRequestBody
+    if (!body.client) {
       return NextResponse.json<APIResponse<never>>(
-        { success: false, error: { code: 'INVALID_INPUT', message: 'Client name and company are required' } },
+        { success: false, error: { code: 'INVALID_INPUT', message: 'Client name is required' } },
         { status: 400 }
       )
     }
 
-    const prompt = buildOutreachPrompt(body)
+    // 將扁平格式轉換為 OutreachInput
+    const input: OutreachInput = {
+      clientData: {
+        name: body.client,
+        company: body.client,
+      },
+      purpose: (body.purpose || 'cold_email') as OutreachInput['purpose'],
+      tone: (body.tone || 'formal') as OutreachInput['tone'],
+      language: (body.language || 'en') as OutreachInput['language'],
+    }
+
+    const prompt = buildOutreachPrompt(input)
 
     const response = await aiGateway({
       task: 'outreach',

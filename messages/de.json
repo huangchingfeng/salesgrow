@@ -133,6 +133,23 @@
         }
       }
     },
+    "howItWorks": {
+      "title": "So funktioniert es",
+      "steps": {
+        "step1": {
+          "title": "Kostenlos registrieren",
+          "description": "Erstellen Sie Ihr Konto in 30 Sekunden. Keine Kreditkarte erforderlich."
+        },
+        "step2": {
+          "title": "Ziele festlegen",
+          "description": "Teilen Sie uns Ihre Branche, Rolle und Vertriebsziele mit."
+        },
+        "step3": {
+          "title": "Wachstum starten",
+          "description": "Erhalten Sie tägliche Aufgaben, KI-Coaching und beobachten Sie, wie sich Ihre Ergebnisse verbessern."
+        }
+      }
+    },
     "cta": {
       "title": "Bereit, Ihren Vertrieb zu stärken?",
       "subtitle": "Schließen Sie sich Tausenden von Vertriebsprofis an, die mit KI mehr Abschlüsse erzielen.",
@@ -152,6 +169,10 @@
   },
   "dashboard": {
     "greeting": "Guten Morgen, {name}!",
+    "recentActivity": "Letzte Aktivitäten",
+    "greetingMorning": "Guten Morgen, {name}!",
+    "greetingAfternoon": "Guten Tag, {name}!",
+    "greetingEvening": "Guten Abend, {name}!",
     "level": "Level {level}: {title}",
     "xp": "{current}/{needed} XP bis zum nächsten Level",
     "streak": "{days}-Tage-Serie 🔥",
@@ -235,7 +256,9 @@
       "interested": "Interessiert"
     },
     "save": "Besuchsprotokoll speichern",
-    "history": "Besuchsverlauf"
+    "history": "Besuchsverlauf",
+    "meetingNotes": "Gesprächsnotizen",
+    "aiAnalysis": "KI-Analyse"
   },
   "followUp": {
     "title": "Nachverfolgung",
@@ -274,7 +297,10 @@
     "score": "Ihre Bewertung: {score}/100",
     "improvement": "Verbesserungspotenzial",
     "strength": "Ihre Stärken",
-    "tip": "Pro-Tipp vom Coach"
+    "tip": "Pro-Tipp vom Coach",
+    "practiceThis": "Dieses Szenario üben",
+    "backToScenarios": "← Zurück zur Szenarioauswahl",
+    "practiceHistory": "Übungsverlauf"
   },
   "gamification": {
     "level": "Level {level}",
@@ -313,7 +339,8 @@
     },
     "exportData": "Meine Daten exportieren",
     "deleteAccount": "Konto löschen",
-    "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Daten werden dauerhaft gelöscht."
+    "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Daten werden dauerhaft gelöscht.",
+    "saveChanges": "Änderungen speichern"
   },
   "auth": {
     "signInTitle": "Willkommen zurück",
@@ -336,5 +363,58 @@
     "unauthorized": "Bitte melden Sie sich an, um fortzufahren",
     "rateLimit": "Zu viele Anfragen. Bitte warten Sie einen Moment.",
     "aiError": "Die KI ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut."
+  },
+  "learning": {
+    "title": "Lernzentrum",
+    "subtitle": "Verbessern Sie Ihre Vertriebsfähigkeiten mit KI-kuratierten Inhalten",
+    "categories": {
+      "all": "Alle",
+      "prospecting": "Kundenakquise",
+      "negotiation": "Verhandlung",
+      "closing": "Abschluss",
+      "communication": "Kommunikation"
+    },
+    "readTime": "{min} Min. Lesezeit",
+    "articles": {
+      "coldEmail": {
+        "title": "Die Kunst der Kaltakquise-Mail",
+        "description": "Lernen Sie, wie Sie Kaltakquise-Mails schreiben, die Antworten erhalten"
+      },
+      "objectionHandling": {
+        "title": "Einwandbehandlung meistern",
+        "description": "Verwandeln Sie Einwände in Chancen"
+      },
+      "closingTechniques": {
+        "title": "5 Abschlusstechniken",
+        "description": "Bewährte Methoden für mehr erfolgreiche Abschlüsse"
+      },
+      "needsDiscovery": {
+        "title": "Framework zur Bedarfsermittlung",
+        "description": "Stellen Sie die richtigen Fragen, um Kundenbedürfnisse zu erkennen"
+      },
+      "followUpStrategy": {
+        "title": "Leitfaden zur Nachverfolgungsstrategie",
+        "description": "Wann und wie Sie effektiv nachfassen"
+      },
+      "socialSelling": {
+        "title": "Social Selling auf LinkedIn",
+        "description": "Bauen Sie Kundenbeziehungen über soziale Medien auf"
+      }
+    },
+    "startReading": "Artikel lesen",
+    "bookmarkSaved": "Gespeichert!",
+    "filterBy": "Nach Thema filtern"
+  },
+  "leaderboard": {
+    "title": "Bestenliste",
+    "tabs": {
+      "weekly": "Diese Woche",
+      "monthly": "Dieser Monat",
+      "allTime": "Gesamtzeitraum"
+    },
+    "yourRank": "Ihr Rang",
+    "xpToRankUp": "Noch {xp} XP bis zum Aufstieg",
+    "rank": "Platz {rank}",
+    "topPerformer": "Bestleistung"
   }
 }
