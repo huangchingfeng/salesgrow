@@ -182,9 +182,34 @@ export const leaderboardEntries = pgTable('leaderboard_entries', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const salesProfiles = pgTable('sales_profiles', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').notNull().unique().references(() => users.id, { onDelete: 'cascade' }),
+  jobTitle: varchar('job_title', { length: 100 }),
+  companyName: varchar('company_name', { length: 255 }),
+  companyDescription: text('company_description'),
+  productsServices: text('products_services'),
+  industry: varchar('industry', { length: 100 }),
+  targetAudience: text('target_audience'),
+  uniqueSellingPoints: text('unique_selling_points'),
+  yearsExperience: integer('years_experience'),
+  communicationStyle: varchar('communication_style', { length: 50 }),
+  personalBio: text('personal_bio'),
+  phone: varchar('phone', { length: 50 }),
+  lineId: varchar('line_id', { length: 100 }),
+  linkedinUrl: text('linkedin_url'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
 // ─── Relations ───────────────────────────────────────────
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const salesProfilesRelations = relations(salesProfiles, ({ one }) => ({
+  user: one(users, { fields: [salesProfiles.userId], references: [users.id] }),
+}));
+
+export const usersRelations = relations(users, ({ many, one }) => ({
+  salesProfile: one(salesProfiles),
   clients: many(clients),
   outreachEmails: many(outreachEmails),
   visitLogs: many(visitLogs),
@@ -262,3 +287,5 @@ export type CoachSession = typeof coachSessions.$inferSelect;
 export type NewCoachSession = typeof coachSessions.$inferInsert;
 export type LeaderboardEntry = typeof leaderboardEntries.$inferSelect;
 export type NewLeaderboardEntry = typeof leaderboardEntries.$inferInsert;
+export type SalesProfile = typeof salesProfiles.$inferSelect;
+export type NewSalesProfile = typeof salesProfiles.$inferInsert;

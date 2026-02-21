@@ -8,6 +8,7 @@ import { useTheme } from "next-themes";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogHeader } from "@/components/ui/dialog";
@@ -78,6 +79,77 @@ export default function SettingsPage() {
       setFormEmail(profile.email || "");
     }
   }, [profile]);
+
+  // --- Sales Profile ---
+  const profileQuery = trpc.user.getSalesProfile.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const utils = trpc.useUtils();
+
+  const updateProfileMutation = trpc.user.updateSalesProfile.useMutation({
+    onSuccess: () => {
+      toast(t("salesProfile.saveSuccess"), "success");
+      utils.user.getSalesProfile.invalidate();
+    },
+    onError: (err) => {
+      toast(err.message, "error");
+    },
+  });
+
+  const [salesForm, setSalesForm] = useState({
+    jobTitle: "",
+    companyName: "",
+    companyDescription: "",
+    productsServices: "",
+    industry: "",
+    targetAudience: "",
+    uniqueSellingPoints: "",
+    yearsExperience: "",
+    communicationStyle: "",
+    personalBio: "",
+    phone: "",
+    lineId: "",
+    linkedinUrl: "",
+  });
+
+  useEffect(() => {
+    if (profileQuery.data) {
+      setSalesForm({
+        jobTitle: profileQuery.data.jobTitle ?? "",
+        companyName: profileQuery.data.companyName ?? "",
+        companyDescription: profileQuery.data.companyDescription ?? "",
+        productsServices: profileQuery.data.productsServices ?? "",
+        industry: profileQuery.data.industry ?? "",
+        targetAudience: profileQuery.data.targetAudience ?? "",
+        uniqueSellingPoints: profileQuery.data.uniqueSellingPoints ?? "",
+        yearsExperience: profileQuery.data.yearsExperience?.toString() ?? "",
+        communicationStyle: profileQuery.data.communicationStyle ?? "",
+        personalBio: profileQuery.data.personalBio ?? "",
+        phone: profileQuery.data.phone ?? "",
+        lineId: profileQuery.data.lineId ?? "",
+        linkedinUrl: profileQuery.data.linkedinUrl ?? "",
+      });
+    }
+  }, [profileQuery.data]);
+
+  const handleSaveSalesProfile = () => {
+    updateProfileMutation.mutate({
+      jobTitle: salesForm.jobTitle.trim() || undefined,
+      companyName: salesForm.companyName.trim() || undefined,
+      companyDescription: salesForm.companyDescription.trim() || undefined,
+      productsServices: salesForm.productsServices.trim() || undefined,
+      industry: salesForm.industry.trim() || undefined,
+      targetAudience: salesForm.targetAudience.trim() || undefined,
+      uniqueSellingPoints: salesForm.uniqueSellingPoints.trim() || undefined,
+      yearsExperience: salesForm.yearsExperience ? parseInt(salesForm.yearsExperience) : undefined,
+      communicationStyle: salesForm.communicationStyle.trim() || undefined,
+      personalBio: salesForm.personalBio.trim() || undefined,
+      phone: salesForm.phone.trim() || undefined,
+      lineId: salesForm.lineId.trim() || undefined,
+      linkedinUrl: salesForm.linkedinUrl.trim() || undefined,
+    });
+  };
 
   const updateProfile = trpc.user.updateProfile.useMutation({
     onSuccess: () => {
@@ -269,6 +341,130 @@ export default function SettingsPage() {
                 </Button>
               </>
             )}
+          </CardContent>
+        </Card>
+
+        {/* Sales Profile */}
+        <Card>
+          <CardContent className="p-6 space-y-6">
+            <div>
+              <h2 className="text-lg font-semibold text-text">{t("salesProfile.title")}</h2>
+              <p className="text-sm text-text-secondary mt-1">{t("salesProfile.description")}</p>
+            </div>
+
+            {/* 基本資訊 */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Input
+                label={t("salesProfile.jobTitle")}
+                placeholder={t("salesProfile.jobTitlePlaceholder")}
+                value={salesForm.jobTitle}
+                onChange={(e) => setSalesForm(f => ({ ...f, jobTitle: e.target.value }))}
+              />
+              <Input
+                label={t("salesProfile.companyName")}
+                placeholder={t("salesProfile.companyNamePlaceholder")}
+                value={salesForm.companyName}
+                onChange={(e) => setSalesForm(f => ({ ...f, companyName: e.target.value }))}
+              />
+            </div>
+
+            <Textarea
+              label={t("salesProfile.companyDescription")}
+              placeholder={t("salesProfile.companyDescriptionPlaceholder")}
+              value={salesForm.companyDescription}
+              onChange={(e) => setSalesForm(f => ({ ...f, companyDescription: e.target.value }))}
+            />
+
+            <Textarea
+              label={t("salesProfile.productsServices")}
+              placeholder={t("salesProfile.productsServicesPlaceholder")}
+              value={salesForm.productsServices}
+              onChange={(e) => setSalesForm(f => ({ ...f, productsServices: e.target.value }))}
+            />
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Input
+                label={t("salesProfile.industry")}
+                placeholder={t("salesProfile.industryPlaceholder")}
+                value={salesForm.industry}
+                onChange={(e) => setSalesForm(f => ({ ...f, industry: e.target.value }))}
+              />
+              <Input
+                label={t("salesProfile.yearsExperience")}
+                placeholder="0"
+                type="number"
+                value={salesForm.yearsExperience}
+                onChange={(e) => setSalesForm(f => ({ ...f, yearsExperience: e.target.value }))}
+              />
+            </div>
+
+            <Textarea
+              label={t("salesProfile.targetAudience")}
+              placeholder={t("salesProfile.targetAudiencePlaceholder")}
+              value={salesForm.targetAudience}
+              onChange={(e) => setSalesForm(f => ({ ...f, targetAudience: e.target.value }))}
+            />
+
+            <Textarea
+              label={t("salesProfile.uniqueSellingPoints")}
+              placeholder={t("salesProfile.uniqueSellingPointsPlaceholder")}
+              value={salesForm.uniqueSellingPoints}
+              onChange={(e) => setSalesForm(f => ({ ...f, uniqueSellingPoints: e.target.value }))}
+            />
+
+            <Select
+              label={t("salesProfile.communicationStyle")}
+              options={[
+                { value: "professional", label: t("salesProfile.styles.professional") },
+                { value: "friendly", label: t("salesProfile.styles.friendly") },
+                { value: "consultative", label: t("salesProfile.styles.consultative") },
+                { value: "direct", label: t("salesProfile.styles.direct") },
+              ]}
+              value={salesForm.communicationStyle}
+              onChange={(e) => setSalesForm(f => ({ ...f, communicationStyle: e.target.value }))}
+            />
+
+            <Textarea
+              label={t("salesProfile.personalBio")}
+              placeholder={t("salesProfile.personalBioPlaceholder")}
+              value={salesForm.personalBio}
+              onChange={(e) => setSalesForm(f => ({ ...f, personalBio: e.target.value }))}
+            />
+
+            {/* 聯繫方式 */}
+            <div>
+              <h3 className="text-sm font-medium text-text mb-3">{t("salesProfile.contactInfo")}</h3>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <Input
+                  label={t("salesProfile.phone")}
+                  placeholder="+886-"
+                  value={salesForm.phone}
+                  onChange={(e) => setSalesForm(f => ({ ...f, phone: e.target.value }))}
+                />
+                <Input
+                  label={t("salesProfile.lineId")}
+                  placeholder="LINE ID"
+                  value={salesForm.lineId}
+                  onChange={(e) => setSalesForm(f => ({ ...f, lineId: e.target.value }))}
+                />
+                <Input
+                  label={t("salesProfile.linkedin")}
+                  placeholder="https://linkedin.com/in/"
+                  value={salesForm.linkedinUrl}
+                  onChange={(e) => setSalesForm(f => ({ ...f, linkedinUrl: e.target.value }))}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <Button
+                onClick={handleSaveSalesProfile}
+                disabled={updateProfileMutation.isPending}
+              >
+                {updateProfileMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                {t("saveChanges")}
+              </Button>
+            </div>
           </CardContent>
         </Card>
 

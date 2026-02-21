@@ -8,6 +8,13 @@
       "when": 1771574810317,
       "tag": "0000_closed_cerise",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771674724841,
+      "tag": "0001_sweet_zaladane",
+      "breakpoints": true
     }
   ]
 }

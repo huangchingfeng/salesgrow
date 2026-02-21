@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
-import { users } from '@/lib/db/schema';
+import { users, salesProfiles } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const userRouter = router({
@@ -67,4 +67,52 @@ export const userRouter = router({
 
     return updated;
   }),
+
+  getSalesProfile: protectedProcedure.query(async ({ ctx }) => {
+    const [profile] = await ctx.db
+      .select()
+      .from(salesProfiles)
+      .where(eq(salesProfiles.userId, ctx.user.id));
+    return profile ?? null;
+  }),
+
+  updateSalesProfile: protectedProcedure
+    .input(
+      z.object({
+        jobTitle: z.string().max(100).optional(),
+        companyName: z.string().max(255).optional(),
+        companyDescription: z.string().max(2000).optional(),
+        productsServices: z.string().max(3000).optional(),
+        industry: z.string().max(100).optional(),
+        targetAudience: z.string().max(1000).optional(),
+        uniqueSellingPoints: z.string().max(1000).optional(),
+        yearsExperience: z.number().int().min(0).max(99).nullable().optional(),
+        communicationStyle: z.string().max(50).optional(),
+        personalBio: z.string().max(1000).optional(),
+        phone: z.string().max(50).optional(),
+        lineId: z.string().max(100).optional(),
+        linkedinUrl: z.string().max(500).optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const [existing] = await ctx.db
+        .select({ id: salesProfiles.id })
+        .from(salesProfiles)
+        .where(eq(salesProfiles.userId, ctx.user.id));
+
+      if (existing) {
+        const [updated] = await ctx.db
+          .update(salesProfiles)
+          .set({ ...input, updatedAt: new Date() })
+          .where(eq(salesProfiles.userId, ctx.user.id))
+          .returning();
+        return updated;
+      } else {
+        const [created] = await ctx.db
+          .insert(salesProfiles)
+          .values({ ...input, userId: ctx.user.id })
+          .returning();
+        return created;
+      }
+    }),
 });

@@ -397,7 +397,40 @@
     "exportData": "Export My Data",
     "deleteAccount": "Delete Account",
     "deleteWarning": "This action is irreversible. All your data will be permanently deleted.",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "salesProfile": {
+      "title": "Sales Profile",
+      "description": "Help AI understand your background to generate personalized content.",
+      "jobTitle": "Job Title",
+      "jobTitlePlaceholder": "e.g., Sales Manager",
+      "companyName": "Company Name",
+      "companyNamePlaceholder": "e.g., Acme Corp",
+      "companyDescription": "Company Description",
+      "companyDescriptionPlaceholder": "What does your company do?",
+      "productsServices": "Products / Services",
+      "productsServicesPlaceholder": "Describe what you sell — this helps AI craft relevant pitches.",
+      "industry": "Industry",
+      "industryPlaceholder": "e.g., Technology, Finance",
+      "targetAudience": "Target Audience",
+      "targetAudiencePlaceholder": "Who are your ideal customers?",
+      "uniqueSellingPoints": "Unique Selling Points",
+      "uniqueSellingPointsPlaceholder": "What sets you apart from competitors?",
+      "yearsExperience": "Years of Experience",
+      "communicationStyle": "Communication Style",
+      "personalBio": "Personal Bio",
+      "personalBioPlaceholder": "A short introduction about yourself.",
+      "contactInfo": "Contact Information",
+      "phone": "Phone",
+      "lineId": "LINE ID",
+      "linkedin": "LinkedIn",
+      "saveSuccess": "Sales profile saved!",
+      "styles": {
+        "professional": "Professional & Formal",
+        "friendly": "Friendly & Warm",
+        "consultative": "Consultative",
+        "direct": "Direct & Assertive"
+      }
+    }
   },
   "auth": {
     "signInTitle": "Welcome back",

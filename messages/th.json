@@ -351,7 +351,40 @@
     "exportData": "ส่งออกข้อมูลของฉัน",
     "deleteAccount": "ลบบัญชี",
     "deleteWarning": "การดำเนินการนี้ไม่สามารถย้อนกลับได้ ข้อมูลทั้งหมดของคุณจะถูกลบอย่างถาวร",
-    "saveChanges": "บันทึกการเปลี่ยนแปลง"
+    "saveChanges": "บันทึกการเปลี่ยนแปลง",
+    "salesProfile": {
+      "title": "โปรไฟล์การขาย",
+      "description": "ช่วยให้ AI เข้าใจพื้นฐานของคุณเพื่อสร้างเนื้อหาที่เหมาะสม",
+      "jobTitle": "ตำแหน่ง",
+      "jobTitlePlaceholder": "เช่น ผู้จัดการฝ่ายขาย",
+      "companyName": "ชื่อบริษัท",
+      "companyNamePlaceholder": "เช่น บริษัท ABC จำกัด",
+      "companyDescription": "รายละเอียดบริษัท",
+      "companyDescriptionPlaceholder": "บริษัทของคุณทำอะไร?",
+      "productsServices": "สินค้า/บริการ",
+      "productsServicesPlaceholder": "อธิบายสิ่งที่คุณขาย AI จะใช้ในการเขียนอีเมล",
+      "industry": "อุตสาหกรรม",
+      "industryPlaceholder": "เช่น เทคโนโลยี การเงิน",
+      "targetAudience": "กลุ่มเป้าหมาย",
+      "targetAudiencePlaceholder": "ลูกค้าในอุดมคติของคุณคือใคร?",
+      "uniqueSellingPoints": "จุดขายเด่น",
+      "uniqueSellingPointsPlaceholder": "คุณแตกต่างจากคู่แข่งอย่างไร?",
+      "yearsExperience": "ประสบการณ์ (ปี)",
+      "communicationStyle": "สไตล์การสื่อสาร",
+      "personalBio": "แนะนำตัว",
+      "personalBioPlaceholder": "แนะนำตัวสั้นๆ",
+      "contactInfo": "ข้อมูลติดต่อ",
+      "phone": "โทรศัพท์",
+      "lineId": "LINE ID",
+      "linkedin": "LinkedIn",
+      "saveSuccess": "บันทึกโปรไฟล์เรียบร้อย!",
+      "styles": {
+        "professional": "มืออาชีพ",
+        "friendly": "เป็นกันเอง",
+        "consultative": "แบบที่ปรึกษา",
+        "direct": "ตรงไปตรงมา"
+      }
+    }
   },
   "auth": {
     "signInTitle": "ยินดีต้อนรับกลับ",

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { eq } from 'drizzle-orm'
 import { getCurrentUser } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { salesProfiles } from '@/lib/db/schema'
 import { aiGateway } from '@/lib/ai/gateway'
 import { buildOutreachPrompt } from '@/lib/ai/prompts/outreach-writer'
 import type { OutreachInput, APIResponse, OutreachOutput } from '@/lib/ai/types'
@@ -36,7 +39,14 @@ export async function POST(req: NextRequest) {
       language: (body.language || 'en') as OutreachInput['language'],
     }
 
-    const prompt = buildOutreachPrompt(input)
+    // 讀取業務員檔案
+    let salesProfile = null
+    if (dbUser) {
+      const [profile] = await db.select().from(salesProfiles).where(eq(salesProfiles.userId, dbUser.id))
+      salesProfile = profile ?? null
+    }
+
+    const prompt = buildOutreachPrompt(input, salesProfile)
 
     const response = await aiGateway({
       task: 'outreach',

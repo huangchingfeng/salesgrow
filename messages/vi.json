@@ -351,7 +351,40 @@
     "exportData": "Xuất dữ liệu của tôi",
     "deleteAccount": "Xóa tài khoản",
     "deleteWarning": "Hành động này không thể hoàn tác. Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn.",
-    "saveChanges": "Lưu thay đổi"
+    "saveChanges": "Lưu thay đổi",
+    "salesProfile": {
+      "title": "Hồ sơ bán hàng",
+      "description": "Giúp AI hiểu về bạn để tạo nội dung phù hợp hơn.",
+      "jobTitle": "Chức danh",
+      "jobTitlePlaceholder": "VD: Trưởng phòng kinh doanh",
+      "companyName": "Tên công ty",
+      "companyNamePlaceholder": "VD: Công ty ABC",
+      "companyDescription": "Giới thiệu công ty",
+      "companyDescriptionPlaceholder": "Công ty bạn làm gì?",
+      "productsServices": "Sản phẩm/Dịch vụ",
+      "productsServicesPlaceholder": "Mô tả sản phẩm bạn bán. AI sẽ dùng thông tin này.",
+      "industry": "Ngành nghề",
+      "industryPlaceholder": "VD: Công nghệ, Tài chính",
+      "targetAudience": "Khách hàng mục tiêu",
+      "targetAudiencePlaceholder": "Khách hàng lý tưởng của bạn?",
+      "uniqueSellingPoints": "Điểm khác biệt",
+      "uniqueSellingPointsPlaceholder": "Bạn khác gì so với đối thủ?",
+      "yearsExperience": "Năm kinh nghiệm",
+      "communicationStyle": "Phong cách giao tiếp",
+      "personalBio": "Giới thiệu bản thân",
+      "personalBioPlaceholder": "Giới thiệu ngắn về bạn.",
+      "contactInfo": "Thông tin liên hệ",
+      "phone": "Điện thoại",
+      "lineId": "LINE ID",
+      "linkedin": "LinkedIn",
+      "saveSuccess": "Đã lưu hồ sơ!",
+      "styles": {
+        "professional": "Chuyên nghiệp",
+        "friendly": "Thân thiện",
+        "consultative": "Tư vấn",
+        "direct": "Trực tiếp"
+      }
+    }
   },
   "auth": {
     "signInTitle": "Chào mừng trở lại",

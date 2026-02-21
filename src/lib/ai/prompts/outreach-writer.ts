@@ -1,6 +1,7 @@
 // 開發信撰寫 Prompt Template
 
 import type { OutreachInput, SupportedLocale } from '../types'
+import type { SalesProfile } from '@/lib/db/schema'
 
 const CULTURAL_GUIDELINES: Record<SupportedLocale, string> = {
   'en': `- Use a direct but professional tone
@@ -71,7 +72,24 @@ const TONE_INSTRUCTIONS: Record<string, string> = {
   consultative: 'Position yourself as an expert advisor. Ask thought-provoking questions.',
 }
 
-export function buildOutreachPrompt(input: OutreachInput) {
+export function buildOutreachPrompt(input: OutreachInput, salesProfile?: SalesProfile | null) {
+  const senderSection = salesProfile ? `
+ABOUT THE SENDER (use this to personalize the email):
+- Name/Company: ${salesProfile.companyName ?? 'N/A'}
+- Title: ${salesProfile.jobTitle ?? 'N/A'}
+- Products/Services offered: ${salesProfile.productsServices ?? 'Not specified'}
+- Unique advantages: ${salesProfile.uniqueSellingPoints ?? 'Not specified'}
+- Industry: ${salesProfile.industry ?? 'Not specified'}
+- Preferred communication style: ${salesProfile.communicationStyle ?? 'professional'}
+- Bio: ${salesProfile.personalBio ?? 'Not specified'}
+
+Use the sender's product/service info to craft relevant value propositions.
+Include the sender's company name naturally in the email.
+Match the sender's preferred communication style.
+${salesProfile.phone ? `Include phone: ${salesProfile.phone} in signature if appropriate.` : ''}
+${salesProfile.lineId ? `Include LINE ID: ${salesProfile.lineId} in signature if appropriate.` : ''}
+` : '';
+
   const systemPrompt = `You are a world-class B2B sales copywriter who crafts highly personalized outreach emails.
 You understand cultural nuances across different markets and adapt your writing style accordingly.
 
@@ -80,7 +98,7 @@ ${CULTURAL_GUIDELINES[input.language]}
 
 Purpose: ${PURPOSE_INSTRUCTIONS[input.purpose] ?? ''}
 Tone: ${TONE_INSTRUCTIONS[input.tone] ?? ''}
-
+${senderSection}
 IMPORTANT: Return your response as valid JSON:
 {
   "subject": "Email subject line",

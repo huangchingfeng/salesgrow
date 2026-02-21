@@ -8,6 +8,7 @@ import type {
   ChatMessage,
   CoachFeedbackOutput,
 } from '../types'
+import type { SalesProfile } from '@/lib/db/schema'
 import { aiGateway, cleanJsonResponse } from '../gateway'
 import { buildCoachRoleplayPrompt, buildInitialClientMessage } from '../prompts/coach-roleplay'
 import { buildCoachFeedbackPrompt } from '../prompts/coach-feedback'
@@ -17,6 +18,8 @@ import { calculateWeightedScore, calculateXpReward } from './scoring'
 
 // 記憶體中的 active sessions
 const activeSessions = new Map<string, CoachSessionState>()
+// 每個 session 對應的業務員檔案
+const sessionProfiles = new Map<string, SalesProfile>()
 
 /**
  * 開始新的教練 session
@@ -26,7 +29,8 @@ export function startCoachSession(
   userId: string,
   scenario: CoachScenario,
   locale: SupportedLocale,
-  culture: BusinessCulture = 'taiwan'
+  culture: BusinessCulture = 'taiwan',
+  salesProfile?: SalesProfile | null
 ): { session: CoachSessionState; initialMessage: string } {
   const scenarioConfig = getScenarioById(scenario)
   const maxTurns = scenarioConfig?.maxTurns ?? 8
@@ -50,6 +54,9 @@ export function startCoachSession(
   }
 
   activeSessions.set(sessionId, session)
+  if (salesProfile) {
+    sessionProfiles.set(sessionId, salesProfile)
+  }
 
   return { session, initialMessage }
 }
@@ -76,7 +83,8 @@ export async function processUserMessage(
   const isComplete = session.turnCount >= session.maxTurns
 
   // 用 AI gateway 產生客戶回覆
-  const promptResult = buildCoachRoleplayPrompt(session, session.scenario, session.culture, session.locale)
+  const profile = sessionProfiles.get(sessionId) ?? null
+  const promptResult = buildCoachRoleplayPrompt(session, session.scenario, session.culture, session.locale, profile)
 
   const response = await aiGateway({
     task: 'coach',
@@ -181,6 +189,7 @@ export function cleanupSessions(maxAgeMs: number = 60 * 60 * 1000): number {
   for (const [id, session] of activeSessions) {
     if (now - session.startedAt > maxAgeMs) {
       activeSessions.delete(id)
+      sessionProfiles.delete(id)
       cleaned++
     }
   }

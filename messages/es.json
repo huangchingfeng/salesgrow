@@ -351,7 +351,40 @@
     "exportData": "Exportar mis datos",
     "deleteAccount": "Eliminar cuenta",
     "deleteWarning": "Esta acción es irreversible. Todos sus datos serán eliminados permanentemente.",
-    "saveChanges": "Guardar cambios"
+    "saveChanges": "Guardar cambios",
+    "salesProfile": {
+      "title": "Perfil de ventas",
+      "description": "Ayuda a la IA a entender tu perfil para generar contenido personalizado.",
+      "jobTitle": "Cargo",
+      "jobTitlePlaceholder": "ej: Gerente de ventas",
+      "companyName": "Nombre de la empresa",
+      "companyNamePlaceholder": "ej: Acme S.A.",
+      "companyDescription": "Descripción de la empresa",
+      "companyDescriptionPlaceholder": "¿A qué se dedica tu empresa?",
+      "productsServices": "Productos/Servicios",
+      "productsServicesPlaceholder": "Describe lo que vendes. La IA usará esta info.",
+      "industry": "Industria",
+      "industryPlaceholder": "ej: Tecnología, Finanzas",
+      "targetAudience": "Público objetivo",
+      "targetAudiencePlaceholder": "¿Quiénes son tus clientes ideales?",
+      "uniqueSellingPoints": "Puntos diferenciadores",
+      "uniqueSellingPointsPlaceholder": "¿Qué te diferencia de la competencia?",
+      "yearsExperience": "Años de experiencia",
+      "communicationStyle": "Estilo de comunicación",
+      "personalBio": "Bio personal",
+      "personalBioPlaceholder": "Una breve presentación.",
+      "contactInfo": "Información de contacto",
+      "phone": "Teléfono",
+      "lineId": "LINE ID",
+      "linkedin": "LinkedIn",
+      "saveSuccess": "¡Perfil de ventas guardado!",
+      "styles": {
+        "professional": "Profesional",
+        "friendly": "Amigable",
+        "consultative": "Consultivo",
+        "direct": "Directo"
+      }
+    }
   },
   "auth": {
     "signInTitle": "Bienvenido de vuelta",

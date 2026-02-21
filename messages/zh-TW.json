@@ -397,7 +397,40 @@
     "exportData": "匯出我的資料",
     "deleteAccount": "刪除帳號",
     "deleteWarning": "此操作無法復原。你的所有資料將被永久刪除。",
-    "saveChanges": "儲存變更"
+    "saveChanges": "儲存變更",
+    "salesProfile": {
+      "title": "業務員檔案",
+      "description": "幫助 AI 了解你的背景，產出更個人化的內容。",
+      "jobTitle": "職稱",
+      "jobTitlePlaceholder": "例如：業務經理",
+      "companyName": "公司名稱",
+      "companyNamePlaceholder": "例如：台灣科技股份有限公司",
+      "companyDescription": "公司簡介",
+      "companyDescriptionPlaceholder": "你的公司做什麼？",
+      "productsServices": "產品 / 服務",
+      "productsServicesPlaceholder": "描述你賣什麼 — 這幫助 AI 撰寫精準的開發信。",
+      "industry": "產業",
+      "industryPlaceholder": "例如：科技、金融",
+      "targetAudience": "目標客群",
+      "targetAudiencePlaceholder": "你的理想客戶是誰？",
+      "uniqueSellingPoints": "獨特賣點",
+      "uniqueSellingPointsPlaceholder": "你跟競爭對手有什麼不同？",
+      "yearsExperience": "銷售年資",
+      "communicationStyle": "溝通風格",
+      "personalBio": "個人簡介",
+      "personalBioPlaceholder": "簡短的自我介紹。",
+      "contactInfo": "聯繫方式",
+      "phone": "電話",
+      "lineId": "LINE ID",
+      "linkedin": "LinkedIn",
+      "saveSuccess": "業務員檔案已儲存！",
+      "styles": {
+        "professional": "專業正式",
+        "friendly": "親切友善",
+        "consultative": "顧問式",
+        "direct": "直接有力"
+      }
+    }
   },
   "auth": {
     "signInTitle": "歡迎回來",

@@ -351,7 +351,40 @@
     "exportData": "Exporter mes données",
     "deleteAccount": "Supprimer le compte",
     "deleteWarning": "Cette action est irréversible. Toutes vos données seront définitivement supprimées.",
-    "saveChanges": "Enregistrer les modifications"
+    "saveChanges": "Enregistrer les modifications",
+    "salesProfile": {
+      "title": "Profil commercial",
+      "description": "Aidez l'IA à comprendre votre profil pour générer du contenu personnalisé.",
+      "jobTitle": "Poste",
+      "jobTitlePlaceholder": "ex : Directeur commercial",
+      "companyName": "Nom de l'entreprise",
+      "companyNamePlaceholder": "ex : Acme SAS",
+      "companyDescription": "Description de l'entreprise",
+      "companyDescriptionPlaceholder": "Que fait votre entreprise ?",
+      "productsServices": "Produits/Services",
+      "productsServicesPlaceholder": "Décrivez ce que vous vendez. L'IA utilisera ces infos.",
+      "industry": "Secteur",
+      "industryPlaceholder": "ex : Technologie, Finance",
+      "targetAudience": "Cible commerciale",
+      "targetAudiencePlaceholder": "Qui sont vos clients idéaux ?",
+      "uniqueSellingPoints": "Avantages concurrentiels",
+      "uniqueSellingPointsPlaceholder": "En quoi vous démarquez-vous ?",
+      "yearsExperience": "Années d'expérience",
+      "communicationStyle": "Style de communication",
+      "personalBio": "Bio personnelle",
+      "personalBioPlaceholder": "Courte présentation.",
+      "contactInfo": "Coordonnées",
+      "phone": "Téléphone",
+      "lineId": "LINE ID",
+      "linkedin": "LinkedIn",
+      "saveSuccess": "Profil commercial enregistré !",
+      "styles": {
+        "professional": "Professionnel",
+        "friendly": "Chaleureux",
+        "consultative": "Consultatif",
+        "direct": "Direct"
+      }
+    }
   },
   "auth": {
     "signInTitle": "Bon retour parmi nous",

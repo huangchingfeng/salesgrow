@@ -1,6 +1,7 @@
 // AI Coach 角色扮演 Prompt Template
 
 import type { CoachScenario, BusinessCulture, SupportedLocale, CoachSessionState } from '../types'
+import type { SalesProfile } from '@/lib/db/schema'
 
 const ROLEPLAY_LOCALE_INSTRUCTIONS: Record<SupportedLocale, string> = {
   'en': 'You MUST respond in English.',
@@ -96,10 +97,26 @@ export function buildCoachRoleplayPrompt(
   session: CoachSessionState,
   scenario: CoachScenario,
   culture: BusinessCulture,
-  locale: SupportedLocale
+  locale: SupportedLocale,
+  salesProfile?: SalesProfile | null
 ) {
   const cultureContext = CULTURE_CONTEXT[culture]
   const rolePrompt = SCENARIO_ROLE_PROMPTS[scenario]
+
+  const salesRepContext = salesProfile ? `
+
+THE SALESPERSON YOU'RE PRACTICING WITH:
+- Works at: ${salesProfile.companyName ?? 'a company'}
+- Title: ${salesProfile.jobTitle ?? 'sales representative'}
+- Sells: ${salesProfile.productsServices ?? 'products/services'}
+- Industry: ${salesProfile.industry ?? 'general'}
+- Experience: ${salesProfile.yearsExperience ? `${salesProfile.yearsExperience} years` : 'unknown'}
+
+As a potential client, you should:
+- Ask questions relevant to their products/services
+- Show realistic concerns about their industry
+- React naturally to their pitch based on what they sell
+` : '';
 
   const systemPrompt = `You are playing the role of a potential client in a sales training simulation.
 
@@ -107,7 +124,7 @@ ROLE: ${rolePrompt}
 
 CULTURAL CONTEXT:
 ${cultureContext}
-
+${salesRepContext}
 IMPORTANT RULES:
 1. Stay in character at all times — you ARE the client, not an AI
 2. React naturally to what the salesperson says

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { eq } from 'drizzle-orm'
 import { getCurrentUser } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { salesProfiles } from '@/lib/db/schema'
 import {
   startCoachSession,
   processUserMessage,
@@ -38,13 +41,21 @@ export async function POST(req: NextRequest) {
 
     switch (body.action) {
       case 'start': {
+        // 讀取業務員檔案
+        let salesProfile = null
+        if (dbUser) {
+          const [profile] = await db.select().from(salesProfiles).where(eq(salesProfiles.userId, dbUser.id))
+          salesProfile = profile ?? null
+        }
+
         const sessionId = crypto.randomUUID()
         const { session, initialMessage } = startCoachSession(
           sessionId,
           user.id,
           body.scenario,
           body.locale || (user.locale as SupportedLocale) || 'en',
-          body.culture || 'taiwan'
+          body.culture || 'taiwan',
+          salesProfile
         )
 
         return NextResponse.json<APIResponse<{

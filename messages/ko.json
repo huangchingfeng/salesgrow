@@ -351,7 +351,40 @@
     "exportData": "내 데이터 내보내기",
     "deleteAccount": "계정 삭제",
     "deleteWarning": "이 작업은 되돌릴 수 없습니다. 모든 데이터가 영구적으로 삭제됩니다.",
-    "saveChanges": "변경 사항 저장"
+    "saveChanges": "변경 사항 저장",
+    "salesProfile": {
+      "title": "영업 프로필",
+      "description": "AI가 맞춤형 콘텐츠를 생성할 수 있도록 배경 정보를 입력하세요.",
+      "jobTitle": "직책",
+      "jobTitlePlaceholder": "예: 영업 매니저",
+      "companyName": "회사명",
+      "companyNamePlaceholder": "예: 주식회사 〇〇",
+      "companyDescription": "회사 소개",
+      "companyDescriptionPlaceholder": "회사는 무엇을 하나요?",
+      "productsServices": "제품/서비스",
+      "productsServicesPlaceholder": "판매 내용을 설명하세요. AI가 이메일 작성에 활용합니다.",
+      "industry": "산업",
+      "industryPlaceholder": "예: IT, 금융",
+      "targetAudience": "타겟 고객",
+      "targetAudiencePlaceholder": "이상적인 고객은 누구인가요?",
+      "uniqueSellingPoints": "차별화 포인트",
+      "uniqueSellingPointsPlaceholder": "경쟁사와 다른 점은?",
+      "yearsExperience": "영업 경력",
+      "communicationStyle": "커뮤니케이션 스타일",
+      "personalBio": "자기소개",
+      "personalBioPlaceholder": "간단한 자기소개.",
+      "contactInfo": "연락처",
+      "phone": "전화번호",
+      "lineId": "LINE ID",
+      "linkedin": "LinkedIn",
+      "saveSuccess": "영업 프로필이 저장되었습니다!",
+      "styles": {
+        "professional": "프로페셔널",
+        "friendly": "친근함",
+        "consultative": "컨설팅형",
+        "direct": "직접적"
+      }
+    }
   },
   "auth": {
     "signInTitle": "다시 오신 것을 환영합니다",

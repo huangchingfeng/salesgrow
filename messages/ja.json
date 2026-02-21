@@ -351,7 +351,40 @@
     "exportData": "データをエクスポート",
     "deleteAccount": "アカウントを削除",
     "deleteWarning": "この操作は取り消せません。すべてのデータが完全に削除されます。",
-    "saveChanges": "変更を保存"
+    "saveChanges": "変更を保存",
+    "salesProfile": {
+      "title": "営業プロフィール",
+      "description": "AIがあなたの背景を理解し、パーソナライズされた内容を生成します。",
+      "jobTitle": "役職",
+      "jobTitlePlaceholder": "例：営業マネージャー",
+      "companyName": "会社名",
+      "companyNamePlaceholder": "例：株式会社〇〇",
+      "companyDescription": "会社概要",
+      "companyDescriptionPlaceholder": "御社の事業内容は？",
+      "productsServices": "製品・サービス",
+      "productsServicesPlaceholder": "販売内容を記述してください。AIが提案メールに活用します。",
+      "industry": "業界",
+      "industryPlaceholder": "例：IT、金融",
+      "targetAudience": "ターゲット顧客",
+      "targetAudiencePlaceholder": "理想的な顧客は？",
+      "uniqueSellingPoints": "差別化ポイント",
+      "uniqueSellingPointsPlaceholder": "競合との違いは？",
+      "yearsExperience": "営業経験年数",
+      "communicationStyle": "コミュニケーションスタイル",
+      "personalBio": "自己紹介",
+      "personalBioPlaceholder": "簡単な自己紹介。",
+      "contactInfo": "連絡先",
+      "phone": "電話番号",
+      "lineId": "LINE ID",
+      "linkedin": "LinkedIn",
+      "saveSuccess": "営業プロフィールを保存しました！",
+      "styles": {
+        "professional": "プロフェッショナル",
+        "friendly": "フレンドリー",
+        "consultative": "コンサルティング型",
+        "direct": "ダイレクト"
+      }
+    }
   },
   "auth": {
     "signInTitle": "おかえりなさい",
