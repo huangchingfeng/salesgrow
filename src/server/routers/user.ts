@@ -92,6 +92,10 @@ export const userRouter = router({
         phone: z.string().max(50).optional(),
         lineId: z.string().max(100).optional(),
         linkedinUrl: z.string().max(500).optional(),
+        customLinks: z.array(z.object({
+          label: z.string().max(50),
+          url: z.string().max(500),
+        })).max(10).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {

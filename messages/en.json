@@ -436,6 +436,16 @@
       "phone": "Phone",
       "lineId": "LINE ID",
       "linkedin": "LinkedIn",
+      "customLinks": "Custom Links",
+      "customLinksDesc": "Add your social media or other contact channels",
+      "addLink": "Add Link",
+      "linkLabel": "Platform",
+      "linkUrl": "Link or Account",
+      "maxLinks": "Maximum {max} links",
+      "platformSuggestions": {
+        "newsletter": "Newsletter",
+        "website": "Personal Website"
+      },
       "saveSuccess": "Sales profile saved!",
       "styles": {
         "professional": "Professional & Formal",

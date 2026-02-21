@@ -390,6 +390,16 @@
       "phone": "Điện thoại",
       "lineId": "LINE ID",
       "linkedin": "LinkedIn",
+      "customLinks": "Liên kết tùy chỉnh",
+      "customLinksDesc": "Thêm mạng xã hội hoặc kênh liên lạc khác",
+      "addLink": "Thêm liên kết",
+      "linkLabel": "Nền tảng",
+      "linkUrl": "Liên kết hoặc tài khoản",
+      "maxLinks": "Tối đa {max} liên kết",
+      "platformSuggestions": {
+        "newsletter": "Bản tin",
+        "website": "Trang web cá nhân"
+      },
       "saveSuccess": "Đã lưu hồ sơ!",
       "styles": {
         "professional": "Chuyên nghiệp",

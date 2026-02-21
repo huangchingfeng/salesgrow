@@ -111,6 +111,7 @@ export default function SettingsPage() {
     phone: "",
     lineId: "",
     linkedinUrl: "",
+    customLinks: [] as { label: string; url: string }[],
   });
 
   useEffect(() => {
@@ -129,6 +130,7 @@ export default function SettingsPage() {
         phone: profileQuery.data.phone ?? "",
         lineId: profileQuery.data.lineId ?? "",
         linkedinUrl: profileQuery.data.linkedinUrl ?? "",
+        customLinks: (profileQuery.data.customLinks as { label: string; url: string }[] | null) ?? [],
       });
     }
   }, [profileQuery.data]);
@@ -148,6 +150,7 @@ export default function SettingsPage() {
       phone: salesForm.phone.trim() || undefined,
       lineId: salesForm.lineId.trim() || undefined,
       linkedinUrl: salesForm.linkedinUrl.trim() || undefined,
+      customLinks: salesForm.customLinks.filter(l => l.label.trim() && l.url.trim()),
     });
   };
 
@@ -454,6 +457,104 @@ export default function SettingsPage() {
                   onChange={(e) => setSalesForm(f => ({ ...f, linkedinUrl: e.target.value }))}
                 />
               </div>
+            </div>
+
+            {/* 自訂連結 */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-medium text-text">{t("salesProfile.customLinks")}</h3>
+                  <p className="text-xs text-text-muted mt-0.5">{t("salesProfile.customLinksDesc")}</p>
+                </div>
+                {salesForm.customLinks.length < 10 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setSalesForm(f => ({
+                      ...f,
+                      customLinks: [...f.customLinks, { label: "", url: "" }],
+                    }))}
+                  >
+                    + {t("salesProfile.addLink")}
+                  </Button>
+                )}
+              </div>
+
+              {/* 快速新增常用平台 */}
+              {salesForm.customLinks.length < 10 && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {["WhatsApp", "Instagram", "YouTube", "Facebook", "X / Twitter", "WeChat", t("salesProfile.platformSuggestions.newsletter"), t("salesProfile.platformSuggestions.website")].map((platform) => {
+                    const alreadyAdded = salesForm.customLinks.some(
+                      (l) => l.label.toLowerCase() === platform.toLowerCase()
+                    );
+                    if (alreadyAdded) return null;
+                    return (
+                      <button
+                        key={platform}
+                        type="button"
+                        onClick={() =>
+                          setSalesForm((f) => ({
+                            ...f,
+                            customLinks: [...f.customLinks, { label: platform, url: "" }],
+                          }))
+                        }
+                        className="rounded-full border border-border px-3 py-1 text-xs text-text-secondary hover:bg-bg-muted hover:text-text transition-colors"
+                      >
+                        + {platform}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* 已新增的連結列表 */}
+              {salesForm.customLinks.length > 0 && (
+                <div className="space-y-2">
+                  {salesForm.customLinks.map((link, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <Input
+                        placeholder={t("salesProfile.linkLabel")}
+                        value={link.label}
+                        onChange={(e) => {
+                          const updated = [...salesForm.customLinks];
+                          updated[index] = { ...updated[index], label: e.target.value };
+                          setSalesForm(f => ({ ...f, customLinks: updated }));
+                        }}
+                        className="w-1/3"
+                      />
+                      <Input
+                        placeholder={t("salesProfile.linkUrl")}
+                        value={link.url}
+                        onChange={(e) => {
+                          const updated = [...salesForm.customLinks];
+                          updated[index] = { ...updated[index], url: e.target.value };
+                          setSalesForm(f => ({ ...f, customLinks: updated }));
+                        }}
+                        className="flex-1"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSalesForm(f => ({
+                            ...f,
+                            customLinks: f.customLinks.filter((_, i) => i !== index),
+                          }));
+                        }}
+                        className="rounded p-1.5 text-text-muted hover:bg-danger-light hover:text-danger transition-colors shrink-0"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {salesForm.customLinks.length >= 10 && (
+                <p className="text-xs text-text-muted mt-2">
+                  {t("salesProfile.maxLinks", { max: 10 })}
+                </p>
+              )}
             </div>
 
             <div className="flex justify-end pt-2">

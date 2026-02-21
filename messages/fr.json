@@ -390,6 +390,16 @@
       "phone": "Téléphone",
       "lineId": "LINE ID",
       "linkedin": "LinkedIn",
+      "customLinks": "Liens personnalisés",
+      "customLinksDesc": "Ajoutez vos réseaux sociaux ou autres canaux de contact",
+      "addLink": "Ajouter un lien",
+      "linkLabel": "Plateforme",
+      "linkUrl": "Lien ou compte",
+      "maxLinks": "Maximum {max} liens",
+      "platformSuggestions": {
+        "newsletter": "Newsletter",
+        "website": "Site personnel"
+      },
       "saveSuccess": "Profil commercial enregistré !",
       "styles": {
         "professional": "Professionnel",

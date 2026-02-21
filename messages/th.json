@@ -390,6 +390,16 @@
       "phone": "โทรศัพท์",
       "lineId": "LINE ID",
       "linkedin": "LinkedIn",
+      "customLinks": "ลิงก์กำหนดเอง",
+      "customLinksDesc": "เพิ่มโซเชียลมีเดียหรือช่องทางติดต่ออื่นๆ",
+      "addLink": "เพิ่มลิงก์",
+      "linkLabel": "แพลตฟอร์ม",
+      "linkUrl": "ลิงก์หรือบัญชี",
+      "maxLinks": "สูงสุด {max} ลิงก์",
+      "platformSuggestions": {
+        "newsletter": "จดหมายข่าว",
+        "website": "เว็บไซต์ส่วนตัว"
+      },
       "saveSuccess": "บันทึกโปรไฟล์เรียบร้อย!",
       "styles": {
         "professional": "มืออาชีพ",

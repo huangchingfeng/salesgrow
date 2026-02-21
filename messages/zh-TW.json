@@ -436,6 +436,16 @@
       "phone": "電話",
       "lineId": "LINE ID",
       "linkedin": "LinkedIn",
+      "customLinks": "自訂連結",
+      "customLinksDesc": "新增你的社群媒體或其他聯繫方式",
+      "addLink": "新增連結",
+      "linkLabel": "平台名稱",
+      "linkUrl": "連結或帳號",
+      "maxLinks": "最多新增 {max} 個連結",
+      "platformSuggestions": {
+        "newsletter": "電子報",
+        "website": "個人網站"
+      },
       "saveSuccess": "業務員檔案已儲存！",
       "styles": {
         "professional": "專業正式",

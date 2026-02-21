@@ -390,6 +390,16 @@
       "phone": "전화번호",
       "lineId": "LINE ID",
       "linkedin": "LinkedIn",
+      "customLinks": "사용자 정의 링크",
+      "customLinksDesc": "소셜 미디어 또는 기타 연락처 추가",
+      "addLink": "링크 추가",
+      "linkLabel": "플랫폼",
+      "linkUrl": "링크 또는 계정",
+      "maxLinks": "최대 {max}개 링크",
+      "platformSuggestions": {
+        "newsletter": "뉴스레터",
+        "website": "개인 웹사이트"
+      },
       "saveSuccess": "영업 프로필이 저장되었습니다!",
       "styles": {
         "professional": "프로페셔널",

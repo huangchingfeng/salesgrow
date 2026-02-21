@@ -390,6 +390,16 @@
       "phone": "電話番号",
       "lineId": "LINE ID",
       "linkedin": "LinkedIn",
+      "customLinks": "カスタムリンク",
+      "customLinksDesc": "SNSやその他の連絡先を追加",
+      "addLink": "リンクを追加",
+      "linkLabel": "プラットフォーム",
+      "linkUrl": "リンクまたはアカウント",
+      "maxLinks": "最大{max}件まで",
+      "platformSuggestions": {
+        "newsletter": "ニュースレター",
+        "website": "個人サイト"
+      },
       "saveSuccess": "営業プロフィールを保存しました！",
       "styles": {
         "professional": "プロフェッショナル",

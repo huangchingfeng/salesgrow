@@ -88,6 +88,7 @@ Include the sender's company name naturally in the email.
 Match the sender's preferred communication style.
 ${salesProfile.phone ? `Include phone: ${salesProfile.phone} in signature if appropriate.` : ''}
 ${salesProfile.lineId ? `Include LINE ID: ${salesProfile.lineId} in signature if appropriate.` : ''}
+${salesProfile.customLinks?.length ? `Additional contact channels the sender uses:\n${(salesProfile.customLinks as { label: string; url: string }[]).map(l => `- ${l.label}: ${l.url}`).join('\n')}\nInclude relevant contact channels in the email signature if appropriate.` : ''}
 ` : '';
 
   const systemPrompt = `You are a world-class B2B sales copywriter who crafts highly personalized outreach emails.

@@ -198,6 +198,7 @@ export const salesProfiles = pgTable('sales_profiles', {
   phone: varchar('phone', { length: 50 }),
   lineId: varchar('line_id', { length: 100 }),
   linkedinUrl: text('linkedin_url'),
+  customLinks: jsonb('custom_links').$type<{ label: string; url: string }[]>().default([]),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
