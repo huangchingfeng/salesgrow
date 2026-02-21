@@ -57,6 +57,17 @@ const PIPELINE_STAGES: PipelineStage[] = [
   "closed_lost",
 ];
 
+// DB enum (snake_case) → i18n key (camelCase)
+const STAGE_I18N_KEY: Record<PipelineStage, string> = {
+  lead: "lead",
+  contacted: "contacted",
+  meeting: "meeting",
+  proposal: "proposal",
+  negotiation: "negotiation",
+  closed_won: "closedWon",
+  closed_lost: "closedLost",
+};
+
 interface ClientFormData {
   companyName: string;
   website: string;
@@ -173,7 +184,7 @@ export default function ClientsPage() {
     () =>
       PIPELINE_STAGES.map((s) => ({
         value: s,
-        label: t(`stages.${s}`),
+        label: t(`stages.${STAGE_I18N_KEY[s]}`),
       })),
     [t]
   );
@@ -324,7 +335,7 @@ export default function ClientsPage() {
                   {/* Badges */}
                   <div className="flex flex-wrap gap-1.5">
                     <Badge variant={STAGE_BADGE_VARIANT[client.pipelineStage as PipelineStage] ?? "secondary"}>
-                      {t(`stages.${client.pipelineStage}`)}
+                      {t(`stages.${STAGE_I18N_KEY[client.pipelineStage as PipelineStage]}`)}
                     </Badge>
                     {client.industry && (
                       <Badge variant="outline">{client.industry}</Badge>
