@@ -521,7 +521,7 @@ export default function SettingsPage() {
                           updated[index] = { ...updated[index], label: e.target.value };
                           setSalesForm(f => ({ ...f, customLinks: updated }));
                         }}
-                        className="w-1/3"
+                        className="w-40 shrink-0"
                       />
                       <Input
                         placeholder={t("salesProfile.linkUrl")}
@@ -531,7 +531,7 @@ export default function SettingsPage() {
                           updated[index] = { ...updated[index], url: e.target.value };
                           setSalesForm(f => ({ ...f, customLinks: updated }));
                         }}
-                        className="flex-1"
+                        className="flex-1 min-w-0"
                       />
                       <button
                         type="button"
