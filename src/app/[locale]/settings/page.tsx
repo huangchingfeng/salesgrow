@@ -278,10 +278,10 @@ export default function SettingsPage() {
 
   // --- Notification items config ---
   const notificationItems = [
-    { key: "follow-up-reminders", label: "Follow-up reminders", description: "Get notified when a follow-up is due" },
-    { key: "daily-tasks", label: "Daily tasks", description: "Receive daily task reminders" },
-    { key: "achievement-unlocked", label: "Achievement unlocked", description: "Celebrate when you unlock achievements" },
-    { key: "weekly-report", label: "Weekly report", description: "Get a weekly summary of your progress" },
+    { key: "follow-up-reminders", label: t("notifyFollowUp"), description: t("notifyFollowUpDesc") },
+    { key: "daily-tasks", label: t("notifyDailyTasks"), description: t("notifyDailyTasksDesc") },
+    { key: "achievement-unlocked", label: t("notifyAchievement"), description: t("notifyAchievementDesc") },
+    { key: "weekly-report", label: t("notifyWeeklyReport"), description: t("notifyWeeklyReportDesc") },
   ];
 
   if (!isAuthenticated) {
@@ -318,12 +318,12 @@ export default function SettingsPage() {
               <>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Input
-                    label="Name"
+                    label={t("accountName")}
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                   />
                   <Input
-                    label="Email"
+                    label={t("accountEmail")}
                     value={formEmail}
                     type="email"
                     disabled
@@ -478,7 +478,7 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent>
             <Select
-              label="Interface Language"
+              label={t("interfaceLanguage")}
               options={languageOptions}
               value={locale}
               onChange={handleLanguageChange}
@@ -564,8 +564,8 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-text">Analytics</p>
-                <p className="text-xs text-text-muted">Help us improve with anonymous usage data</p>
+                <p className="text-sm font-medium text-text">{t("analyticsLabel")}</p>
+                <p className="text-xs text-text-muted">{t("analyticsDesc")}</p>
               </div>
               <label className="relative inline-flex cursor-pointer items-center">
                 <input
