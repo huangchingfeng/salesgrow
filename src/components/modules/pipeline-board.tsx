@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,7 @@ interface PipelineBoardProps {
 }
 
 export function PipelineBoard({ stages, className, onMoveDeal }: PipelineBoardProps) {
+  const t = useTranslations("followUp");
   const [selectedDeal, setSelectedDeal] = useState<{ id: string; stageKey: string } | null>(null);
 
   const handleDealClick = (dealId: string, stageKey: string) => {
@@ -86,12 +88,12 @@ export function PipelineBoard({ stages, className, onMoveDeal }: PipelineBoardPr
                             {deal.value}
                           </span>
                           <span className="text-xs text-text-muted">
-                            {deal.daysInStage}d
+                            {t("daysInStage", { days: deal.daysInStage })}
                           </span>
                         </div>
                         {isSelected && onMoveDeal && (
                           <p className="text-xs text-primary mt-1.5 flex items-center gap-0.5">
-                            Click a stage to move <ChevronRight className="h-3 w-3" />
+                            {t("clickToMove")} <ChevronRight className="h-3 w-3" />
                           </p>
                         )}
                       </CardContent>
@@ -103,7 +105,7 @@ export function PipelineBoard({ stages, className, onMoveDeal }: PipelineBoardPr
                     "rounded-lg border border-dashed border-border p-4 text-center text-xs text-text-muted",
                     isDropTarget && "border-primary text-primary"
                   )}>
-                    {isDropTarget ? "Move here" : "No deals"}
+                    {isDropTarget ? t("moveHere") : t("noDeals")}
                   </div>
                 )}
               </div>

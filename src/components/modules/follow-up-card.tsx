@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +31,7 @@ export function FollowUpCard({
   onSendMessage,
   className,
 }: FollowUpCardProps) {
+  const t = useTranslations("followUp");
   const isOverdue = daysAgo > 7;
 
   return (
@@ -46,14 +48,14 @@ export function FollowUpCard({
             </div>
             <div className="flex items-center gap-1 text-xs text-text-muted mb-2">
               <Clock className="h-3 w-3" />
-              <span>Last contact: {daysAgo} days ago</span>
+              <span>{daysAgo === 0 ? t("todayContact") : t("daysAgo", { days: daysAgo })}</span>
             </div>
 
             {/* Suggested message */}
             <div className="rounded-lg bg-bg-muted p-3 mb-3">
               <p className="text-xs text-text-muted mb-1 flex items-center gap-1">
                 <MessageSquare className="h-3 w-3" />
-                Suggested message
+                {t("suggestedMessage")}
               </p>
               <p className="text-sm text-text-secondary">{suggestedMessage}</p>
             </div>
@@ -61,12 +63,12 @@ export function FollowUpCard({
             <div className="flex gap-2">
               <Button size="sm" onClick={onSendMessage} className="flex-1">
                 <MessageSquare className="h-3.5 w-3.5" />
-                Send
+                {t("send")}
               </Button>
-              <Button size="sm" variant="outline" onClick={onMarkDone}>
+              <Button size="sm" variant="outline" onClick={onMarkDone} aria-label={t("markDone")}>
                 <Check className="h-3.5 w-3.5" />
               </Button>
-              <Button size="sm" variant="ghost" onClick={onSnooze}>
+              <Button size="sm" variant="ghost" onClick={onSnooze} aria-label={t("snooze")}>
                 <BellOff className="h-3.5 w-3.5" />
               </Button>
             </div>

@@ -303,6 +303,12 @@
     "noDraftMessage": "尚無草稿訊息。",
     "demoDataNotice": "目前顯示示範資料，登入後即可查看您的真實跟進記錄。",
     "emptyPipeline": "銷售管線尚無客戶，請先到「客戶研究」頁面新增客戶。",
+    "send": "發送",
+    "todayContact": "今天聯繫",
+    "daysInStage": "{days} 天",
+    "clickToMove": "點擊目標階段以移動",
+    "moveHere": "移到這裡",
+    "noDeals": "尚無交易",
     "pipeline": {
       "title": "銷售管線",
       "lead": "潛在客戶",

@@ -317,6 +317,12 @@
     "noDraftMessage": "No draft message available.",
     "demoDataNotice": "Demo data shown. Sign in to see your actual follow-up records.",
     "emptyPipeline": "No clients in pipeline yet. Go to Research to add clients.",
+    "send": "Send",
+    "todayContact": "Contacted today",
+    "daysInStage": "{days}d",
+    "clickToMove": "Click a stage to move",
+    "moveHere": "Move here",
+    "noDeals": "No deals",
     "pipeline": {
       "title": "Sales Pipeline",
       "lead": "Lead",

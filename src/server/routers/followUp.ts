@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { followUps } from '@/lib/db/schema';
-import { eq, and, lte, gte, lt, desc } from 'drizzle-orm';
+import { eq, and, lte, gte, gt, lt, desc } from 'drizzle-orm';
 
 const priorities = ['high', 'medium', 'low'] as const;
 
@@ -44,13 +44,14 @@ export const followUpRouter = router({
       futureDate.setDate(futureDate.getDate() + (input?.days ?? 7));
       const futureStr = futureDate.toISOString().split('T')[0];
 
+      // gt (not gte) to avoid overlap with listToday
       return ctx.db
         .select()
         .from(followUps)
         .where(
           and(
             eq(followUps.userId, ctx.user.id),
-            gte(followUps.dueDate, today),
+            gt(followUps.dueDate, today),
             lte(followUps.dueDate, futureStr),
             eq(followUps.status, 'pending')
           )
@@ -96,9 +97,10 @@ export const followUpRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      // Keep status as 'pending' so it reappears on the new due date
       const [updated] = await ctx.db
         .update(followUps)
-        .set({ status: 'snoozed', dueDate: input.newDueDate })
+        .set({ dueDate: input.newDueDate })
         .where(
           and(eq(followUps.id, input.id), eq(followUps.userId, ctx.user.id))
         )
