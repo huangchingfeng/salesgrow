@@ -32,7 +32,7 @@ IMPORTANT: Return your response as valid JSON:
   "actionItems": [
     { "action": "specific action to take", "deadline": "suggested deadline or null", "priority": "high" | "medium" | "low" }
   ],
-  "closeProbability": 65,
+  "closeProbability": <integer 0-100, estimate based on meeting signals>,
   "keyQuotes": ["important direct quote from the client"]
 }`
 

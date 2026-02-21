@@ -242,7 +242,7 @@
     "recordVoice": "錄製語音筆記",
     "recording": "錄音中... {duration}",
     "stopRecording": "停止錄音",
-    "processing": "正在處理你的語音筆記...",
+    "processing": "AI 正在分析中...",
     "clientName": "客戶名稱",
     "visitDate": "拜訪日期",
     "summary": "會議摘要",
@@ -253,16 +253,35 @@
       "positive": "正面",
       "neutral": "中性",
       "negative": "負面",
-      "interested": "有興趣"
+      "interested": "有興趣",
+      "mixed": "複雜"
+    },
+    "priorities": {
+      "high": "高",
+      "medium": "中",
+      "low": "低"
     },
     "save": "儲存拜訪紀錄",
+    "saveSuccess": "拜訪紀錄已儲存！",
+    "retry": "重試",
     "history": "拜訪歷史",
     "meetingNotes": "會議筆記",
     "aiAnalysis": "AI 分析",
     "micDenied": "麥克風存取被拒絕。請在瀏覽器設定中允許麥克風權限。",
     "processingVoice": "正在處理您的語音記錄...",
     "tapToStop": "點擊停止錄音",
-    "tapToStart": "點擊開始錄音"
+    "tapToStart": "點擊開始錄音",
+    "notesRequired": "請輸入會議筆記",
+    "noSpeechDetected": "未偵測到語音，請改用文字輸入。",
+    "selectClientFirst": "請先選擇客戶。",
+    "selectClient": "選擇客戶...",
+    "liveTranscript": "即時語音轉文字：",
+    "startTranscription": "開始即時轉錄",
+    "stopTranscription": "停止轉錄",
+    "demoDataNotice": "目前顯示示範資料，登入後即可查看您的真實拜訪記錄。",
+    "emptyHistory": "尚無拜訪記錄，立即新增第一筆拜訪！",
+    "unknownClient": "未知客戶",
+    "noSummary": "無摘要"
   },
   "followUp": {
     "title": "跟進追蹤",
@@ -270,10 +289,20 @@
     "overdue": "已逾期",
     "upcoming": "即將到期",
     "noOverdue": "沒有逾期的跟進項目——做得好！",
+    "noToday": "今日沒有待跟進項目，全部搞定了！",
+    "noUpcoming": "未來 7 天沒有排定的跟進。",
     "daysAgo": "上次聯繫：{days} 天前",
     "suggestedMessage": "建議訊息",
     "markDone": "標記完成",
+    "markDoneSuccess": "跟進已完成！",
     "snooze": "延後提醒",
+    "snoozeSuccess": "已延後 3 天提醒",
+    "pipelineUpdated": "銷售管線已更新！",
+    "errorGeneric": "操作失敗，請再試一次。",
+    "unknownClient": "未知客戶",
+    "noDraftMessage": "尚無草稿訊息。",
+    "demoDataNotice": "目前顯示示範資料，登入後即可查看您的真實跟進記錄。",
+    "emptyPipeline": "銷售管線尚無客戶，請先到「客戶研究」頁面新增客戶。",
     "pipeline": {
       "title": "銷售管線",
       "lead": "潛在客戶",
@@ -281,7 +310,9 @@
       "meeting": "會議中",
       "proposal": "提案中",
       "negotiation": "議價中",
-      "closed": "已成交"
+      "closed": "已成交",
+      "closedWon": "已成交",
+      "closedLost": "未成交"
     }
   },
   "coach": {

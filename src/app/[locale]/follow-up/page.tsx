@@ -14,15 +14,15 @@ import { trpc } from "@/lib/trpc";
 import { useToast } from "@/components/ui/toast";
 import { Bell, AlertTriangle, Calendar, Inbox } from "lucide-react";
 
-// Pipeline stage metadata
-const STAGE_CONFIG: Record<string, { label: string; color: string }> = {
-  lead: { label: "Lead", color: "#3B82F6" },
-  contacted: { label: "Contacted", color: "#8B5CF6" },
-  meeting: { label: "Meeting", color: "#F59E0B" },
-  proposal: { label: "Proposal", color: "#22C55E" },
-  negotiation: { label: "Negotiation", color: "#EC4899" },
-  closed_won: { label: "Closed Won", color: "#10B981" },
-  closed_lost: { label: "Closed Lost", color: "#6B7280" },
+// Pipeline stage colors (labels come from i18n)
+const STAGE_COLORS: Record<string, string> = {
+  lead: "#3B82F6",
+  contacted: "#8B5CF6",
+  meeting: "#F59E0B",
+  proposal: "#22C55E",
+  negotiation: "#EC4899",
+  closed_won: "#10B981",
+  closed_lost: "#6B7280",
 };
 
 function daysBetween(dateStr: string): number {
@@ -55,35 +55,35 @@ export default function FollowUpPage() {
   // --- Mutations ---
   const markDone = trpc.followUp.markDone.useMutation({
     onSuccess: () => {
-      toast("Follow-up completed!", "success");
+      toast(t("markDoneSuccess"), "success");
       utils.followUp.listToday.invalidate();
       utils.followUp.listOverdue.invalidate();
       utils.followUp.listUpcoming.invalidate();
     },
     onError: (err) => {
-      toast(err.message || "Failed to mark as done", "error");
+      toast(err.message || t("errorGeneric"), "error");
     },
   });
 
   const snooze = trpc.followUp.snooze.useMutation({
     onSuccess: () => {
-      toast("Snoozed for 3 days", "success");
+      toast(t("snoozeSuccess"), "success");
       utils.followUp.listToday.invalidate();
       utils.followUp.listOverdue.invalidate();
       utils.followUp.listUpcoming.invalidate();
     },
     onError: (err) => {
-      toast(err.message || "Failed to snooze", "error");
+      toast(err.message || t("errorGeneric"), "error");
     },
   });
 
   const updatePipelineStage = trpc.clients.updatePipelineStage.useMutation({
     onSuccess: () => {
-      toast("Pipeline stage updated!", "success");
+      toast(t("pipelineUpdated"), "success");
       utils.clients.list.invalidate();
     },
     onError: (err) => {
-      toast(err.message || "Failed to update stage", "error");
+      toast(err.message || t("errorGeneric"), "error");
     },
   });
 
@@ -128,10 +128,20 @@ export default function FollowUpPage() {
       }
     }
 
+    const stageLabels: Record<string, string> = {
+      lead: t("pipeline.lead"),
+      contacted: t("pipeline.contacted"),
+      meeting: t("pipeline.meeting"),
+      proposal: t("pipeline.proposal"),
+      negotiation: t("pipeline.negotiation"),
+      closed_won: t("pipeline.closedWon"),
+      closed_lost: t("pipeline.closedLost"),
+    };
+
     return stageKeys.map((key) => ({
       key,
-      label: STAGE_CONFIG[key]?.label ?? key,
-      color: STAGE_CONFIG[key]?.color ?? "#999",
+      label: stageLabels[key] ?? key,
+      color: STAGE_COLORS[key] ?? "#999",
       deals: grouped[key],
     }));
   }, [clientsQuery.data]);
@@ -170,10 +180,10 @@ export default function FollowUpPage() {
           return (
             <FollowUpCard
               key={item.id}
-              clientName={client?.companyName ?? "Unknown Client"}
+              clientName={client?.companyName ?? t("unknownClient")}
               daysAgo={daysBetween(item.dueDate)}
-              suggestedMessage={item.messageDraft ?? "No draft message available."}
-              stage={STAGE_CONFIG[client?.pipelineStage ?? ""]?.label ?? "Unknown"}
+              suggestedMessage={item.messageDraft ?? t("noDraftMessage")}
+              stage={t(`pipeline.${client?.pipelineStage ?? "lead"}`) || client?.pipelineStage || ""}
               onMarkDone={() => markDone.mutate({ id: item.id })}
               onSnooze={() => handleSnooze(item.id)}
             />
@@ -195,7 +205,7 @@ export default function FollowUpPage() {
 
         {!isAuthenticated && (
           <div className="rounded-lg border border-primary/30 bg-primary-light p-3 text-center text-sm text-primary">
-            Demo data shown. Sign in to see your real follow-ups.
+            {t("demoDataNotice")}
           </div>
         )}
 
@@ -229,7 +239,7 @@ export default function FollowUpPage() {
             {renderFollowUpList(
               todayQuery.data,
               todayQuery.isLoading,
-              "No follow-ups due today. You're all caught up!"
+              t("noToday")
             )}
           </TabPanel>
 
@@ -245,7 +255,7 @@ export default function FollowUpPage() {
             {renderFollowUpList(
               upcomingQuery.data,
               upcomingQuery.isLoading,
-              "No upcoming follow-ups in the next 7 days."
+              t("noUpcoming")
             )}
           </TabPanel>
         </Tabs>
@@ -262,7 +272,7 @@ export default function FollowUpPage() {
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <Inbox className="h-10 w-10 text-text-muted mb-3" />
                 <p className="text-sm text-text-secondary">
-                  No clients in your pipeline yet. Add clients from the Client Research page.
+                  {t("emptyPipeline")}
                 </p>
               </div>
             ) : (

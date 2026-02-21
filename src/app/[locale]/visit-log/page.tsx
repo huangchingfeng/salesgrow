@@ -70,7 +70,12 @@ export default function VisitLogPage() {
     const recognition = new SR();
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = locale === "zh" ? "zh-TW" : "en-US";
+    const langMap: Record<string, string> = {
+      "zh-TW": "zh-TW", "zh-CN": "zh-CN", "ja": "ja-JP",
+      "ko": "ko-KR", "th": "th-TH", "vi": "vi-VN",
+      "ms": "ms-MY", "id": "id-ID",
+    };
+    recognition.lang = langMap[locale] || "en-US";
 
     let finalText = "";
     recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -113,7 +118,7 @@ export default function VisitLogPage() {
 
   const createVisitLog = trpc.visitLog.create.useMutation({
     onSuccess: () => {
-      toast(t("save") + " - Success!", "success");
+      toast(t("saveSuccess"), "success");
       utils.visitLog.list.invalidate();
       setResult(null);
       setTextNotes("");
@@ -187,13 +192,13 @@ export default function VisitLogPage() {
     if (liveTranscript.trim()) {
       await summarizeTranscript(liveTranscript.trim());
     } else {
-      toast("No speech detected. Please try typing your notes instead.", "error");
+      toast(t("noSpeechDetected"), "error");
     }
   };
 
   const handleTextSubmit = async () => {
     if (!textNotes.trim()) {
-      toast(t("notesRequired") || "Please enter your notes", "error");
+      toast(t("notesRequired"), "error");
       return;
     }
     await summarizeTranscript(textNotes);
@@ -201,7 +206,7 @@ export default function VisitLogPage() {
 
   const handleSaveVisit = () => {
     if (!selectedClientId) {
-      toast("Please select a client first.", "error");
+      toast(t("selectClientFirst"), "error");
       return;
     }
     if (!result) return;
@@ -236,7 +241,7 @@ export default function VisitLogPage() {
                 ) : (
                   <Select
                     label={t("clientName")}
-                    placeholder="Select a client..."
+                    placeholder={t("selectClient")}
                     options={clientOptions}
                     value={selectedClientId}
                     onChange={(e) => setSelectedClientId(e.target.value)}
@@ -279,7 +284,7 @@ export default function VisitLogPage() {
                     {/* Live transcript display */}
                     {liveTranscript && (
                       <div className="mt-3 w-full rounded-lg bg-bg-muted p-3">
-                        <p className="text-xs text-text-muted mb-1">Live transcript:</p>
+                        <p className="text-xs text-text-muted mb-1">{t("liveTranscript")}</p>
                         <p className="text-sm text-text-secondary">{liveTranscript}</p>
                       </div>
                     )}
@@ -292,7 +297,7 @@ export default function VisitLogPage() {
                           onClick={startSpeechRecognition}
                         >
                           <Mic className="h-3.5 w-3.5" />
-                          Start Live Transcription
+                          {t("startTranscription")}
                         </Button>
                       ) : (
                         <Button
@@ -300,7 +305,7 @@ export default function VisitLogPage() {
                           variant="destructive"
                           onClick={stopSpeechRecognition}
                         >
-                          Stop Transcription
+                          {t("stopTranscription")}
                         </Button>
                       )}
                     </div>
@@ -348,7 +353,7 @@ export default function VisitLogPage() {
             <p className="text-sm text-text-secondary mb-3">{tErr("aiError")}</p>
             <Button variant="outline" onClick={handleRetry}>
               <RefreshCw className="h-4 w-4 mr-1.5" />
-              {t("save")}
+              {t("retry")}
             </Button>
           </div>
         )}
@@ -375,7 +380,7 @@ export default function VisitLogPage() {
                       <span className="text-primary font-bold">{i + 1}.</span>
                       {step.action}
                       <Badge variant={step.priority === "high" ? "destructive" : step.priority === "medium" ? "warning" : "secondary"} className="ml-auto text-xs">
-                        {step.priority}
+                        {t(`priorities.${step.priority}`)}
                       </Badge>
                     </li>
                   ))}
@@ -391,7 +396,7 @@ export default function VisitLogPage() {
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-text mb-1">{t("mood")}</h4>
-                  <Badge variant="success">{result.mood}</Badge>
+                  <Badge variant="success">{t(`moods.${result.mood}`) || result.mood}</Badge>
                 </div>
               </div>
               <Button
@@ -407,7 +412,7 @@ export default function VisitLogPage() {
                 {isSaving ? t("processing") : t("save")}
               </Button>
               {!selectedClientId && (
-                <p className="text-xs text-danger">Please select a client above before saving.</p>
+                <p className="text-xs text-danger">{t("selectClientFirst")}</p>
               )}
             </CardContent>
           </Card>
@@ -424,7 +429,7 @@ export default function VisitLogPage() {
           <CardContent>
             {!isAuthenticated ? (
               <div className="rounded-lg border border-primary/30 bg-primary-light p-3 text-center text-sm text-primary">
-                Demo data shown. Sign in to see your real visit history.
+                {t("demoDataNotice")}
               </div>
             ) : visitHistoryQuery.isLoading ? (
               <div className="space-y-3">
@@ -436,7 +441,7 @@ export default function VisitLogPage() {
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <Inbox className="h-10 w-10 text-text-muted mb-3" />
                 <p className="text-sm text-text-secondary">
-                  No visits recorded yet. Start by recording your first client visit!
+                  {t("emptyHistory")}
                 </p>
               </div>
             ) : (
@@ -449,12 +454,12 @@ export default function VisitLogPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <p className="text-sm font-medium text-text">
-                          {clientNameMap.get(visit.clientId) ?? "Unknown Client"}
+                          {clientNameMap.get(visit.clientId) ?? t("unknownClient")}
                         </p>
                         <span className="text-xs text-text-muted">{visit.visitDate}</span>
                       </div>
                       <p className="text-sm text-text-secondary truncate">
-                        {visit.summary ?? "No summary"}
+                        {visit.summary ?? t("noSummary")}
                       </p>
                     </div>
                     {visit.dealProbability != null && (

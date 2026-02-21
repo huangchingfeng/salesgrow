@@ -256,7 +256,7 @@
     "recordVoice": "Record Voice Note",
     "recording": "Recording... {duration}",
     "stopRecording": "Stop Recording",
-    "processing": "Processing your voice note...",
+    "processing": "Analyzing with AI...",
     "clientName": "Client Name",
     "visitDate": "Visit Date",
     "summary": "Meeting Summary",
@@ -267,9 +267,17 @@
       "positive": "Positive",
       "neutral": "Neutral",
       "negative": "Negative",
-      "interested": "Interested"
+      "interested": "Interested",
+      "mixed": "Mixed"
+    },
+    "priorities": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
     },
     "save": "Save Visit Record",
+    "saveSuccess": "Visit record saved!",
+    "retry": "Retry",
     "history": "Visit History",
     "meetingNotes": "Meeting Notes",
     "aiAnalysis": "AI Analysis",
@@ -277,7 +285,17 @@
     "processingVoice": "Processing your voice note...",
     "tapToStop": "Tap to stop recording",
     "tapToStart": "Tap to start recording",
-    "notesRequired": "Please enter your notes"
+    "notesRequired": "Please enter your meeting notes",
+    "noSpeechDetected": "No speech detected. Please try text input instead.",
+    "selectClientFirst": "Please select a client first.",
+    "selectClient": "Select a client...",
+    "liveTranscript": "Live transcript:",
+    "startTranscription": "Start Live Transcription",
+    "stopTranscription": "Stop Transcription",
+    "demoDataNotice": "Demo data shown. Sign in to see your actual visit records.",
+    "emptyHistory": "No visits recorded yet. Add your first visit!",
+    "unknownClient": "Unknown Client",
+    "noSummary": "No summary"
   },
   "followUp": {
     "title": "Follow-up Tracker",
@@ -285,10 +303,20 @@
     "overdue": "Overdue",
     "upcoming": "Upcoming",
     "noOverdue": "No overdue follow-ups — great job!",
+    "noToday": "No follow-ups due today — all done!",
+    "noUpcoming": "No upcoming follow-ups in the next 7 days.",
     "daysAgo": "Last contact: {days} days ago",
     "suggestedMessage": "Suggested Message",
     "markDone": "Mark as Done",
+    "markDoneSuccess": "Follow-up completed!",
     "snooze": "Snooze",
+    "snoozeSuccess": "Snoozed for 3 days",
+    "pipelineUpdated": "Pipeline stage updated!",
+    "errorGeneric": "Operation failed. Please try again.",
+    "unknownClient": "Unknown Client",
+    "noDraftMessage": "No draft message available.",
+    "demoDataNotice": "Demo data shown. Sign in to see your actual follow-up records.",
+    "emptyPipeline": "No clients in pipeline yet. Go to Research to add clients.",
     "pipeline": {
       "title": "Sales Pipeline",
       "lead": "Lead",
@@ -296,7 +324,9 @@
       "meeting": "Meeting",
       "proposal": "Proposal",
       "negotiation": "Negotiation",
-      "closed": "Closed"
+      "closed": "Closed",
+      "closedWon": "Closed Won",
+      "closedLost": "Closed Lost"
     }
   },
   "coach": {
