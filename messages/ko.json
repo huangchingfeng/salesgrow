@@ -442,6 +442,31 @@
       "negotiation": "협상",
       "closedWon": "성사",
       "closedLost": "실패"
+    },
+    "views": {
+      "cards": "카드",
+      "table": "테이블",
+      "analytics": "분석"
+    },
+    "filter": {
+      "all": "전체",
+      "byStage": "단계별 필터"
+    },
+    "table": {
+      "company": "회사명",
+      "industry": "산업",
+      "stage": "단계",
+      "dealValue": "거래 금액",
+      "lastContact": "최근 연락",
+      "actions": "작업"
+    },
+    "analytics": {
+      "totalClients": "총 고객 수",
+      "totalDealValue": "총 거래 금액",
+      "winRate": "성사율",
+      "avgDealValue": "평균 거래 금액",
+      "pipelineChart": "파이프라인 개요",
+      "dealDistribution": "거래 분포"
     }
   },
   "leaderboard": {

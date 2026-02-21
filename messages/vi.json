@@ -442,6 +442,31 @@
       "negotiation": "Đàm phán",
       "closedWon": "Chốt thành công",
       "closedLost": "Chốt thất bại"
+    },
+    "views": {
+      "cards": "Thẻ",
+      "table": "Bảng",
+      "analytics": "Phân tích"
+    },
+    "filter": {
+      "all": "Tất cả",
+      "byStage": "Lọc theo giai đoạn"
+    },
+    "table": {
+      "company": "Tên công ty",
+      "industry": "Ngành",
+      "stage": "Giai đoạn",
+      "dealValue": "Giá trị",
+      "lastContact": "Liên hệ gần nhất",
+      "actions": "Hành động"
+    },
+    "analytics": {
+      "totalClients": "Tổng khách hàng",
+      "totalDealValue": "Tổng giá trị",
+      "winRate": "Tỷ lệ thắng",
+      "avgDealValue": "Giá trị trung bình",
+      "pipelineChart": "Tổng quan pipeline",
+      "dealDistribution": "Phân bổ giá trị"
     }
   },
   "leaderboard": {

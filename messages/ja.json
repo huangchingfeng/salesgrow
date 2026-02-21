@@ -442,6 +442,31 @@
       "negotiation": "交渉中",
       "closedWon": "成約",
       "closedLost": "失注"
+    },
+    "views": {
+      "cards": "カード",
+      "table": "テーブル",
+      "analytics": "分析"
+    },
+    "filter": {
+      "all": "すべて",
+      "byStage": "ステージで絞り込み"
+    },
+    "table": {
+      "company": "会社名",
+      "industry": "業種",
+      "stage": "ステージ",
+      "dealValue": "案件金額",
+      "lastContact": "最終連絡",
+      "actions": "操作"
+    },
+    "analytics": {
+      "totalClients": "顧客総数",
+      "totalDealValue": "案件総額",
+      "winRate": "成約率",
+      "avgDealValue": "平均案件金額",
+      "pipelineChart": "パイプライン概要",
+      "dealDistribution": "案件分布"
     }
   },
   "leaderboard": {

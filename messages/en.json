@@ -488,6 +488,31 @@
       "negotiation": "Negotiation",
       "closedWon": "Closed Won",
       "closedLost": "Closed Lost"
+    },
+    "views": {
+      "cards": "Cards",
+      "table": "Table",
+      "analytics": "Analytics"
+    },
+    "filter": {
+      "all": "All",
+      "byStage": "Filter by Stage"
+    },
+    "table": {
+      "company": "Company",
+      "industry": "Industry",
+      "stage": "Stage",
+      "dealValue": "Deal Value",
+      "lastContact": "Last Contact",
+      "actions": "Actions"
+    },
+    "analytics": {
+      "totalClients": "Total Clients",
+      "totalDealValue": "Total Deal Value",
+      "winRate": "Win Rate",
+      "avgDealValue": "Avg. Deal Value",
+      "pipelineChart": "Pipeline Overview",
+      "dealDistribution": "Deal Distribution"
     }
   },
   "leaderboard": {

@@ -15,6 +15,9 @@ import { SignInPrompt } from "@/components/ui/sign-in-prompt";
 import { useToast } from "@/components/ui/toast";
 import { trpc } from "@/lib/trpc";
 import { useUserStore } from "@/lib/stores/user-store";
+import { StageFilter } from "./_components/stage-filter";
+import { ClientTable } from "./_components/client-table";
+import { ClientAnalytics } from "./_components/client-analytics";
 import {
   Plus,
   Search,
@@ -26,6 +29,9 @@ import {
   Globe,
   DollarSign,
   Calendar,
+  LayoutGrid,
+  Table2,
+  BarChart3,
 } from "lucide-react";
 
 type PipelineStage =
@@ -99,6 +105,8 @@ export default function ClientsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [form, setForm] = useState<ClientFormData>(emptyForm);
+  const [viewMode, setViewMode] = useState<"cards" | "table" | "analytics">("cards");
+  const [stageFilter, setStageFilter] = useState<PipelineStage | "all">("all");
 
   // --- tRPC queries ---
   const listQuery = trpc.clients.list.useQuery(undefined, {
@@ -117,6 +125,24 @@ export default function ClientsPage() {
   const isLoading = searchQuery.trim()
     ? searchQueryResult.isLoading
     : listQuery.isLoading;
+
+  // --- Filtered clients by stage ---
+  const filteredClients = useMemo(() => {
+    if (stageFilter === "all") return clients;
+    return clients.filter((c) => c.pipelineStage === stageFilter);
+  }, [clients, stageFilter]);
+
+  // --- Stage counts ---
+  const stageCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: clients.length };
+    PIPELINE_STAGES.forEach((s) => {
+      counts[s] = 0;
+    });
+    clients.forEach((c) => {
+      counts[c.pipelineStage] = (counts[c.pipelineStage] || 0) + 1;
+    });
+    return counts;
+  }, [clients]);
 
   // --- Mutations ---
   const createMutation = trpc.clients.create.useMutation({
@@ -246,6 +272,12 @@ export default function ClientsPage() {
     }
   };
 
+  // --- View mode button styles ---
+  const viewBtnActive =
+    "rounded-md px-2.5 py-1.5 text-sm font-medium bg-primary text-white";
+  const viewBtnInactive =
+    "rounded-md px-2.5 py-1.5 text-sm font-medium text-text-secondary hover:text-text hover:bg-bg-muted transition-colors";
+
   // --- Auth check ---
   if (!isAuthenticated) {
     return (
@@ -261,114 +293,217 @@ export default function ClientsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-text">{t("title")}</h1>
-          <Button onClick={openAddForm}>
-            <Plus className="h-4 w-4" />
-            {t("addClient")}
-          </Button>
-        </div>
-
-        {/* Search bar */}
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
-          <input
-            type="text"
-            placeholder={t("searchPlaceholder")}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-10 w-full rounded-lg border border-border bg-bg-card pl-10 pr-3 text-sm text-text placeholder:text-text-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-border-hover"
-          />
-        </div>
-
-        {/* Client list */}
-        {isLoading ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <Skeleton key={i} className="h-44 w-full rounded-xl" />
-            ))}
-          </div>
-        ) : clients.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Inbox className="h-12 w-12 text-text-muted mb-3" />
-            <p className="text-sm text-text-secondary">{t("emptyState")}</p>
-          </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {clients.map((client) => (
-              <Card
-                key={client.id}
-                className="group cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => openEditForm(client)}
+          <div className="flex items-center gap-2">
+            {/* View mode toggle */}
+            <div className="flex items-center rounded-lg border border-border p-0.5">
+              <button
+                onClick={() => setViewMode("cards")}
+                className={viewMode === "cards" ? viewBtnActive : viewBtnInactive}
+                title={t("views.cards")}
               >
-                <CardContent className="p-4 space-y-3">
-                  {/* Company name + actions */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <Building2 className="h-4 w-4 shrink-0 text-primary" />
-                      <h3 className="font-semibold text-text truncate">
-                        {client.companyName}
-                      </h3>
-                    </div>
-                    <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openEditForm(client);
-                        }}
-                        className="rounded p-1 text-text-muted hover:bg-bg-muted hover:text-text transition-colors"
-                        title={tc("edit")}
-                      >
-                        <Pencil className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setDeleteId(client.id);
-                        }}
-                        className="rounded p-1 text-text-muted hover:bg-danger-light hover:text-danger transition-colors"
-                        title={tc("delete")}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Badges */}
-                  <div className="flex flex-wrap gap-1.5">
-                    <Badge variant={STAGE_BADGE_VARIANT[client.pipelineStage as PipelineStage] ?? "secondary"}>
-                      {t(`stages.${STAGE_I18N_KEY[client.pipelineStage as PipelineStage]}`)}
-                    </Badge>
-                    {client.industry && (
-                      <Badge variant="outline">{client.industry}</Badge>
-                    )}
-                  </div>
-
-                  {/* Details */}
-                  <div className="space-y-1 text-xs text-text-secondary">
-                    {client.dealValue && (
-                      <div className="flex items-center gap-1.5">
-                        <DollarSign className="h-3 w-3" />
-                        <span>{formatCurrency(client.dealValue)}</span>
-                      </div>
-                    )}
-                    {client.website && (
-                      <div className="flex items-center gap-1.5">
-                        <Globe className="h-3 w-3" />
-                        <span className="truncate">{client.website}</span>
-                      </div>
-                    )}
-                    {client.lastContactAt && (
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="h-3 w-3" />
-                        <span>
-                          {t("lastContact")}: {formatDate(client.lastContactAt)}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                <LayoutGrid className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setViewMode("table")}
+                className={viewMode === "table" ? viewBtnActive : viewBtnInactive}
+                title={t("views.table")}
+              >
+                <Table2 className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setViewMode("analytics")}
+                className={viewMode === "analytics" ? viewBtnActive : viewBtnInactive}
+                title={t("views.analytics")}
+              >
+                <BarChart3 className="h-4 w-4" />
+              </button>
+            </div>
+            <Button onClick={openAddForm}>
+              <Plus className="h-4 w-4" />
+              {t("addClient")}
+            </Button>
           </div>
+        </div>
+
+        {/* Search bar - hidden in analytics view */}
+        {viewMode !== "analytics" && (
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+            <input
+              type="text"
+              placeholder={t("searchPlaceholder")}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-10 w-full rounded-lg border border-border bg-bg-card pl-10 pr-3 text-sm text-text placeholder:text-text-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-border-hover"
+            />
+          </div>
+        )}
+
+        {/* Stage filter - hidden in analytics view */}
+        {viewMode !== "analytics" && (
+          <StageFilter
+            activeStage={stageFilter}
+            onStageChange={setStageFilter}
+            stageCounts={stageCounts}
+            translations={{
+              all: t("filter.all"),
+              stages: Object.fromEntries(
+                PIPELINE_STAGES.map((s) => [s, t(`stages.${STAGE_I18N_KEY[s]}`)])
+              ),
+            }}
+          />
+        )}
+
+        {/* Content area */}
+        {viewMode === "cards" && (
+          <>
+            {isLoading ? (
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Skeleton key={i} className="h-44 w-full rounded-xl" />
+                ))}
+              </div>
+            ) : filteredClients.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <Inbox className="h-12 w-12 text-text-muted mb-3" />
+                <p className="text-sm text-text-secondary">{t("emptyState")}</p>
+              </div>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {filteredClients.map((client) => (
+                  <Card
+                    key={client.id}
+                    className="group cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => openEditForm(client)}
+                  >
+                    <CardContent className="p-4 space-y-3">
+                      {/* Company name + actions */}
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Building2 className="h-4 w-4 shrink-0 text-primary" />
+                          <h3 className="font-semibold text-text truncate">
+                            {client.companyName}
+                          </h3>
+                        </div>
+                        <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openEditForm(client);
+                            }}
+                            className="rounded p-1 text-text-muted hover:bg-bg-muted hover:text-text transition-colors"
+                            title={tc("edit")}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteId(client.id);
+                            }}
+                            className="rounded p-1 text-text-muted hover:bg-danger-light hover:text-danger transition-colors"
+                            title={tc("delete")}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-1.5">
+                        <Badge variant={STAGE_BADGE_VARIANT[client.pipelineStage as PipelineStage] ?? "secondary"}>
+                          {t(`stages.${STAGE_I18N_KEY[client.pipelineStage as PipelineStage]}`)}
+                        </Badge>
+                        {client.industry && (
+                          <Badge variant="outline">{client.industry}</Badge>
+                        )}
+                      </div>
+
+                      {/* Details */}
+                      <div className="space-y-1 text-xs text-text-secondary">
+                        {client.dealValue && (
+                          <div className="flex items-center gap-1.5">
+                            <DollarSign className="h-3 w-3" />
+                            <span>{formatCurrency(client.dealValue)}</span>
+                          </div>
+                        )}
+                        {client.website && (
+                          <div className="flex items-center gap-1.5">
+                            <Globe className="h-3 w-3" />
+                            <span className="truncate">{client.website}</span>
+                          </div>
+                        )}
+                        {client.lastContactAt && (
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="h-3 w-3" />
+                            <span>
+                              {t("lastContact")}: {formatDate(client.lastContactAt)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {viewMode === "table" && (
+          <>
+            {isLoading ? (
+              <div className="space-y-2">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Skeleton key={i} className="h-12 w-full rounded-lg" />
+                ))}
+              </div>
+            ) : filteredClients.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <Inbox className="h-12 w-12 text-text-muted mb-3" />
+                <p className="text-sm text-text-secondary">{t("emptyState")}</p>
+              </div>
+            ) : (
+              <ClientTable
+                clients={filteredClients}
+                onEdit={openEditForm}
+                onDelete={(id) => setDeleteId(id)}
+                formatCurrency={formatCurrency}
+                formatDate={formatDate}
+                translations={{
+                  company: t("table.company"),
+                  industry: t("table.industry"),
+                  stage: t("table.stage"),
+                  dealValue: t("table.dealValue"),
+                  lastContact: t("table.lastContact"),
+                  actions: t("table.actions"),
+                  stages: Object.fromEntries(
+                    PIPELINE_STAGES.map((s) => [s, t(`stages.${STAGE_I18N_KEY[s]}`)])
+                  ),
+                  editTitle: tc("edit"),
+                  deleteTitle: tc("delete"),
+                }}
+              />
+            )}
+          </>
+        )}
+
+        {viewMode === "analytics" && (
+          <ClientAnalytics
+            clients={clients}
+            locale={locale}
+            translations={{
+              totalClients: t("analytics.totalClients"),
+              totalDealValue: t("analytics.totalDealValue"),
+              winRate: t("analytics.winRate"),
+              avgDealValue: t("analytics.avgDealValue"),
+              pipelineChart: t("analytics.pipelineChart"),
+              dealDistribution: t("analytics.dealDistribution"),
+              stages: Object.fromEntries(
+                PIPELINE_STAGES.map((s) => [s, t(`stages.${STAGE_I18N_KEY[s]}`)])
+              ),
+            }}
+          />
         )}
       </div>
 

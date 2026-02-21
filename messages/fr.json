@@ -442,6 +442,31 @@
       "negotiation": "Négociation",
       "closedWon": "Conclu (gagné)",
       "closedLost": "Conclu (perdu)"
+    },
+    "views": {
+      "cards": "Cartes",
+      "table": "Tableau",
+      "analytics": "Analyse"
+    },
+    "filter": {
+      "all": "Tous",
+      "byStage": "Filtrer par étape"
+    },
+    "table": {
+      "company": "Entreprise",
+      "industry": "Secteur",
+      "stage": "Étape",
+      "dealValue": "Valeur",
+      "lastContact": "Dernier contact",
+      "actions": "Actions"
+    },
+    "analytics": {
+      "totalClients": "Total clients",
+      "totalDealValue": "Valeur totale",
+      "winRate": "Taux de conversion",
+      "avgDealValue": "Valeur moyenne",
+      "pipelineChart": "Vue pipeline",
+      "dealDistribution": "Répartition des deals"
     }
   },
   "leaderboard": {

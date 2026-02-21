@@ -442,6 +442,31 @@
       "negotiation": "เจรจา",
       "closedWon": "ปิดดีลสำเร็จ",
       "closedLost": "ปิดดีลไม่สำเร็จ"
+    },
+    "views": {
+      "cards": "การ์ด",
+      "table": "ตาราง",
+      "analytics": "วิเคราะห์"
+    },
+    "filter": {
+      "all": "ทั้งหมด",
+      "byStage": "กรองตามขั้นตอน"
+    },
+    "table": {
+      "company": "ชื่อบริษัท",
+      "industry": "อุตสาหกรรม",
+      "stage": "ขั้นตอน",
+      "dealValue": "มูลค่า",
+      "lastContact": "ติดต่อล่าสุด",
+      "actions": "ดำเนินการ"
+    },
+    "analytics": {
+      "totalClients": "ลูกค้าทั้งหมด",
+      "totalDealValue": "มูลค่ารวม",
+      "winRate": "อัตราปิดการขาย",
+      "avgDealValue": "มูลค่าเฉลี่ย",
+      "pipelineChart": "ภาพรวมท่อขาย",
+      "dealDistribution": "การกระจายดีล"
     }
   },
   "leaderboard": {

@@ -488,6 +488,31 @@
       "negotiation": "議價中",
       "closedWon": "已成交",
       "closedLost": "未成交"
+    },
+    "views": {
+      "cards": "卡片",
+      "table": "表格",
+      "analytics": "分析"
+    },
+    "filter": {
+      "all": "全部",
+      "byStage": "依階段篩選"
+    },
+    "table": {
+      "company": "公司名稱",
+      "industry": "產業",
+      "stage": "階段",
+      "dealValue": "交易金額",
+      "lastContact": "最近聯繫",
+      "actions": "操作"
+    },
+    "analytics": {
+      "totalClients": "總客戶數",
+      "totalDealValue": "總交易金額",
+      "winRate": "成交率",
+      "avgDealValue": "平均交易金額",
+      "pipelineChart": "銷售漏斗",
+      "dealDistribution": "交易分佈"
     }
   },
   "leaderboard": {
