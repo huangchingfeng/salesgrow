@@ -57,8 +57,14 @@ export default function CoachPage() {
     improvements: string[];
     tip: string;
   } | null>(null);
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  // DB session ID (separate from AI session ID)
+  // Session config (replaces sessionId for stateless architecture)
+  const [sessionConfig, setSessionConfig] = useState<{
+    scenario: string;
+    locale: string;
+    culture: string;
+    maxTurns: number;
+  } | null>(null);
+  // DB session ID (separate from AI session)
   const dbSessionIdRef = useRef<string | null>(null);
   const sessionStartTimeRef = useRef<number>(0);
 
@@ -81,6 +87,13 @@ export default function CoachPage() {
     enabled: isAuthenticated,
   });
   const utils = trpc.useUtils();
+
+  // 將前端 messages 轉為 API 格式
+  const toApiMessages = (msgs: ChatMessage[]) =>
+    msgs.map((m) => ({
+      role: (m.role === "coach" ? "assistant" : "user") as "user" | "assistant",
+      content: m.content,
+    }));
 
   const startScenario = async (key: string) => {
     const scenario = SCENARIOS.find((s) => s.key === key);
@@ -125,7 +138,14 @@ export default function CoachPage() {
         return;
       }
 
-      setSessionId(json.data.sessionId);
+      // Store session config for subsequent requests
+      setSessionConfig({
+        scenario: json.data.scenario,
+        locale: json.data.locale,
+        culture: json.data.culture,
+        maxTurns: json.data.maxTurns,
+      });
+
       const initialMessage = json.data.initialMessage;
       setMessages([
         {
@@ -153,7 +173,7 @@ export default function CoachPage() {
   };
 
   const handleSendMessage = async (content: string) => {
-    if (!sessionId) return;
+    if (!sessionConfig) return;
 
     const userMsg: ChatMessage = { id: crypto.randomUUID(), role: "user", content };
     setMessages((prev) => [...prev, userMsg]);
@@ -169,12 +189,24 @@ export default function CoachPage() {
     }
 
     try {
+      // Use functional update to get the latest messages including the new user message
+      const currentMessages = await new Promise<ChatMessage[]>((resolve) => {
+        setMessages((prev) => {
+          resolve(prev);
+          return prev;
+        });
+      });
+
       const res = await fetch("/api/ai/coach", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "message",
-          sessionId,
+          messages: toApiMessages(currentMessages),
+          scenario: sessionConfig.scenario,
+          locale: sessionConfig.locale,
+          culture: sessionConfig.culture,
+          maxTurns: sessionConfig.maxTurns,
           message: content,
         }),
       });
@@ -215,13 +247,26 @@ export default function CoachPage() {
   };
 
   const endSession = async () => {
-    if (!sessionId) return;
+    if (!sessionConfig) return;
 
     try {
+      // Get the latest messages for feedback
+      const currentMessages = await new Promise<ChatMessage[]>((resolve) => {
+        setMessages((prev) => {
+          resolve(prev);
+          return prev;
+        });
+      });
+
       const res = await fetch("/api/ai/coach", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "end", sessionId }),
+        body: JSON.stringify({
+          action: "end",
+          messages: toApiMessages(currentMessages),
+          scenario: sessionConfig.scenario,
+          locale: sessionConfig.locale,
+        }),
       });
 
       const json = await res.json();
@@ -399,7 +444,7 @@ export default function CoachPage() {
               size="sm"
               onClick={() => {
                 setActiveScenario(null);
-                setSessionId(null);
+                setSessionConfig(null);
                 dbSessionIdRef.current = null;
               }}
               className="mb-4"

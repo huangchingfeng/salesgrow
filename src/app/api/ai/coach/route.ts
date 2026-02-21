@@ -7,7 +7,6 @@ import {
   startCoachSession,
   processUserMessage,
   generateFeedback,
-  getSessionDuration,
 } from '@/lib/ai/coach/engine'
 import type { CoachScenario, BusinessCulture, SupportedLocale, APIResponse, CoachFeedbackOutput } from '@/lib/ai/types'
 
@@ -20,13 +19,19 @@ interface StartSessionBody {
 
 interface SendMessageBody {
   action: 'message'
-  sessionId: string
+  messages: { role: 'user' | 'assistant'; content: string }[]
+  scenario: CoachScenario
+  locale: SupportedLocale
+  culture: BusinessCulture
+  maxTurns: number
   message: string
 }
 
 interface EndSessionBody {
   action: 'end'
-  sessionId: string
+  messages: { role: 'user' | 'assistant'; content: string }[]
+  scenario: CoachScenario
+  locale: SupportedLocale
 }
 
 type RequestBody = StartSessionBody | SendMessageBody | EndSessionBody
@@ -41,53 +46,64 @@ export async function POST(req: NextRequest) {
 
     switch (body.action) {
       case 'start': {
-        // 讀取業務員檔案
+        const locale = body.locale || (user.locale as SupportedLocale) || 'en'
+        const culture = body.culture || 'taiwan'
+
+        const { initialMessage, maxTurns } = startCoachSession(
+          body.scenario,
+          locale,
+          culture,
+        )
+
+        return NextResponse.json<APIResponse<{
+          initialMessage: string
+          scenario: string
+          maxTurns: number
+          locale: string
+          culture: string
+        }>>({
+          success: true,
+          data: {
+            initialMessage,
+            scenario: body.scenario,
+            maxTurns,
+            locale,
+            culture,
+          },
+        })
+      }
+
+      case 'message': {
+        if (!body.messages || !body.message) {
+          return NextResponse.json<APIResponse<never>>(
+            { success: false, error: { code: 'INVALID_INPUT', message: 'messages and message are required' } },
+            { status: 400 }
+          )
+        }
+
+        // 每次都從 DB 讀取 salesProfile
         let salesProfile = null
         if (dbUser) {
           const [profile] = await db.select().from(salesProfiles).where(eq(salesProfiles.userId, dbUser.id))
           salesProfile = profile ?? null
         }
 
-        const sessionId = crypto.randomUUID()
-        const { session, initialMessage } = startCoachSession(
-          sessionId,
-          user.id,
-          body.scenario,
-          body.locale || (user.locale as SupportedLocale) || 'en',
-          body.culture || 'taiwan',
-          salesProfile
-        )
+        // 把新的 user message 加進 messages
+        const allMessages = [
+          ...body.messages,
+          { role: 'user' as const, content: body.message },
+        ]
 
-        return NextResponse.json<APIResponse<{
-          sessionId: string
-          initialMessage: string
-          scenario: string
-          maxTurns: number
-        }>>({
-          success: true,
-          data: {
-            sessionId: session.sessionId,
-            initialMessage,
-            scenario: session.scenario,
-            maxTurns: session.maxTurns,
-          },
+        const { reply, turnCount, isComplete } = await processUserMessage({
+          userId: user.id,
+          messages: allMessages,
+          scenario: body.scenario,
+          locale: body.locale,
+          culture: body.culture,
+          maxTurns: body.maxTurns,
+          userPlan,
+          salesProfile,
         })
-      }
-
-      case 'message': {
-        if (!body.sessionId || !body.message) {
-          return NextResponse.json<APIResponse<never>>(
-            { success: false, error: { code: 'INVALID_INPUT', message: 'sessionId and message are required' } },
-            { status: 400 }
-          )
-        }
-
-        const { reply, session, isComplete } = await processUserMessage(
-          body.sessionId,
-          user.id,
-          body.message,
-          userPlan
-        )
 
         return NextResponse.json<APIResponse<{
           reply: string
@@ -98,27 +114,32 @@ export async function POST(req: NextRequest) {
           success: true,
           data: {
             reply,
-            turnCount: session.turnCount,
-            maxTurns: session.maxTurns,
+            turnCount,
+            maxTurns: body.maxTurns,
             isComplete,
           },
         })
       }
 
       case 'end': {
-        if (!body.sessionId) {
+        if (!body.messages) {
           return NextResponse.json<APIResponse<never>>(
-            { success: false, error: { code: 'INVALID_INPUT', message: 'sessionId is required' } },
+            { success: false, error: { code: 'INVALID_INPUT', message: 'messages are required' } },
             { status: 400 }
           )
         }
 
-        const feedback = await generateFeedback(body.sessionId, user.id, userPlan)
-        const durationSeconds = getSessionDuration(body.sessionId)
+        const feedback = await generateFeedback({
+          userId: user.id,
+          messages: body.messages,
+          scenario: body.scenario,
+          locale: body.locale,
+          userPlan,
+        })
 
-        return NextResponse.json<APIResponse<CoachFeedbackOutput & { durationSeconds: number }>>({
+        return NextResponse.json<APIResponse<CoachFeedbackOutput>>({
           success: true,
-          data: { ...feedback, durationSeconds },
+          data: feedback,
         })
       }
 

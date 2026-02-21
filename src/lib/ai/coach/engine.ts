@@ -1,4 +1,4 @@
-// AI Coach 核心引擎 — 管理教練 session 生命週期
+// AI Coach 核心引擎 — Stateless 架構（適用 Serverless 環境）
 
 import type {
   CoachScenario,
@@ -13,78 +13,61 @@ import { aiGateway, cleanJsonResponse } from '../gateway'
 import { buildCoachRoleplayPrompt, buildInitialClientMessage } from '../prompts/coach-roleplay'
 import { buildCoachFeedbackPrompt } from '../prompts/coach-feedback'
 import { getScenarioById } from './scenarios'
-import { getCoachSystemPrompt } from './personality'
 import { calculateWeightedScore, calculateXpReward } from './scoring'
 
-// 記憶體中的 active sessions
-const activeSessions = new Map<string, CoachSessionState>()
-// 每個 session 對應的業務員檔案
-const sessionProfiles = new Map<string, SalesProfile>()
-
 /**
- * 開始新的教練 session
+ * 開始新的教練 session（純函數，不存任何 state）
  */
 export function startCoachSession(
-  sessionId: string,
-  userId: string,
   scenario: CoachScenario,
   locale: SupportedLocale,
   culture: BusinessCulture = 'taiwan',
-  salesProfile?: SalesProfile | null
-): { session: CoachSessionState; initialMessage: string } {
+): { initialMessage: string; maxTurns: number } {
   const scenarioConfig = getScenarioById(scenario)
   const maxTurns = scenarioConfig?.maxTurns ?? 8
 
   // 產生客戶的開場白
   const initialMessage = buildInitialClientMessage(scenario, culture, locale)
 
-  const session: CoachSessionState = {
-    sessionId,
+  return { initialMessage, maxTurns }
+}
+
+/**
+ * 處理使用者的回應，取得 AI 客戶的回覆（Stateless）
+ */
+export async function processUserMessage(params: {
+  userId: string
+  messages: { role: 'user' | 'assistant'; content: string }[]
+  scenario: CoachScenario
+  locale: SupportedLocale
+  culture: BusinessCulture
+  maxTurns: number
+  userPlan: 'free' | 'pro'
+  salesProfile?: SalesProfile | null
+}): Promise<{ reply: string; turnCount: number; isComplete: boolean }> {
+  const { userId, messages, scenario, locale, culture, maxTurns, userPlan, salesProfile } = params
+
+  // 從 messages 計算 turnCount（user 訊息數 + assistant 訊息數）
+  const turnCount = messages.length
+
+  // 檢查是否到達最大回合
+  const isComplete = turnCount >= maxTurns
+
+  // 建構臨時 session state 物件給 buildCoachRoleplayPrompt
+  const tempSession: CoachSessionState = {
+    sessionId: '',
     userId,
     scenario,
     locale,
     culture,
-    messages: [
-      { role: 'assistant', content: initialMessage },
-    ],
-    turnCount: 1,
+    messages: messages.map(m => ({ role: m.role, content: m.content })),
+    turnCount,
     maxTurns,
-    startedAt: Date.now(),
+    startedAt: 0,
     status: 'active',
   }
 
-  activeSessions.set(sessionId, session)
-  if (salesProfile) {
-    sessionProfiles.set(sessionId, salesProfile)
-  }
-
-  return { session, initialMessage }
-}
-
-/**
- * 處理使用者的回應，取得 AI 客戶的回覆
- */
-export async function processUserMessage(
-  sessionId: string,
-  userId: string,
-  userMessage: string,
-  userPlan: 'free' | 'pro' = 'free'
-): Promise<{ reply: string; session: CoachSessionState; isComplete: boolean }> {
-  const session = activeSessions.get(sessionId)
-  if (!session) throw new Error('Session not found')
-  if (session.userId !== userId) throw new Error('Unauthorized')
-  if (session.status !== 'active') throw new Error('Session is not active')
-
-  // 加入使用者訊息
-  session.messages.push({ role: 'user', content: userMessage })
-  session.turnCount++
-
-  // 檢查是否到達最大回合
-  const isComplete = session.turnCount >= session.maxTurns
-
-  // 用 AI gateway 產生客戶回覆
-  const profile = sessionProfiles.get(sessionId) ?? null
-  const promptResult = buildCoachRoleplayPrompt(session, session.scenario, session.culture, session.locale, profile)
+  const promptResult = buildCoachRoleplayPrompt(tempSession, scenario, culture, locale, salesProfile ?? null)
 
   const response = await aiGateway({
     task: 'coach',
@@ -92,40 +75,31 @@ export async function processUserMessage(
     userId,
     messages: [
       { role: 'system', content: promptResult.systemPrompt },
-      ...session.messages,
+      ...messages,
     ],
     temperature: promptResult.temperature,
     maxTokens: promptResult.maxTokens,
   })
 
-  // 加入 AI 回覆
-  session.messages.push({ role: 'assistant', content: response.content })
-
-  if (isComplete) {
-    session.status = 'completed'
-  }
-
-  return { reply: response.content, session, isComplete }
+  return { reply: response.content, turnCount: turnCount + 1, isComplete }
 }
 
 /**
- * 產生教練回饋
+ * 產生教練回饋（Stateless）
  */
-export async function generateFeedback(
-  sessionId: string,
-  userId: string,
-  userPlan: 'free' | 'pro' = 'free'
-): Promise<CoachFeedbackOutput> {
-  const session = activeSessions.get(sessionId)
-  if (!session) throw new Error('Session not found')
-  if (session.userId !== userId) throw new Error('Unauthorized')
-
-  session.status = 'completed'
+export async function generateFeedback(params: {
+  userId: string
+  messages: { role: 'user' | 'assistant'; content: string }[]
+  scenario: CoachScenario
+  locale: SupportedLocale
+  userPlan: 'free' | 'pro'
+}): Promise<CoachFeedbackOutput> {
+  const { userId, messages, scenario, locale, userPlan } = params
 
   const promptResult = buildCoachFeedbackPrompt({
-    scenario: session.scenario,
-    conversation: session.messages,
-    locale: session.locale,
+    scenario,
+    conversation: messages,
+    locale,
   })
 
   const response = await aiGateway({
@@ -152,7 +126,7 @@ export async function generateFeedback(
   }
 
   // 用加權算法調整分數
-  const scenarioConfig = getScenarioById(session.scenario)
+  const scenarioConfig = getScenarioById(scenario)
   if (scenarioConfig) {
     const weightedScore = calculateWeightedScore(feedback, scenarioConfig.category)
     feedback.totalScore = weightedScore
@@ -160,47 +134,4 @@ export async function generateFeedback(
   }
 
   return feedback
-}
-
-/**
- * 取得 session 狀態
- */
-export function getSession(sessionId: string): CoachSessionState | undefined {
-  return activeSessions.get(sessionId)
-}
-
-/**
- * 結束 session
- */
-export function endSession(sessionId: string): CoachSessionState | undefined {
-  const session = activeSessions.get(sessionId)
-  if (session) {
-    session.status = 'completed'
-  }
-  return session
-}
-
-/**
- * 清除已完成的 sessions（記憶體管理）
- */
-export function cleanupSessions(maxAgeMs: number = 60 * 60 * 1000): number {
-  const now = Date.now()
-  let cleaned = 0
-  for (const [id, session] of activeSessions) {
-    if (now - session.startedAt > maxAgeMs) {
-      activeSessions.delete(id)
-      sessionProfiles.delete(id)
-      cleaned++
-    }
-  }
-  return cleaned
-}
-
-/**
- * 取得 session 的持續時間（秒）
- */
-export function getSessionDuration(sessionId: string): number {
-  const session = activeSessions.get(sessionId)
-  if (!session) return 0
-  return Math.floor((Date.now() - session.startedAt) / 1000)
 }
