@@ -47,12 +47,12 @@ ${LOCALE_INSTRUCTIONS[input.language]}
 
 IMPORTANT: Return your response as valid JSON:
 {
-  "totalScore": 75,
+  "totalScore": <integer 0-100>,
   "dimensions": {
-    "personalization": { "score": 18, "maxScore": 25, "feedback": "specific feedback" },
-    "valueProposition": { "score": 20, "maxScore": 25, "feedback": "specific feedback" },
-    "callToAction": { "score": 15, "maxScore": 25, "feedback": "specific feedback" },
-    "toneAppropriateness": { "score": 22, "maxScore": 25, "feedback": "specific feedback" }
+    "personalization": { "score": <integer 0-25>, "maxScore": 25, "feedback": "specific feedback" },
+    "valueProposition": { "score": <integer 0-25>, "maxScore": 25, "feedback": "specific feedback" },
+    "callToAction": { "score": <integer 0-25>, "maxScore": 25, "feedback": "specific feedback" },
+    "toneAppropriateness": { "score": <integer 0-25>, "maxScore": 25, "feedback": "specific feedback" }
   },
   "improvements": ["improvement 1", "improvement 2"],
   "strengths": ["strength 1", "strength 2"]

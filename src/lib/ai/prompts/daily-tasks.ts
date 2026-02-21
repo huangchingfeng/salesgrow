@@ -56,7 +56,7 @@ IMPORTANT: Return your response as valid JSON:
       "xpReward": 25,
       "difficulty": "easy" | "medium" | "hard",
       "estimatedMinutes": 15,
-      "relatedClient": "client name or null"
+      "relatedClient": null
     }
   ],
   "motivationalQuote": "an inspiring sales quote",

@@ -27,7 +27,18 @@
     "settings": "設定",
     "profile": "個人檔案",
     "help": "說明",
-    "language": "語言"
+    "language": "語言",
+    "signInRequired": "請先登入以使用此功能",
+    "signInDescription": "請登入以查看和管理您的資料。",
+    "noData": "尚無資料",
+    "exportingData": "正在匯出您的資料...",
+    "exportSuccess": "資料匯出成功！",
+    "exportError": "資料匯出失敗，請再試一次。",
+    "profileSaved": "個人檔案已儲存！",
+    "profileSaveError": "儲存個人檔案失敗，請再試一次。",
+    "deleteConfirmTitle": "刪除帳號",
+    "deleteConfirmMessage": "確定要刪除帳號嗎？此操作將會登出你的帳號，你可以透過電子郵件申請完整的資料刪除。",
+    "accountDeleted": "帳號已登出。如需完整刪除資料，請聯繫客服。"
   },
   "landing": {
     "hero": {
@@ -184,7 +195,8 @@
     "deals": "{count} 筆進行中的交易",
     "revenue": "預估營收：{amount}",
     "weeklyGoal": "每週目標",
-    "completed": "已完成"
+    "completed": "已完成",
+    "signInToSave": "登入以儲存你的進度"
   },
   "research": {
     "title": "客戶研究",
@@ -226,6 +238,8 @@
     },
     "languageLabel": "輸出語言",
     "generate": "產生郵件",
+    "generating": "產生中...",
+    "clientRequired": "請輸入客戶名稱",
     "regenerate": "重新產生",
     "score": "郵件評分",
     "scoreExcellent": "優秀——很可能獲得回覆！",
@@ -316,7 +330,6 @@
       "meeting": "會議中",
       "proposal": "提案中",
       "negotiation": "議價中",
-      "closed": "已成交",
       "closedWon": "已成交",
       "closedLost": "未成交"
     }

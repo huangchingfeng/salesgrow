@@ -8,7 +8,7 @@ import type {
   ChatMessage,
   CoachFeedbackOutput,
 } from '../types'
-import { aiGateway } from '../gateway'
+import { aiGateway, cleanJsonResponse } from '../gateway'
 import { buildCoachRoleplayPrompt, buildInitialClientMessage } from '../prompts/coach-roleplay'
 import { buildCoachFeedbackPrompt } from '../prompts/coach-feedback'
 import { getScenarioById } from './scenarios'
@@ -130,7 +130,18 @@ export async function generateFeedback(
     responseFormat: promptResult.responseFormat,
   })
 
-  const feedback = JSON.parse(response.content) as CoachFeedbackOutput
+  let feedback: CoachFeedbackOutput
+  try {
+    feedback = JSON.parse(response.content) as CoachFeedbackOutput
+  } catch {
+    // Anthropic fallback 可能回傳帶 markdown code block 的 JSON
+    try {
+      feedback = JSON.parse(cleanJsonResponse(response.content)) as CoachFeedbackOutput
+    } catch {
+      console.error('[Coach Engine] Failed to parse feedback JSON:', response.content.slice(0, 200))
+      throw new Error('AI 回饋解析失敗，請重試')
+    }
+  }
 
   // 用加權算法調整分數
   const scenarioConfig = getScenarioById(session.scenario)

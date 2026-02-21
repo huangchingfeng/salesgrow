@@ -38,6 +38,7 @@ export const clientMoodEnum = pgEnum('client_mood', [
   'neutral',
   'negative',
   'interested',
+  'mixed',
 ]);
 
 export const followUpStatusEnum = pgEnum('follow_up_status', [

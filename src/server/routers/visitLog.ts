@@ -3,7 +3,7 @@ import { router, protectedProcedure } from '../trpc';
 import { visitLogs } from '@/lib/db/schema';
 import { eq, and, desc } from 'drizzle-orm';
 
-const clientMoods = ['positive', 'neutral', 'negative', 'interested'] as const;
+const clientMoods = ['positive', 'neutral', 'negative', 'interested', 'mixed'] as const;
 
 export const visitLogRouter = router({
   list: protectedProcedure

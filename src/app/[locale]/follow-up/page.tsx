@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs";
@@ -34,8 +34,18 @@ function daysBetween(dateStr: string): number {
 
 export default function FollowUpPage() {
   const t = useTranslations("followUp");
+  const locale = useLocale();
   const { toast } = useToast();
   const { isAuthenticated } = useUserStore();
+
+  const formatCurrency = (value: string | null) => {
+    const num = Number(value) || 0;
+    return new Intl.NumberFormat(locale === 'zh-TW' ? 'zh-TW' : locale === 'ja' ? 'ja-JP' : 'en-US', {
+      style: 'currency',
+      currency: locale === 'zh-TW' ? 'TWD' : locale === 'ja' ? 'JPY' : 'USD',
+      maximumFractionDigits: 0,
+    }).format(num);
+  };
   const utils = trpc.useUtils();
 
   // --- tRPC queries ---
@@ -122,7 +132,7 @@ export default function FollowUpPage() {
         grouped[stage].push({
           id: client.id,
           clientName: client.companyName,
-          value: client.dealValue ? `$${Number(client.dealValue).toLocaleString()}` : "$0",
+          value: formatCurrency(client.dealValue),
           daysInStage,
         });
       }

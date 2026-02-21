@@ -2,6 +2,18 @@
 
 import type { CoachScenario, BusinessCulture, SupportedLocale, CoachSessionState } from '../types'
 
+const ROLEPLAY_LOCALE_INSTRUCTIONS: Record<SupportedLocale, string> = {
+  'en': 'You MUST respond in English.',
+  'zh-TW': '你必須使用繁體中文（台灣用語）回覆。所有對話都要用繁體中文。',
+  'zh-CN': '你必须使用简体中文回复。所有对话都要用简体中文。',
+  'ja': 'あなたは必ず日本語で応答してください。すべての会話は日本語で行ってください。',
+  'ko': '반드시 한국어로 응답해 주세요. 모든 대화는 한국어로 진행해 주세요.',
+  'th': 'คุณต้องตอบเป็นภาษาไทยเท่านั้น บทสนทนาทั้งหมดต้องเป็นภาษาไทย',
+  'vi': 'Bạn PHẢI trả lời bằng tiếng Việt. Tất cả hội thoại phải bằng tiếng Việt.',
+  'ms': 'Anda MESTI menjawab dalam Bahasa Melayu. Semua perbualan mesti dalam Bahasa Melayu.',
+  'id': 'Anda HARUS menjawab dalam Bahasa Indonesia. Semua percakapan harus dalam Bahasa Indonesia.',
+}
+
 const CULTURE_CONTEXT: Record<BusinessCulture, string> = {
   taiwan: `You are a Taiwanese business client.
 - Use polite but warm language
@@ -108,7 +120,10 @@ IMPORTANT RULES:
 9. After ${session.maxTurns} total turns, naturally wind down the conversation
 
 Current turn: ${session.turnCount + 1} of ${session.maxTurns}
-${session.turnCount >= session.maxTurns - 2 ? 'The conversation is nearing its end. Start wrapping up naturally.' : ''}`
+${session.turnCount >= session.maxTurns - 2 ? 'The conversation is nearing its end. Start wrapping up naturally.' : ''}
+
+LANGUAGE REQUIREMENT: ${ROLEPLAY_LOCALE_INSTRUCTIONS[locale]}
+The initial client message may be provided in English as a template. You MUST rephrase and continue the conversation in the required language above.`
 
   return {
     systemPrompt,

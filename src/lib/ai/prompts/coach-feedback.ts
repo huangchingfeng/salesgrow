@@ -66,18 +66,18 @@ ${LOCALE_INSTRUCTIONS[input.locale]}
 
 IMPORTANT: Return your response as valid JSON:
 {
-  "totalScore": 72,
+  "totalScore": <integer 0-100>,
   "dimensions": {
-    "opening": { "score": 15, "maxScore": 20, "feedback": "specific feedback" },
-    "needsDiscovery": { "score": 16, "maxScore": 20, "feedback": "specific feedback" },
-    "solutionPresentation": { "score": 14, "maxScore": 20, "feedback": "specific feedback" },
-    "objectionHandling": { "score": 12, "maxScore": 20, "feedback": "specific feedback" },
-    "closing": { "score": 15, "maxScore": 20, "feedback": "specific feedback" }
+    "opening": { "score": <integer 0-20>, "maxScore": 20, "feedback": "specific feedback" },
+    "needsDiscovery": { "score": <integer 0-20>, "maxScore": 20, "feedback": "specific feedback" },
+    "solutionPresentation": { "score": <integer 0-20>, "maxScore": 20, "feedback": "specific feedback" },
+    "objectionHandling": { "score": <integer 0-20>, "maxScore": 20, "feedback": "specific feedback" },
+    "closing": { "score": <integer 0-20>, "maxScore": 20, "feedback": "specific feedback" }
   },
   "strengths": ["strength 1", "strength 2"],
   "improvements": ["improvement 1", "improvement 2"],
   "encouragement": "a motivational closing message",
-  "xpEarned": 50
+  "xpEarned": <integer based on XP table above>
 }`
 
   const userPrompt = `Please evaluate this sales practice session:

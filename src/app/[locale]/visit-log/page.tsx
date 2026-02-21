@@ -218,7 +218,7 @@ export default function VisitLogPage() {
       summary: result.summary || undefined,
       nextSteps: result.nextSteps.map((s) => s.action),
       dealProbability: result.probability,
-      clientMood: (result.mood.toLowerCase() as "positive" | "neutral" | "negative" | "interested") || undefined,
+      clientMood: (result.mood.toLowerCase() as "positive" | "neutral" | "negative" | "interested" | "mixed") || undefined,
       visitDate: new Date().toISOString().split("T")[0],
     });
   };

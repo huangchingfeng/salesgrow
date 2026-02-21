@@ -330,7 +330,6 @@
       "meeting": "Meeting",
       "proposal": "Proposal",
       "negotiation": "Negotiation",
-      "closed": "Closed",
       "closedWon": "Closed Won",
       "closedLost": "Closed Lost"
     }

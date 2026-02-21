@@ -27,7 +27,7 @@ ${LOCALE_INSTRUCTIONS[input.locale]}
 IMPORTANT: Return your response as valid JSON:
 {
   "summary": "2-3 paragraph meeting summary",
-  "clientReaction": "positive" | "neutral" | "negative" | "mixed",
+  "clientReaction": "positive" | "neutral" | "negative" | "interested" | "mixed",
   "clientSentiment": "brief description of client's overall mood and engagement level",
   "actionItems": [
     { "action": "specific action to take", "deadline": "suggested deadline or null", "priority": "high" | "medium" | "low" }
@@ -44,7 +44,7 @@ ${input.transcript}
 
 Please provide:
 1. **Summary**: Concise overview of the meeting (key topics, decisions, concerns)
-2. **Client Reaction**: Overall client sentiment (positive/neutral/negative/mixed)
+2. **Client Reaction**: Overall client sentiment (positive/neutral/negative/interested/mixed)
 3. **Client Sentiment**: Describe their engagement level and emotional state
 4. **Action Items**: Specific next steps with priorities and suggested deadlines
 5. **Close Probability**: Estimate likelihood of closing (0-100) with reasoning

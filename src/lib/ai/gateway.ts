@@ -110,7 +110,7 @@ function getNextResetTime(): Date {
 
 // --- JSON 清理 ---
 
-function cleanJsonResponse(content: string): string {
+export function cleanJsonResponse(content: string): string {
   let cleaned = content.trim()
   // 移除 markdown code blocks
   if (cleaned.startsWith('```')) {
@@ -248,15 +248,23 @@ async function callAnthropic(
   messages: ChatMessage[],
   model: string,
   maxTokens: number,
-  temperature: number
+  temperature: number,
+  responseFormat?: 'json' | 'text'
 ): Promise<{ content: string; usage: TokenUsage }> {
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not configured')
 
-  const systemMessage = messages.find((m) => m.role === 'system')?.content
+  let systemMessage = messages.find((m) => m.role === 'system')?.content
   const chatMessages = messages
     .filter((m) => m.role !== 'system')
     .map((m) => ({ role: m.role, content: m.content }))
+
+  // Anthropic 沒有 response_format 參數，透過 system prompt 強制 JSON 輸出
+  if (responseFormat === 'json' && systemMessage) {
+    systemMessage += '\n\nIMPORTANT: You must respond with valid JSON only, no markdown formatting or code blocks.'
+  } else if (responseFormat === 'json') {
+    systemMessage = 'IMPORTANT: You must respond with valid JSON only, no markdown formatting or code blocks.'
+  }
 
   const body: Record<string, unknown> = {
     model,
@@ -317,7 +325,7 @@ async function callModel(
     case 'google':
       return callGemini(messages, model, maxTokens, temperature, responseFormat)
     case 'anthropic':
-      return callAnthropic(messages, model, maxTokens, temperature)
+      return callAnthropic(messages, model, maxTokens, temperature, responseFormat)
     default:
       throw new Error(`Unknown provider: ${config.provider}`)
   }
