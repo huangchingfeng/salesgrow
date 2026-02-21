@@ -108,6 +108,17 @@ function getNextResetTime(): Date {
   return tomorrow
 }
 
+// --- JSON 清理 ---
+
+function cleanJsonResponse(content: string): string {
+  let cleaned = content.trim()
+  // 移除 markdown code blocks
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '')
+  }
+  return cleaned.trim()
+}
+
 // --- Token 估算 ---
 
 function estimateTokens(text: string): number {
@@ -174,7 +185,8 @@ async function callGemini(
   messages: ChatMessage[],
   _model: string,
   maxTokens: number,
-  temperature: number
+  temperature: number,
+  responseFormat?: 'json' | 'text'
 ): Promise<{ content: string; usage: TokenUsage }> {
   const apiKey = process.env.GOOGLE_AI_API_KEY
   if (!apiKey) throw new Error('GOOGLE_AI_API_KEY not configured')
@@ -188,12 +200,17 @@ async function callGemini(
       parts: [{ text: m.content }],
     }))
 
+  const generationConfig: Record<string, unknown> = {
+    maxOutputTokens: maxTokens,
+    temperature,
+  }
+  if (responseFormat === 'json') {
+    generationConfig.responseMimeType = 'application/json'
+  }
+
   const body: Record<string, unknown> = {
     contents,
-    generationConfig: {
-      maxOutputTokens: maxTokens,
-      temperature,
-    },
+    generationConfig,
   }
   if (systemInstruction) {
     body.systemInstruction = { parts: [{ text: systemInstruction }] }
@@ -298,7 +315,7 @@ async function callModel(
     case 'deepseek':
       return callDeepSeek(messages, model, maxTokens, temperature, responseFormat)
     case 'google':
-      return callGemini(messages, model, maxTokens, temperature)
+      return callGemini(messages, model, maxTokens, temperature, responseFormat)
     case 'anthropic':
       return callAnthropic(messages, model, maxTokens, temperature)
     default:
@@ -364,11 +381,16 @@ export async function aiGateway(request: AIRequest): Promise<AIResponse> {
       // 更新配額
       incrementQuota(request.userId, request.task)
 
+      // JSON 回應自動清理
+      const content = request.responseFormat === 'json'
+        ? cleanJsonResponse(result.content)
+        : result.content
+
       // 寫入快取
-      setCache(cacheKey, result.content, model)
+      setCache(cacheKey, content, model)
 
       return {
-        content: result.content,
+        content,
         model,
         provider: config.provider as AIProvider,
         usage: result.usage,

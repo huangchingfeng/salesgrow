@@ -48,7 +48,16 @@ export async function POST(req: NextRequest) {
       responseFormat: prompt.responseFormat,
     })
 
-    const data = JSON.parse(response.content) as OutreachOutput
+    let data: OutreachOutput
+    try {
+      data = JSON.parse(response.content) as OutreachOutput
+    } catch {
+      console.error('[Outreach API] JSON parse failed. Raw:', response.content.slice(0, 500))
+      return NextResponse.json<APIResponse<never>>(
+        { success: false, error: { code: 'PARSE_ERROR', message: 'Failed to parse AI response' } },
+        { status: 502 }
+      )
+    }
 
     return NextResponse.json<APIResponse<OutreachOutput>>({
       success: true,
@@ -57,6 +66,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
+    console.error('[Outreach API] Error:', message)
     return NextResponse.json<APIResponse<never>>(
       { success: false, error: { code: 'AI_ERROR', message } },
       { status: 500 }

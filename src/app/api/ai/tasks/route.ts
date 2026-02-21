@@ -57,7 +57,16 @@ export async function POST(req: NextRequest) {
       responseFormat: prompt.responseFormat,
     })
 
-    const data = JSON.parse(response.content) as DailyTasksOutput
+    let data: DailyTasksOutput
+    try {
+      data = JSON.parse(response.content) as DailyTasksOutput
+    } catch {
+      console.error('[Tasks API] JSON parse failed. Raw:', response.content.slice(0, 500))
+      return NextResponse.json<APIResponse<never>>(
+        { success: false, error: { code: 'PARSE_ERROR', message: 'Failed to parse AI response' } },
+        { status: 502 }
+      )
+    }
 
     return NextResponse.json<APIResponse<DailyTasksOutput>>({
       success: true,
@@ -66,6 +75,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
+    console.error('[Tasks API] Error:', message)
     return NextResponse.json<APIResponse<never>>(
       { success: false, error: { code: 'AI_ERROR', message } },
       { status: 500 }

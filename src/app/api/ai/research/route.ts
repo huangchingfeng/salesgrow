@@ -33,7 +33,16 @@ export async function POST(req: NextRequest) {
       responseFormat: prompt.responseFormat,
     })
 
-    const data = JSON.parse(response.content) as ClientResearchOutput
+    let data: ClientResearchOutput
+    try {
+      data = JSON.parse(response.content) as ClientResearchOutput
+    } catch {
+      console.error('[Research API] JSON parse failed. Raw content:', response.content.slice(0, 500))
+      return NextResponse.json<APIResponse<never>>(
+        { success: false, error: { code: 'PARSE_ERROR', message: 'Failed to parse AI response' } },
+        { status: 502 }
+      )
+    }
 
     return NextResponse.json<APIResponse<ClientResearchOutput>>({
       success: true,
@@ -42,6 +51,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
+    console.error('[Research API] Error:', message)
     return NextResponse.json<APIResponse<never>>(
       { success: false, error: { code: 'AI_ERROR', message } },
       { status: 500 }
