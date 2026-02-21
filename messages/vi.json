@@ -159,6 +159,7 @@
   "nav": {
     "dashboard": "Bảng điều khiển",
     "research": "Nghiên cứu",
+    "clients": "Quản lý khách hàng",
     "outreach": "Email bán hàng",
     "visitLog": "Nhật ký thăm",
     "followUp": "Theo dõi",
@@ -414,6 +415,34 @@
     "startReading": "Đọc bài viết",
     "bookmarkSaved": "Đã đánh dấu!",
     "filterBy": "Lọc theo chủ đề"
+  },
+  "clients": {
+    "title": "Quản lý khách hàng",
+    "addClient": "Thêm khách hàng",
+    "editClient": "Chỉnh sửa khách hàng",
+    "deleteClient": "Xóa khách hàng",
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa khách hàng này không?",
+    "companyName": "Tên công ty",
+    "website": "Website",
+    "industry": "Ngành nghề",
+    "stage": "Giai đoạn quy trình",
+    "dealValue": "Giá trị giao dịch",
+    "notes": "Ghi chú",
+    "lastContact": "Liên hệ lần cuối",
+    "nextFollowUp": "Theo dõi tiếp theo",
+    "searchPlaceholder": "Tìm kiếm khách hàng...",
+    "emptyState": "Chưa có khách hàng nào. Hãy thêm khách hàng đầu tiên!",
+    "saveSuccess": "Đã lưu thông tin khách hàng!",
+    "deleteSuccess": "Đã xóa khách hàng!",
+    "stages": {
+      "lead": "Tiềm năng",
+      "contacted": "Đã liên hệ",
+      "meeting": "Cuộc họp",
+      "proposal": "Đề xuất",
+      "negotiation": "Đàm phán",
+      "closedWon": "Chốt thành công",
+      "closedLost": "Chốt thất bại"
+    }
   },
   "leaderboard": {
     "title": "Bảng xếp hạng",

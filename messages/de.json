@@ -159,6 +159,7 @@
   "nav": {
     "dashboard": "Dashboard",
     "research": "Recherche",
+    "clients": "Kundenverwaltung",
     "outreach": "Akquise-Mails",
     "visitLog": "Besuchsprotokoll",
     "followUp": "Nachverfolgung",
@@ -414,6 +415,34 @@
     "startReading": "Artikel lesen",
     "bookmarkSaved": "Gespeichert!",
     "filterBy": "Nach Thema filtern"
+  },
+  "clients": {
+    "title": "Kundenverwaltung",
+    "addClient": "Kunde hinzufügen",
+    "editClient": "Kunde bearbeiten",
+    "deleteClient": "Kunde löschen",
+    "deleteConfirm": "Sind Sie sicher, dass Sie diesen Kunden löschen möchten?",
+    "companyName": "Firmenname",
+    "website": "Website",
+    "industry": "Branche",
+    "stage": "Pipeline-Phase",
+    "dealValue": "Auftragswert",
+    "notes": "Notizen",
+    "lastContact": "Letzter Kontakt",
+    "nextFollowUp": "Nächste Nachverfolgung",
+    "searchPlaceholder": "Kunden suchen...",
+    "emptyState": "Noch keine Kunden. Fügen Sie Ihren ersten Kunden hinzu!",
+    "saveSuccess": "Kundendaten erfolgreich gespeichert!",
+    "deleteSuccess": "Kunde gelöscht!",
+    "stages": {
+      "lead": "Lead",
+      "contacted": "Kontaktiert",
+      "meeting": "Meeting",
+      "proposal": "Angebot",
+      "negotiation": "Verhandlung",
+      "closedWon": "Abgeschlossen (gewonnen)",
+      "closedLost": "Abgeschlossen (verloren)"
+    }
   },
   "leaderboard": {
     "title": "Bestenliste",

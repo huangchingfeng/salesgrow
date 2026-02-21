@@ -14,12 +14,14 @@ import {
   BookOpen,
   Settings,
   TrendingUp,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { key: "dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { key: "research", icon: Search, href: "/research" },
+  { key: "clients", icon: Users, href: "/clients" },
   { key: "outreach", icon: Mail, href: "/outreach" },
   { key: "visitLog", icon: ClipboardList, href: "/visit-log" },
   { key: "followUp", icon: Bell, href: "/follow-up" },

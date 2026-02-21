@@ -159,6 +159,7 @@
   "nav": {
     "dashboard": "Panel",
     "research": "Investigación",
+    "clients": "Gestión de clientes",
     "outreach": "Prospección",
     "visitLog": "Registro de visitas",
     "followUp": "Seguimiento",
@@ -414,6 +415,34 @@
     "startReading": "Leer artículo",
     "bookmarkSaved": "¡Guardado en favoritos!",
     "filterBy": "Filtrar por tema"
+  },
+  "clients": {
+    "title": "Gestión de clientes",
+    "addClient": "Agregar cliente",
+    "editClient": "Editar cliente",
+    "deleteClient": "Eliminar cliente",
+    "deleteConfirm": "¿Está seguro de que desea eliminar este cliente?",
+    "companyName": "Nombre de la empresa",
+    "website": "Sitio web",
+    "industry": "Industria",
+    "stage": "Etapa del pipeline",
+    "dealValue": "Valor del negocio",
+    "notes": "Notas",
+    "lastContact": "Último contacto",
+    "nextFollowUp": "Próximo seguimiento",
+    "searchPlaceholder": "Buscar clientes...",
+    "emptyState": "Aún no hay clientes. ¡Agregue su primer cliente!",
+    "saveSuccess": "¡Cliente guardado exitosamente!",
+    "deleteSuccess": "¡Cliente eliminado!",
+    "stages": {
+      "lead": "Prospecto",
+      "contacted": "Contactado",
+      "meeting": "Reunión",
+      "proposal": "Propuesta",
+      "negotiation": "Negociación",
+      "closedWon": "Cerrado (ganado)",
+      "closedLost": "Cerrado (perdido)"
+    }
   },
   "leaderboard": {
     "title": "Clasificación",

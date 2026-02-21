@@ -170,6 +170,7 @@
   "nav": {
     "dashboard": "儀表板",
     "research": "客戶研究",
+    "clients": "客戶管理",
     "outreach": "開發信",
     "visitLog": "拜訪紀錄",
     "followUp": "跟進追蹤",
@@ -460,6 +461,34 @@
     "startReading": "閱讀文章",
     "bookmarkSaved": "已收藏！",
     "filterBy": "依主題篩選"
+  },
+  "clients": {
+    "title": "客戶管理",
+    "addClient": "新增客戶",
+    "editClient": "編輯客戶",
+    "deleteClient": "刪除客戶",
+    "deleteConfirm": "確定要刪除此客戶嗎？",
+    "companyName": "公司名稱",
+    "website": "網站",
+    "industry": "產業",
+    "stage": "銷售階段",
+    "dealValue": "交易金額",
+    "notes": "備註",
+    "lastContact": "上次聯繫",
+    "nextFollowUp": "下次跟進",
+    "searchPlaceholder": "搜尋客戶...",
+    "emptyState": "尚無客戶，立即新增第一位客戶！",
+    "saveSuccess": "客戶資料已儲存！",
+    "deleteSuccess": "客戶已刪除！",
+    "stages": {
+      "lead": "潛在客戶",
+      "contacted": "已聯繫",
+      "meeting": "會議中",
+      "proposal": "提案中",
+      "negotiation": "議價中",
+      "closedWon": "已成交",
+      "closedLost": "未成交"
+    }
   },
   "leaderboard": {
     "title": "排行榜",

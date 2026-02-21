@@ -170,6 +170,7 @@
   "nav": {
     "dashboard": "Dashboard",
     "research": "Research",
+    "clients": "Clients",
     "outreach": "Outreach",
     "visitLog": "Visit Log",
     "followUp": "Follow-up",
@@ -460,6 +461,34 @@
     "startReading": "Read Article",
     "bookmarkSaved": "Bookmarked!",
     "filterBy": "Filter by topic"
+  },
+  "clients": {
+    "title": "Client Management",
+    "addClient": "Add Client",
+    "editClient": "Edit Client",
+    "deleteClient": "Delete Client",
+    "deleteConfirm": "Are you sure you want to delete this client?",
+    "companyName": "Company Name",
+    "website": "Website",
+    "industry": "Industry",
+    "stage": "Pipeline Stage",
+    "dealValue": "Deal Value",
+    "notes": "Notes",
+    "lastContact": "Last Contact",
+    "nextFollowUp": "Next Follow-up",
+    "searchPlaceholder": "Search clients...",
+    "emptyState": "No clients yet. Add your first client!",
+    "saveSuccess": "Client saved successfully!",
+    "deleteSuccess": "Client deleted!",
+    "stages": {
+      "lead": "Lead",
+      "contacted": "Contacted",
+      "meeting": "Meeting",
+      "proposal": "Proposal",
+      "negotiation": "Negotiation",
+      "closedWon": "Closed Won",
+      "closedLost": "Closed Lost"
+    }
   },
   "leaderboard": {
     "title": "Leaderboard",

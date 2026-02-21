@@ -159,6 +159,7 @@
   "nav": {
     "dashboard": "Tableau de bord",
     "research": "Recherche",
+    "clients": "Gestion des clients",
     "outreach": "Prospection",
     "visitLog": "Journal de visites",
     "followUp": "Suivi",
@@ -414,6 +415,34 @@
     "startReading": "Lire l'article",
     "bookmarkSaved": "Ajouté aux favoris !",
     "filterBy": "Filtrer par sujet"
+  },
+  "clients": {
+    "title": "Gestion des clients",
+    "addClient": "Ajouter un client",
+    "editClient": "Modifier le client",
+    "deleteClient": "Supprimer le client",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce client ?",
+    "companyName": "Nom de l'entreprise",
+    "website": "Site web",
+    "industry": "Secteur d'activité",
+    "stage": "Étape du pipeline",
+    "dealValue": "Valeur de l'affaire",
+    "notes": "Notes",
+    "lastContact": "Dernier contact",
+    "nextFollowUp": "Prochain suivi",
+    "searchPlaceholder": "Rechercher des clients...",
+    "emptyState": "Aucun client pour le moment. Ajoutez votre premier client !",
+    "saveSuccess": "Client enregistré avec succès !",
+    "deleteSuccess": "Client supprimé !",
+    "stages": {
+      "lead": "Prospect",
+      "contacted": "Contacté",
+      "meeting": "Rendez-vous",
+      "proposal": "Proposition",
+      "negotiation": "Négociation",
+      "closedWon": "Conclu (gagné)",
+      "closedLost": "Conclu (perdu)"
+    }
   },
   "leaderboard": {
     "title": "Classement",

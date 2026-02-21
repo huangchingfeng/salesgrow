@@ -9,12 +9,14 @@ import {
   Mail,
   Brain,
   User,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { key: "dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { key: "research", icon: Search, href: "/research" },
+  { key: "clients", icon: Users, href: "/clients" },
   { key: "outreach", icon: Mail, href: "/outreach" },
   { key: "coach", icon: Brain, href: "/coach" },
   { key: "settings", icon: User, href: "/settings" },

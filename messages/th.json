@@ -159,6 +159,7 @@
   "nav": {
     "dashboard": "แดชบอร์ด",
     "research": "วิจัย",
+    "clients": "จัดการลูกค้า",
     "outreach": "อีเมลขาย",
     "visitLog": "บันทึกการเยี่ยม",
     "followUp": "ติดตาม",
@@ -414,6 +415,34 @@
     "startReading": "อ่านบทความ",
     "bookmarkSaved": "บันทึกแล้ว!",
     "filterBy": "กรองตามหัวข้อ"
+  },
+  "clients": {
+    "title": "จัดการลูกค้า",
+    "addClient": "เพิ่มลูกค้า",
+    "editClient": "แก้ไขลูกค้า",
+    "deleteClient": "ลบลูกค้า",
+    "deleteConfirm": "คุณแน่ใจหรือไม่ว่าต้องการลบลูกค้ารายนี้?",
+    "companyName": "ชื่อบริษัท",
+    "website": "เว็บไซต์",
+    "industry": "อุตสาหกรรม",
+    "stage": "ขั้นตอนไปป์ไลน์",
+    "dealValue": "มูลค่าดีล",
+    "notes": "บันทึก",
+    "lastContact": "ติดต่อล่าสุด",
+    "nextFollowUp": "ติดตามครั้งถัดไป",
+    "searchPlaceholder": "ค้นหาลูกค้า...",
+    "emptyState": "ยังไม่มีลูกค้า เพิ่มลูกค้าคนแรกของคุณ!",
+    "saveSuccess": "บันทึกข้อมูลลูกค้าเรียบร้อย!",
+    "deleteSuccess": "ลบลูกค้าแล้ว!",
+    "stages": {
+      "lead": "ลีด",
+      "contacted": "ติดต่อแล้ว",
+      "meeting": "นัดพบ",
+      "proposal": "เสนอราคา",
+      "negotiation": "เจรจา",
+      "closedWon": "ปิดดีลสำเร็จ",
+      "closedLost": "ปิดดีลไม่สำเร็จ"
+    }
   },
   "leaderboard": {
     "title": "กระดานผู้นำ",

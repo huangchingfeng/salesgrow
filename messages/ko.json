@@ -159,6 +159,7 @@
   "nav": {
     "dashboard": "대시보드",
     "research": "리서치",
+    "clients": "고객 관리",
     "outreach": "영업 메일",
     "visitLog": "방문 기록",
     "followUp": "팔로업",
@@ -414,6 +415,34 @@
     "startReading": "기사 읽기",
     "bookmarkSaved": "북마크되었습니다!",
     "filterBy": "주제별 필터"
+  },
+  "clients": {
+    "title": "고객 관리",
+    "addClient": "고객 추가",
+    "editClient": "고객 편집",
+    "deleteClient": "고객 삭제",
+    "deleteConfirm": "이 고객을 삭제하시겠습니까?",
+    "companyName": "회사명",
+    "website": "웹사이트",
+    "industry": "업종",
+    "stage": "파이프라인 단계",
+    "dealValue": "거래 금액",
+    "notes": "메모",
+    "lastContact": "마지막 연락",
+    "nextFollowUp": "다음 팔로업",
+    "searchPlaceholder": "고객 검색...",
+    "emptyState": "아직 고객이 없습니다. 첫 번째 고객을 추가하세요!",
+    "saveSuccess": "고객 정보가 저장되었습니다!",
+    "deleteSuccess": "고객이 삭제되었습니다!",
+    "stages": {
+      "lead": "리드",
+      "contacted": "연락 완료",
+      "meeting": "미팅",
+      "proposal": "제안",
+      "negotiation": "협상",
+      "closedWon": "성사",
+      "closedLost": "실패"
+    }
   },
   "leaderboard": {
     "title": "리더보드",

@@ -159,6 +159,7 @@
   "nav": {
     "dashboard": "ダッシュボード",
     "research": "リサーチ",
+    "clients": "顧客管理",
     "outreach": "営業メール",
     "visitLog": "訪問記録",
     "followUp": "フォローアップ",
@@ -414,6 +415,34 @@
     "startReading": "記事を読む",
     "bookmarkSaved": "ブックマークしました！",
     "filterBy": "トピックで絞り込む"
+  },
+  "clients": {
+    "title": "顧客管理",
+    "addClient": "顧客を追加",
+    "editClient": "顧客を編集",
+    "deleteClient": "顧客を削除",
+    "deleteConfirm": "この顧客を削除してもよろしいですか？",
+    "companyName": "会社名",
+    "website": "ウェブサイト",
+    "industry": "業種",
+    "stage": "パイプライン段階",
+    "dealValue": "取引金額",
+    "notes": "メモ",
+    "lastContact": "最終連絡日",
+    "nextFollowUp": "次回フォローアップ",
+    "searchPlaceholder": "顧客を検索...",
+    "emptyState": "顧客がまだいません。最初の顧客を追加しましょう！",
+    "saveSuccess": "顧客情報を保存しました！",
+    "deleteSuccess": "顧客を削除しました！",
+    "stages": {
+      "lead": "リード",
+      "contacted": "連絡済み",
+      "meeting": "商談",
+      "proposal": "提案中",
+      "negotiation": "交渉中",
+      "closedWon": "成約",
+      "closedLost": "失注"
+    }
   },
   "leaderboard": {
     "title": "リーダーボード",
