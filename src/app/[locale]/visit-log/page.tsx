@@ -273,6 +273,8 @@ export default function VisitLogPage() {
                   <div className="flex flex-col items-center">
                     <VoiceRecorder
                       onRecordingComplete={handleRecordingComplete}
+                      onRecordingStart={startSpeechRecognition}
+                      onRecordingStop={stopSpeechRecognition}
                       isProcessing={isProcessing}
                       labels={{
                         micDenied: t("micDenied"),
@@ -288,27 +290,6 @@ export default function VisitLogPage() {
                         <p className="text-sm text-text-secondary">{liveTranscript}</p>
                       </div>
                     )}
-                    {/* Start/stop speech recognition alongside audio recording */}
-                    <div className="mt-2">
-                      {!isListening ? (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={startSpeechRecognition}
-                        >
-                          <Mic className="h-3.5 w-3.5" />
-                          {t("startTranscription")}
-                        </Button>
-                      ) : (
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={stopSpeechRecognition}
-                        >
-                          {t("stopTranscription")}
-                        </Button>
-                      )}
-                    </div>
                   </div>
                 </TabPanel>
               )}
