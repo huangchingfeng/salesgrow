@@ -262,7 +262,13 @@
     "micDenied": "Quyền truy cập micrô bị từ chối. Vui lòng cho phép quyền micrô trong cài đặt trình duyệt.",
     "processingVoice": "Đang xử lý ghi chú thoại của bạn...",
     "tapToStop": "Nhấn để dừng ghi âm",
-    "tapToStart": "Nhấn để bắt đầu ghi âm"
+    "tapToStart": "Nhấn để bắt đầu ghi âm",
+    "transcribing": "Đang chuyển đổi giọng nói thành văn bản...",
+    "transcriptLabel": "Văn bản chuyển đổi",
+    "transcriptPlaceholder": "Văn bản chuyển đổi sẽ hiển thị tại đây...",
+    "editTranscriptHint": "Kiểm tra và chỉnh sửa văn bản nếu cần, sau đó nhấn Phân tích.",
+    "analyze": "Phân tích bằng AI",
+    "noSpeechDetected": "Không phát hiện giọng nói. Vui lòng thử nhập văn bản."
   },
   "followUp": {
     "title": "Quản lý theo dõi",

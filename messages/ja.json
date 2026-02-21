@@ -262,7 +262,13 @@
     "micDenied": "マイクへのアクセスが拒否されました。ブラウザの設定でマイクの権限を許可してください。",
     "processingVoice": "音声メモを処理しています...",
     "tapToStop": "タップして録音を停止",
-    "tapToStart": "タップして録音を開始"
+    "tapToStart": "タップして録音を開始",
+    "transcribing": "録音を文字起こし中...",
+    "transcriptLabel": "文字起こし",
+    "transcriptPlaceholder": "文字起こしされたテキストがここに表示されます...",
+    "editTranscriptHint": "文字起こしを確認・編集してから、分析をクリックしてください。",
+    "analyze": "AIで分析",
+    "noSpeechDetected": "音声が検出されませんでした。テキスト入力をお試しください。"
   },
   "followUp": {
     "title": "フォローアップ管理",

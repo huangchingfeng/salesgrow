@@ -8,8 +8,6 @@ import { useToast } from "@/components/ui/toast";
 
 interface VoiceRecorderProps {
   onRecordingComplete?: (blob: Blob) => void;
-  onRecordingStart?: () => void;
-  onRecordingStop?: () => void;
   isProcessing?: boolean;
   className?: string;
   labels?: {
@@ -22,8 +20,6 @@ interface VoiceRecorderProps {
 
 export function VoiceRecorder({
   onRecordingComplete,
-  onRecordingStart,
-  onRecordingStop,
   isProcessing = false,
   className,
   labels,
@@ -67,7 +63,6 @@ export function VoiceRecorder({
       mediaRecorder.start();
       setIsRecording(true);
       setDuration(0);
-      onRecordingStart?.();
 
       timerRef.current = setInterval(() => {
         setDuration((d) => d + 1);
@@ -81,7 +76,6 @@ export function VoiceRecorder({
     mediaRecorderRef.current?.stop();
     setIsRecording(false);
     if (timerRef.current) clearInterval(timerRef.current);
-    onRecordingStop?.();
   };
 
   if (isProcessing) {

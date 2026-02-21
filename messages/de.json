@@ -262,7 +262,13 @@
     "micDenied": "Mikrofonzugriff verweigert. Bitte erlauben Sie die Mikrofonberechtigung in Ihren Browsereinstellungen.",
     "processingVoice": "Ihre Sprachnotiz wird verarbeitet...",
     "tapToStop": "Tippen, um die Aufnahme zu stoppen",
-    "tapToStart": "Tippen, um die Aufnahme zu starten"
+    "tapToStart": "Tippen, um die Aufnahme zu starten",
+    "transcribing": "Aufnahme wird transkribiert...",
+    "transcriptLabel": "Transkript",
+    "transcriptPlaceholder": "Der transkribierte Text wird hier angezeigt...",
+    "editTranscriptHint": "Überprüfen und bearbeiten Sie das Transkript, dann klicken Sie auf Analysieren.",
+    "analyze": "Mit KI analysieren",
+    "noSpeechDetected": "Keine Sprache erkannt. Bitte versuchen Sie die Texteingabe."
   },
   "followUp": {
     "title": "Nachverfolgung",

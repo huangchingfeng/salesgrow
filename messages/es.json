@@ -262,7 +262,13 @@
     "micDenied": "Acceso al micrófono denegado. Por favor, permita el acceso al micrófono en la configuración de su navegador.",
     "processingVoice": "Procesando su nota de voz...",
     "tapToStop": "Toque para detener la grabación",
-    "tapToStart": "Toque para iniciar la grabación"
+    "tapToStart": "Toque para iniciar la grabación",
+    "transcribing": "Transcribiendo la grabación...",
+    "transcriptLabel": "Transcripción",
+    "transcriptPlaceholder": "El texto transcrito aparecerá aquí...",
+    "editTranscriptHint": "Revise y edite la transcripción si es necesario, luego haga clic en Analizar.",
+    "analyze": "Analizar con IA",
+    "noSpeechDetected": "No se detectó voz. Por favor, intente la entrada de texto."
   },
   "followUp": {
     "title": "Seguimiento comercial",

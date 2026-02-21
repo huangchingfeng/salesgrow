@@ -262,7 +262,13 @@
     "micDenied": "Accès au microphone refusé. Veuillez autoriser le microphone dans les paramètres de votre navigateur.",
     "processingVoice": "Traitement de votre note vocale en cours...",
     "tapToStop": "Appuyez pour arrêter l'enregistrement",
-    "tapToStart": "Appuyez pour commencer l'enregistrement"
+    "tapToStart": "Appuyez pour commencer l'enregistrement",
+    "transcribing": "Transcription de l'enregistrement...",
+    "transcriptLabel": "Transcription",
+    "transcriptPlaceholder": "Le texte transcrit apparaîtra ici...",
+    "editTranscriptHint": "Vérifiez et modifiez la transcription si nécessaire, puis cliquez sur Analyser.",
+    "analyze": "Analyser avec l'IA",
+    "noSpeechDetected": "Aucune parole détectée. Veuillez essayer la saisie de texte."
   },
   "followUp": {
     "title": "Suivi commercial",

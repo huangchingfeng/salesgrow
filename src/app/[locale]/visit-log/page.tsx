@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { AppShell } from "@/components/layout/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -51,61 +50,10 @@ export default function VisitLogPage() {
   const [selectedClientId, setSelectedClientId] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  // --- Web Speech API for live transcription ---
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const [liveTranscript, setLiveTranscript] = useState("");
-  const [isListening, setIsListening] = useState(false);
-  const [speechSupported, setSpeechSupported] = useState(true);
-
-  useEffect(() => {
-    const SR = typeof window !== "undefined"
-      ? (window.SpeechRecognition || window.webkitSpeechRecognition)
-      : null;
-    if (!SR) setSpeechSupported(false);
-  }, []);
-
-  const startSpeechRecognition = useCallback(() => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return;
-    const recognition = new SR();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    const langMap: Record<string, string> = {
-      "zh-TW": "zh-TW", "zh-CN": "zh-CN", "ja": "ja-JP",
-      "ko": "ko-KR", "th": "th-TH", "vi": "vi-VN",
-      "ms": "ms-MY", "id": "id-ID",
-    };
-    recognition.lang = langMap[locale] || "en-US";
-
-    let finalText = "";
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let interim = "";
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          finalText += transcript + " ";
-        } else {
-          interim = transcript;
-        }
-      }
-      setLiveTranscript(finalText + interim);
-    };
-    recognition.onerror = () => {
-      setIsListening(false);
-    };
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-    recognition.start();
-    recognitionRef.current = recognition;
-    setIsListening(true);
-    setLiveTranscript("");
-  }, [locale]);
-
-  const stopSpeechRecognition = useCallback(() => {
-    recognitionRef.current?.stop();
-    setIsListening(false);
-  }, []);
+  // --- Whisper 轉錄 ---
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const [editableTranscript, setEditableTranscript] = useState("");
+  const [showTranscriptEditor, setShowTranscriptEditor] = useState(false);
 
   // --- tRPC queries ---
   const clientsQuery = trpc.clients.list.useQuery(undefined, {
@@ -122,7 +70,8 @@ export default function VisitLogPage() {
       utils.visitLog.list.invalidate();
       setResult(null);
       setTextNotes("");
-      setLiveTranscript("");
+      setEditableTranscript("");
+      setShowTranscriptEditor(false);
       setSelectedClientId("");
       setIsSaving(false);
     },
@@ -187,13 +136,51 @@ export default function VisitLogPage() {
     }
   };
 
-  const handleRecordingComplete = async (_blob: Blob) => {
-    // 如果有 live transcript 就用它，否則 fallback 到手動輸入提示
-    if (liveTranscript.trim()) {
-      await summarizeTranscript(liveTranscript.trim());
-    } else {
-      toast(t("noSpeechDetected"), "error");
+  // 錄音完成 → 送 Whisper 轉錄
+  const handleRecordingComplete = async (blob: Blob) => {
+    setIsTranscribing(true);
+    setShowTranscriptEditor(false);
+
+    try {
+      const formData = new FormData();
+      formData.append("audio", blob, "recording.webm");
+      formData.append("language", locale);
+
+      const res = await fetch("/api/ai/transcribe", {
+        method: "POST",
+        body: formData,
+      });
+
+      const json = await res.json();
+
+      if (!json.success) {
+        toast(json.error?.message || tErr("aiError"), "error");
+        return;
+      }
+
+      const transcribedText = json.data.text;
+      if (!transcribedText?.trim()) {
+        toast(t("noSpeechDetected"), "error");
+        return;
+      }
+
+      // 顯示可編輯的轉錄文字
+      setEditableTranscript(transcribedText);
+      setShowTranscriptEditor(true);
+    } catch {
+      toast(tErr("aiError"), "error");
+    } finally {
+      setIsTranscribing(false);
     }
+  };
+
+  // 使用者確認轉錄文字後 → AI 分析
+  const handleAnalyzeTranscript = async () => {
+    if (!editableTranscript.trim()) {
+      toast(t("notesRequired"), "error");
+      return;
+    }
+    await summarizeTranscript(editableTranscript.trim());
   };
 
   const handleTextSubmit = async () => {
@@ -250,16 +237,14 @@ export default function VisitLogPage() {
               </div>
             )}
 
-            <Tabs defaultValue={speechSupported ? "voice" : "text"}>
+            <Tabs defaultValue="voice">
               <TabList>
-                {speechSupported && (
-                  <Tab value="voice">
-                    <span className="flex items-center gap-1.5">
-                      <Mic className="h-4 w-4" />
-                      {t("recordVoice")}
-                    </span>
-                  </Tab>
-                )}
+                <Tab value="voice">
+                  <span className="flex items-center gap-1.5">
+                    <Mic className="h-4 w-4" />
+                    {t("recordVoice")}
+                  </span>
+                </Tab>
                 <Tab value="text">
                   <span className="flex items-center gap-1.5">
                     <Keyboard className="h-4 w-4" />
@@ -268,31 +253,45 @@ export default function VisitLogPage() {
                 </Tab>
               </TabList>
 
-              {speechSupported && (
-                <TabPanel value="voice">
-                  <div className="flex flex-col items-center">
-                    <VoiceRecorder
-                      onRecordingComplete={handleRecordingComplete}
-                      onRecordingStart={startSpeechRecognition}
-                      onRecordingStop={stopSpeechRecognition}
-                      isProcessing={isProcessing}
-                      labels={{
-                        micDenied: t("micDenied"),
-                        processingVoice: t("processingVoice"),
-                        tapToStop: t("tapToStop"),
-                        tapToStart: t("tapToStart"),
-                      }}
-                    />
-                    {/* Live transcript display */}
-                    {liveTranscript && (
-                      <div className="mt-3 w-full rounded-lg bg-bg-muted p-3">
-                        <p className="text-xs text-text-muted mb-1">{t("liveTranscript")}</p>
-                        <p className="text-sm text-text-secondary">{liveTranscript}</p>
-                      </div>
-                    )}
-                  </div>
-                </TabPanel>
-              )}
+              <TabPanel value="voice">
+                <div className="flex flex-col items-center">
+                  <VoiceRecorder
+                    onRecordingComplete={handleRecordingComplete}
+                    isProcessing={isTranscribing}
+                    labels={{
+                      micDenied: t("micDenied"),
+                      processingVoice: t("transcribing"),
+                      tapToStop: t("tapToStop"),
+                      tapToStart: t("tapToStart"),
+                    }}
+                  />
+
+                  {/* 可編輯的轉錄文字 */}
+                  {showTranscriptEditor && (
+                    <div className="mt-4 w-full space-y-3">
+                      <Textarea
+                        label={t("transcriptLabel")}
+                        value={editableTranscript}
+                        onChange={(e) => setEditableTranscript(e.target.value)}
+                        className="min-h-[120px]"
+                        placeholder={t("transcriptPlaceholder")}
+                      />
+                      <p className="text-xs text-text-muted">{t("editTranscriptHint")}</p>
+                      <Button
+                        onClick={handleAnalyzeTranscript}
+                        disabled={isProcessing || !editableTranscript.trim()}
+                      >
+                        {isProcessing ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <FileText className="h-4 w-4" />
+                        )}
+                        {isProcessing ? t("processing") : t("analyze")}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </TabPanel>
 
               <TabPanel value="text">
                 <div className="space-y-4">
